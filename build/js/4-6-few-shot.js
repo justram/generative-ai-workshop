@@ -107,7 +107,7 @@ OUTPUT:
 
 INPUT: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-OUTPUT:`}}],this.session=new l,this.session.setModel(s(`openai`,`gpt-4o-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.shotCount=t;let n=t===0?e.zeroShot:t===1?e.oneShot:e.threeShot;this.session.setSystemPrompt(n.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(n.prompt)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return a`
+OUTPUT:`}}],this.session=new l,this.session.setModel(s(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.shotCount=t;let n=t===0?e.zeroShot:t===1?e.oneShot:e.threeShot;this.session.setSystemPrompt(n.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(n.prompt)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return a`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
 				<p class="text-sm text-muted-foreground">See how providing examples improves consistency and accuracy.</p>
 

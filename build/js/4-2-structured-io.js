@@ -24,7 +24,7 @@ Review 1:
 - Issues: list each problem, or "none"
 - Positives: list good points, or "none"
 - Employee mentioned: name or "none"
-- Priority action: most important thing to fix, or "none needed"`}],this.session=new h,this.session.setModel(c(`openai`,`gpt-4o-mini`)),this.agentInterface=new s,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runApproach(e){this.selectedFormat=e.id,this.session.setSystemPrompt(e.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(e.prompt)}renderContentPanel(){return o`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return o`
+- Priority action: most important thing to fix, or "none needed"`}],this.session=new h,this.session.setModel(c(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new s,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runApproach(e){this.selectedFormat=e.id,this.session.setSystemPrompt(e.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(e.prompt)}renderContentPanel(){return o`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return o`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
 				<p class="text-sm text-muted-foreground">
 					${n(`Compare how different prompting approaches handle the same customer feedback data.`)}

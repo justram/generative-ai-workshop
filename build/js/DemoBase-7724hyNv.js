@@ -2127,7 +2127,7 @@ This is a conceptual workshop focused on understanding how these systems work, n
 - **Training costs:**
    - Pre-training a large model: $10-100+ million in compute costs
    - Requires thousands of specialized GPUs for weeks/months
-   - Only a handful of companies can afford this (OpenAI, Anthropic, Google, Meta)
+   - Only a handful of frontier AI labs can afford this; this workshop focuses on the GPT family through the learner's own ChatGPT login
    - Fine-tuning exists but doesn't reliably add new factual knowledge - it mostly adjusts style and behavior, or improves performance on a specific task
    - When vendors say 'trained on your data' they usually mean Retrieval Augmented Generation (we'll cover this later), not actual training
 
@@ -2320,10 +2320,9 @@ _左側卡片顯示的是這個套件實際可以呼叫的 GPT 選項。_
 
 - The maximum number of tokens a model can process
 - Depends on model:
-   - OpenAI GPT-5: max 272k input tokens, max 128k output tokens
-   - OpenAI GPT-3.5-Turbo: max 16k input tokens, max 4k output tokens
-   - Anthropic Claude Sonnet 4.0: max 168k input tokens, max 32k output tokens
-   - Google Gemini 2.5 Pro: max 1M input tokens, max 64k output tokens
+   - GPT-5.5: max 272k input tokens, max 128k output tokens
+   - GPT-5.4: max 272k input tokens, max 128k output tokens
+   - GPT-5.4 Mini: max 272k input tokens, max 128k output tokens
 
 **What counts against limit**:
 
@@ -2524,7 +2523,7 @@ _左側卡片顯示的是這個套件實際可以呼叫的 GPT 選項。_
 
 **Context engineering**: Most "prompt engineering" is actually about providing the right context. LLMs have no memory between conversations and no knowledge of your specific situation. The techniques below are mostly about giving the model enough context to understand what you actually want, whether that's background information, examples, constraints, or output formats.
 
-**Model variability**: Different models react differently to the same prompt. What works perfectly for GPT might fail on Claude or Gemini. Even version updates of the same model can break previously working prompts. While the techniques below generally work across models, nothing beats actual experimentation and testing with your specific use case.
+**Model variability**: Different GPT-family models and versions can react differently to the same prompt. Even version updates of the same model can break previously working prompts. While the techniques below generally transfer across GPT models, nothing beats actual experimentation and testing with your specific use case.
 
 ### 4.1 Personas - Make the LLM Roleplay
 
@@ -2635,10 +2634,10 @@ Result:
    - You can see and verify the logic
 
 2. **Reasoning-trained models** (2024+):
-   - Models like o1, Claude (thinking mode), Gemini Thinking
+   - Models in the GPT reasoning family can generate internal reasoning traces
    - Trained on datasets with reasoning traces
    - Automatically generate internal reasoning without prompting
-   - Some hide the reasoning (o1), others show it (Claude)
+   - Some reasoning is hidden from the user; the visible answer should still be checked
 
 **Why it works**: Transformers use attention mechanisms that let later tokens "look back" at earlier ones. When reasoning steps are in the context, the model can reference them when generating the answer, like having scratch paper available while solving a problem.
 
@@ -3636,11 +3635,10 @@ LLM reads sensitive data → Prompt injection says "search for evil.com?stolen_d
 
 **The problem:** Chat interfaces are terrible for iterative work. You ask for code, the LLM outputs it, you ask for changes, it outputs the entire thing again. Copy-paste hell ensues.
 
-**All major providers offer this:**
+**GPT-focused version in this package:**
 
-- **OpenAI**: [Canvas](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it) - side panel for writing and coding
-- **Anthropic**: [Artifacts](https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them) - dedicated window for content creation
-- **Google**: [Canvas in Google AI Studio](https://aistudio.google.com/apps) - real-time collaborative app building
+- **ChatGPT Canvas-style workflow**: a side panel for writing, coding, and iterative edits
+- **This demo's artifacts tool**: the same idea, implemented locally so learners can inspect how file creation and updates work
 
 **Without artifacts:**
 
@@ -4292,12 +4290,12 @@ This section walks through three practical demos showing different ways to run m
 				<!-- Header -->
 				<div class="px-4 py-3 border-b border-border flex items-center justify-between flex-shrink-0">
 					<div class="flex items-center gap-3">
-						<a href="./" class="p-2 rounded-md hover:bg-muted transition-colors" title="Back to demos"> ${u} </a>
+							<a href="./" class="p-2 rounded-md hover:bg-muted transition-colors" title="${i(`Back to demos`)}"> ${u} </a>
 						<h1 class="text-xl lg:text-2xl font-semibold">${this.headerTitle}</h1>
 					</div>
 					<div class="flex items-center gap-1">
-						${r?e({variant:p?`secondary`:`ghost`,size:`icon`,title:this.showLeftPanelDesktop?`Hide left panel`:`Show left panel`,onClick:()=>{window.innerWidth>=1024?this.showLeftPanelDesktop=!this.showLeftPanelDesktop:this.showLeftPanel=!this.showLeftPanel},children:d}):``}
-						${c?e({variant:m?`secondary`:`ghost`,size:`icon`,title:this.showRightPanelDesktop?`Hide right panel`:`Show right panel`,onClick:()=>{window.innerWidth>=1024?this.showRightPanelDesktop=!this.showRightPanelDesktop:this.showRightPanel=!this.showRightPanel},children:f}):``}
+							${r?e({variant:p?`secondary`:`ghost`,size:`icon`,title:this.showLeftPanelDesktop?i(`Hide left panel`):i(`Show left panel`),onClick:()=>{window.innerWidth>=1024?this.showLeftPanelDesktop=!this.showLeftPanelDesktop:this.showLeftPanel=!this.showLeftPanel},children:d}):``}
+							${c?e({variant:m?`secondary`:`ghost`,size:`icon`,title:this.showRightPanelDesktop?i(`Hide right panel`):i(`Show right panel`),onClick:()=>{window.innerWidth>=1024?this.showRightPanelDesktop=!this.showRightPanelDesktop:this.showRightPanel=!this.showRightPanel},children:f}):``}
 						<theme-toggle></theme-toggle>
 					</div>
 				</div>

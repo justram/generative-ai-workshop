@@ -9,7 +9,7 @@ Solve this step-by-step:
 Think through this step-by-step:
 1. List all the relationships
 2. Order the people from tallest to shortest
-3. Identify who is the shortest`}}],this.session=new m,this.session.setModel(s(`openai`,`gpt-4.1-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!0,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.useCoT=t;let n=t?e.withCoT:e.withoutCoT;this.session.setSystemPrompt(n.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(n.prompt)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return a`
+3. Identify who is the shortest`}}],this.session=new m,this.session.setModel(s(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!0,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.useCoT=t;let n=t?e.withCoT:e.withoutCoT;this.session.setSystemPrompt(n.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(n.prompt)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return a`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
 				<p class="text-sm text-muted-foreground">
 					${n(`Compare how models perform with and without step-by-step reasoning prompts.`)}
