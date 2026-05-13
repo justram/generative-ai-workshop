@@ -2308,7 +2308,7 @@ _Note: This is simplified - the actual mechanisms are still being studied._
 
 **對這個套件很重要的事**
 
-- 成本顯示為 $0.00，因為這個 demo 不使用按 token 計費的 API Key
+- 成本顯示採用 OpenAI API 公告價格作為估算基準；實際使用仍走學員自己的 ChatGPT 訂閱
 - 學員自己的 ChatGPT 訂閱與使用限制仍然適用
 - 其他供應商已從這個獨立版移除，使用者不需要設定 API Key
 
@@ -2438,32 +2438,40 @@ _左側卡片顯示的是這個套件實際可以呼叫的 GPT 選項。_
 - Works well for common objects, fails at counting, precision, or specifics
 - Hallucinations about visual content are inevitable
 
-### 3.7 The (Hidden) Costs
+### 3.7 （隱藏的）成本
 
-<p class="text-interactive-primary italic">Talk to the LLM and watch the cost per message increase</p>
+<p class="text-interactive-primary italic">和模型對話，觀察每一輪訊息如何累積 token 與成本</p>
 
-**API pricing model**:
+**API 計價模型**：
 
-- Individuals using websites/apps: flat rate ($20-200/month) with usage limits
-- Developers using APIs: charged per token
-   - Pricing examples:
-      - OpenAI GPT-5: $1.25 / 1M input tokens, $10 / 1M output tokens
-      - Anthropic Claude Opus 4.1: $15 / 1M input tokens, $75 / 1M output tokens
+- 使用 ChatGPT 網站或 App：通常是月費訂閱，並搭配使用量限制
+- 使用 API：依 token 計費，價格以每 100 萬 token 計算
+   - OpenAI 官方 API 價格範例（Standard、短上下文）：
+      - GPT-5.5：輸入 USD 5.00，快取輸入 USD 0.50，輸出 USD 30.00
+      - GPT-5.4：輸入 USD 2.50，快取輸入 USD 0.25，輸出 USD 15.00
+      - GPT-5.4 Mini：輸入 USD 0.75，快取輸入 USD 0.075，輸出 USD 4.50
+      - GPT-5.3 Codex：輸入 USD 1.75，快取輸入 USD 0.175，輸出 USD 14.00
 
-**What you pay for in each message**:
+**這個本地版怎麼看成本**：
 
-- All tokens in the system prompt
-- All tokens from previous messages (yours + AI's)
-- All tokens in your new message
-- All tokens in the model's response (including reasoning/thinking)
-- The longer the conversation, the more expensive each turn
+- 這個 app 使用學員自己的 ChatGPT 登入，不會使用講師提供的 API Key
+- 左側成本追蹤器顯示的是 API 等價估算，用來理解 token 成本結構
+- 實際可用額度與限制仍取決於學員自己的 ChatGPT 訂閱
 
-**Key insights**:
+**每次訊息會消耗哪些 token**：
 
-- First message: pennies
-- After an hour: dollars per message
-- Customer service bot: thousands per day
-- Context window size directly impacts cost
+- System prompt 中的所有 token
+- 前面對話紀錄的所有 token（使用者 + 模型）
+- 這次新訊息的 token
+- 模型回答的 token（包含 reasoning / thinking）
+- 對話越長，每一輪要重新送出的上下文就越多
+
+**重點整理**：
+
+- 第一則訊息通常很便宜
+- 長對話、長文件與大型上下文會讓成本快速累積
+- 客服機器人或內部知識庫若大量使用，成本會從「單次請求」放大成「每日營運成本」
+- Context window 大小與是否使用 reasoning 會直接影響成本
 
 ### 3.8 Key Observations from User Interactions
 

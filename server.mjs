@@ -10,7 +10,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_PORT = 4174;
 const DEFAULT_MODEL_ID = "gpt-5.4-mini";
 const CODEX_PROVIDER = "openai-codex";
-const GPT_MODEL_IDS = new Set(getModels(CODEX_PROVIDER).map((model) => model.id));
+const PRICED_GPT_MODEL_IDS = ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5.3-codex"];
+const GPT_MODEL_IDS = new Set(
+  getModels(CODEX_PROVIDER)
+    .filter((model) => PRICED_GPT_MODEL_IDS.includes(model.id))
+    .map((model) => model.id),
+);
 
 let pendingLogin = null;
 let movieEmbeddingDim = null;
