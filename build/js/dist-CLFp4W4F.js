@@ -1,0 +1,1 @@
+import{require_dist as e}from"./dist-BBN5nh1I.js";export default e();

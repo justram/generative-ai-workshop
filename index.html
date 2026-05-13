@@ -1,0 +1,21 @@
+<!doctype html>
+<html class="bg-background" lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GenAI Workshop</title>
+		<!-- Immediately set theme to prevent flicker -->
+		<script>
+			(function () {
+				const theme = localStorage.getItem("theme") || "system";
+				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				const actualTheme = theme === "system" ? systemTheme : theme;
+				document.documentElement.setAttribute("data-theme", actualTheme);
+			})();
+		</script>
+		<link rel="stylesheet" href="build/css/styles.css?v=zh-tw8" />
+		<script type="module" src="build/js/index.js?v=zh-tw8"></script>
+	</head>
+	<body><script type="module" src="local-pi-auth.js?v=pi1"></script>
+</body>
+</html>

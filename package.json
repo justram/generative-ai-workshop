@@ -1,0 +1,58 @@
+{
+  "name": "generative-ai-workshop-tw",
+  "version": "1.0.0",
+  "description": "Local Generative AI Workshop clone with ChatGPT subscription login via pi.",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.mjs",
+  "scripts": {
+    "postinstall": "node scripts/patch-pi-oauth-page.mjs",
+    "prestart": "node scripts/patch-pi-oauth-page.mjs",
+    "start": "node server.mjs",
+    "electron": "electron .",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win nsis portable --x64"
+  },
+  "keywords": [],
+  "author": "Mario Zechner; Traditional Chinese translation and maintenance by Jheng-Hong (Matt) Yang / 楊政紘, Stencilzeit",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@earendil-works/pi-ai": "^0.74.0"
+  },
+  "devDependencies": {
+    "electron": "^42.0.1",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.stencilzeit.generative-ai-workshop",
+    "productName": "Generative AI Workshop",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "**/*",
+      "!dist-electron/**",
+      "!.local-auth/**",
+      "!vendor/**",
+      "!*.log"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "artifactName": "${productName}-${version}-win-${arch}-installer.${ext}",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-win-${arch}-portable.${ext}"
+    }
+  }
+}
