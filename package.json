@@ -53,6 +53,15 @@
     },
     "portable": {
       "artifactName": "${productName}-${version}-win-${arch}-portable.${ext}"
-    }
+    },
+    "extraResources": [
+      {
+        "from": "build",
+        "to": "build",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   }
 }

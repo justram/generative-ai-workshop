@@ -54,6 +54,10 @@ root.innerHTML = `
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
     }
+    workshop-index p.text-sm.text-muted-foreground {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
   </style>
   <button class="auth-light" type="button" aria-label="ChatGPT login status">
     <span class="dot" aria-hidden="true"></span>

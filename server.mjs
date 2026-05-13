@@ -16,6 +16,7 @@ let pendingLogin = null;
 let movieEmbeddingDim = null;
 let authDir = process.env.GENAI_AUTH_DIR || path.join(__dirname, ".local-auth");
 let authFile = path.join(authDir, "openai-codex.json");
+let staticRoots = [__dirname];
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -252,30 +253,31 @@ async function handleEmbed(req, res) {
 async function handleStatic(req, res, url) {
   const requestedPath = decodeURIComponent(url.pathname === "/" ? "/index.html" : url.pathname);
   const safePath = path.normalize(requestedPath).replace(/^(\.\.[/\\])+/, "");
-  const filePath = path.join(__dirname, safePath);
 
-  if (!filePath.startsWith(__dirname)) {
-    sendJson(res, 403, { error: "Forbidden" });
-    return;
-  }
-
-  try {
-    const stat = await fs.stat(filePath);
-    const actualPath = stat.isDirectory() ? path.join(filePath, "index.html") : filePath;
-    const ext = path.extname(actualPath).toLowerCase();
-    res.writeHead(200, {
-      "content-type": MIME_TYPES[ext] || "application/octet-stream",
-      "cache-control": "no-cache",
-    });
-    fsSync.createReadStream(actualPath).pipe(res);
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-      res.end("Not found");
+  for (const root of staticRoots) {
+    const filePath = path.join(root, safePath);
+    if (!filePath.startsWith(root)) {
+      sendJson(res, 403, { error: "Forbidden" });
       return;
     }
-    throw error;
+
+    try {
+      const stat = await fs.stat(filePath);
+      const actualPath = stat.isDirectory() ? path.join(filePath, "index.html") : filePath;
+      const ext = path.extname(actualPath).toLowerCase();
+      res.writeHead(200, {
+        "content-type": MIME_TYPES[ext] || "application/octet-stream",
+        "cache-control": "no-cache",
+      });
+      fsSync.createReadStream(actualPath).pipe(res);
+      return;
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
   }
+
+  res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+  res.end("Not found");
 }
 
 async function route(req, res) {
@@ -334,6 +336,7 @@ export async function startServer(options = {}) {
   const host = options.host || "127.0.0.1";
   authDir = options.authDir || process.env.GENAI_AUTH_DIR || path.join(__dirname, ".local-auth");
   authFile = path.join(authDir, "openai-codex.json");
+  staticRoots = [...new Set([...(options.staticRoots || []), __dirname])];
 
   const server = http.createServer(route);
   await new Promise((resolve, reject) => {

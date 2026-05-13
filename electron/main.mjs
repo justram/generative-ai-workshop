@@ -15,7 +15,7 @@ async function startWorkshopServer(authDir) {
   let lastError = null;
   for (const port of APP_PORTS) {
     try {
-      return await startServer({ port, authDir });
+      return await startServer({ port, authDir, staticRoots: [process.resourcesPath] });
     } catch (error) {
       lastError = error;
       if (error?.code !== "EADDRINUSE") throw error;
