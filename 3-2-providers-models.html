@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" class="h-full">
+<html lang="zh-Hant-TW" class="h-full">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Providers & Models</title>
+		<title>供應商與模型</title>
 		<!-- Immediately set theme to prevent flicker -->
 		<script>
 			(function () {
@@ -11,11 +11,13 @@
 				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 				const actualTheme = theme === "system" ? systemTheme : theme;
 				document.documentElement.setAttribute("data-theme", actualTheme);
+				document.documentElement.classList.toggle("dark", actualTheme === "dark");
 			})();
 		</script>
 		<link rel="stylesheet" href="build/css/styles.css?v=zh-tw8" />
-		<script type="module" src="build/js/3-2-providers-models.js?v=zh-tw8"></script>
+		<link rel="stylesheet" href="native-polish.css?v=4" />
+		<script type="module" src="build/js/3-2-providers-models.js?v=examples-pass1"></script>
 	</head>
-	<body class="h-full overflow-hidden"><script type="module" src="local-pi-auth.js?v=pi1"></script>
+	<body class="h-full overflow-hidden"><script type="module" src="local-pi-auth.js?v=proper-i18n-1"></script>
 </body>
 </html>

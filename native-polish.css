@@ -1,0 +1,792 @@
+@import url("./cozy-workshop-theme.css?v=3");
+
+html {
+  -webkit-touch-callout: none;
+}
+
+body {
+  --native-accent: #007aff;
+  --ring: oklch(62% 0.17 255);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI Variable",
+    "Segoe UI",
+    sans-serif;
+}
+
+.dark body {
+  --native-accent: #0a84ff;
+  --ring: oklch(68% 0.15 255);
+}
+
+button,
+[role="button"],
+summary,
+.cursor-pointer {
+  cursor: default !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+a {
+  cursor: default;
+}
+
+button:active,
+[role="button"]:active {
+  transform: translateY(1px);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--native-accent, #007aff) 76%, white 24%);
+  outline-offset: 2px;
+}
+
+textarea:focus-visible,
+input:focus-visible,
+[contenteditable="true"]:focus-visible {
+  outline-width: 1.5px;
+}
+
+.markdown-content,
+.markdown-content *,
+pre,
+code {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.native-model-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+self-hosting-lab {
+  display: block;
+}
+
+.native-section-stack {
+  display: grid;
+  gap: 2rem;
+}
+
+.native-memory-row {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-memory-fill {
+  height: 100%;
+  transition: width 120ms ease-out;
+}
+
+.native-memory-fill-weights {
+  background: #2563eb;
+}
+
+.native-memory-fill-kv {
+  background: #d97706;
+}
+
+.native-memory-fill-runtime {
+  background: #059669;
+}
+
+.native-decision-row {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-context-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-overview-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.native-overview-control,
+.native-setting-control {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem 1.125rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.native-overview-control:last-child,
+.native-setting-control:last-child {
+  border-bottom: 0;
+}
+
+.native-overview-meter {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.native-overview-meter-fill {
+  height: 100%;
+  transition: width 140ms ease-out;
+  background: var(--native-accent);
+}
+
+.native-overview-value,
+.native-setting-value {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.625rem;
+  max-width: 15rem;
+  padding: 0 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--background) 72%, var(--muted) 28%);
+  color: var(--foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.native-setting-value {
+  max-width: 18rem;
+}
+
+.native-overview-slider,
+.native-setting-slider {
+  width: 100%;
+  height: 1.25rem;
+  appearance: none;
+  -webkit-appearance: none;
+  accent-color: var(--native-accent);
+  background: transparent;
+  cursor: default;
+}
+
+.native-overview-slider::-webkit-slider-runnable-track,
+.native-setting-slider::-webkit-slider-runnable-track {
+  height: 0.375rem;
+  border: 1px solid color-mix(in oklab, var(--border) 72%, var(--foreground) 28%);
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--native-accent), var(--native-accent)) 0 / var(--range-progress, 0%) 100% no-repeat,
+    color-mix(in oklab, var(--background) 70%, var(--muted) 30%);
+}
+
+.native-overview-slider::-webkit-slider-thumb,
+.native-setting-slider::-webkit-slider-thumb {
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.375rem;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid var(--background);
+  border-radius: 999px;
+  background: var(--native-accent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
+}
+
+.native-overview-slider::-moz-range-track,
+.native-setting-slider::-moz-range-track {
+  height: 0.375rem;
+  border: 1px solid color-mix(in oklab, var(--border) 72%, var(--foreground) 28%);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--background) 70%, var(--muted) 30%);
+}
+
+.native-overview-slider::-moz-range-progress,
+.native-setting-slider::-moz-range-progress {
+  height: 0.375rem;
+  border-radius: 999px;
+  background: var(--native-accent);
+}
+
+.native-overview-slider::-moz-range-thumb,
+.native-setting-slider::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--background);
+  border-radius: 999px;
+  background: var(--native-accent);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.22);
+}
+
+.native-overview-scale,
+.native-setting-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+}
+
+.native-quant-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.native-preset-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-architecture-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.native-quant-option {
+  display: grid;
+  gap: 0.25rem;
+  min-height: 3.5rem;
+  padding: 0.625rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--background) 74%, var(--muted) 26%);
+  color: var(--muted-foreground);
+  text-align: left;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.native-preset-option,
+.native-architecture-option {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--background) 74%, var(--muted) 26%);
+  color: var(--muted-foreground);
+  text-align: left;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.native-quant-option.is-active {
+  border-color: color-mix(in oklab, var(--native-accent) 62%, var(--border) 38%);
+  background: color-mix(in oklab, var(--native-accent) 12%, var(--background) 88%);
+  color: var(--foreground);
+}
+
+.native-preset-option.is-active,
+.native-architecture-option.is-active {
+  border-color: color-mix(in oklab, var(--native-accent) 62%, var(--border) 38%);
+  background: color-mix(in oklab, var(--native-accent) 12%, var(--background) 88%);
+  color: var(--foreground);
+}
+
+.native-quant-option .native-quant-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.native-quant-option .native-quant-note {
+  font-size: 0.6875rem;
+  line-height: 0.95rem;
+}
+
+.native-preset-title,
+.native-architecture-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.native-preset-note,
+.native-architecture-note {
+  font-size: 0.6875rem;
+  line-height: 0.95rem;
+}
+
+.native-stack-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.native-stack-option-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-stack-option {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--background) 74%, var(--muted) 26%);
+  color: var(--muted-foreground);
+  text-align: left;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.native-stack-option.is-active {
+  border-color: color-mix(in oklab, var(--native-accent) 62%, var(--border) 38%);
+  background: color-mix(in oklab, var(--native-accent) 12%, var(--background) 88%);
+  color: var(--foreground);
+}
+
+.native-stack-layer {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.native-stack-layer:last-child {
+  border-bottom: 0;
+}
+
+.native-stack-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.375rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--background) 70%, var(--muted) 30%);
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.native-stack-flow {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-demo-panel {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--card);
+}
+
+.native-demo-hero {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--background) 78%, var(--muted) 22%);
+}
+
+.native-demo-receipt,
+.native-demo-status {
+  display: inline-grid;
+  align-content: center;
+  justify-self: start;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+  background: color-mix(in oklab, var(--background) 78%, var(--muted) 22%);
+}
+
+.native-demo-layout {
+  display: grid;
+}
+
+.native-demo-picker {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.native-demo-option {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--background) 74%, var(--muted) 26%);
+  color: var(--muted-foreground);
+  text-align: left;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.native-demo-option.is-active {
+  border-color: color-mix(in oklab, var(--native-accent) 62%, var(--border) 38%);
+  background: color-mix(in oklab, var(--native-accent) 12%, var(--background) 88%);
+  color: var(--foreground);
+}
+
+.native-demo-option-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.native-demo-option-note {
+  font-size: 0.75rem;
+  line-height: 1.1rem;
+}
+
+.native-demo-detail {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.native-demo-detail-header {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.native-demo-command {
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--background) 82%, var(--muted) 18%);
+  color: var(--foreground);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  overflow-wrap: anywhere;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.native-demo-process {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+}
+
+.native-demo-step {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--background) 76%, var(--muted) 24%);
+}
+
+.native-demo-step:last-child {
+  border-bottom: 0;
+}
+
+.native-demo-step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--native-accent) 14%, var(--background) 86%);
+  color: var(--foreground);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.native-demo-evidence-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.native-demo-evidence-grid > div {
+  padding: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: 0.625rem;
+  background: color-mix(in oklab, var(--background) 78%, var(--muted) 22%);
+}
+
+.native-demo-evidence-grid ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.native-demo-evidence-grid li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.native-demo-evidence-grid li::before {
+  position: absolute;
+  left: 0;
+  color: var(--native-accent);
+  content: "•";
+}
+
+.native-demo-summary {
+  display: grid;
+  gap: 0.875rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, var(--card) 88%, var(--background) 12%);
+}
+
+.native-demo-summary-kicker {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.native-demo-summary-title {
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.375rem;
+}
+
+.native-demo-summary-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.native-demo-summary-grid > div {
+  display: grid;
+  gap: 0.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.native-demo-summary-label {
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.125rem;
+}
+
+.native-demo-summary p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.45rem;
+}
+
+.native-hardware-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.native-hardware-option-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-hardware-option {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--background) 74%, var(--muted) 26%);
+  color: var(--muted-foreground);
+  text-align: left;
+  transition:
+    background-color 120ms ease-out,
+    border-color 120ms ease-out;
+}
+
+.native-hardware-option.is-active {
+  border-color: color-mix(in oklab, var(--native-accent) 62%, var(--border) 38%);
+  background: color-mix(in oklab, var(--native-accent) 12%, var(--background) 88%);
+  color: var(--foreground);
+}
+
+.native-hardware-option-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.native-hardware-option-meta {
+  font-size: 0.6875rem;
+  line-height: 0.95rem;
+}
+
+.native-hardware-summary {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.native-hardware-meter-row {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.native-hardware-meter {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.native-hardware-meter-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--native-accent);
+  transition: width 140ms ease-out;
+}
+
+.native-overview-factor {
+  display: grid;
+  gap: 0.375rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.native-overview-factor:last-child {
+  border-bottom: 0;
+}
+
+.native-context-scale {
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+}
+
+.native-context-scale-row {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--background) 76%, var(--muted) 24%);
+}
+
+.native-context-scale-row:last-child {
+  border-bottom: 0;
+}
+
+.native-context-scale-row.is-active {
+  background: color-mix(in oklab, var(--native-accent) 12%, var(--background) 88%);
+  box-shadow: inset 3px 0 0 var(--native-accent);
+}
+
+.native-model-value {
+  font-variant-numeric: tabular-nums;
+  min-width: 3.75rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .native-model-grid {
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .native-memory-row {
+    grid-template-columns: 120px minmax(0, 1fr) 72px;
+    align-items: center;
+  }
+
+  .native-decision-row {
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .native-context-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .native-context-scale-row {
+    grid-template-columns: 3.75rem minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .native-overview-grid {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+  }
+
+  .native-overview-factor {
+    grid-template-columns: 5.75rem minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .native-stack-grid {
+    grid-template-columns: 300px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .native-stack-layer {
+    grid-template-columns: 7.5rem minmax(0, 1fr) 7.5rem;
+    align-items: start;
+  }
+
+  .native-demo-hero {
+    grid-template-columns: minmax(0, 1fr) 14rem;
+    align-items: center;
+  }
+
+  .native-demo-layout {
+    grid-template-columns: 17rem minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .native-demo-picker {
+    border-right: 1px solid var(--border);
+    border-bottom: 0;
+  }
+
+  .native-demo-detail-header,
+  .native-demo-evidence-grid {
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    align-items: start;
+  }
+
+  .native-demo-summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .native-hardware-grid {
+    grid-template-columns: 320px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .native-hardware-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .native-hardware-meter-row {
+    grid-template-columns: 7.5rem minmax(0, 1fr) 4.75rem;
+    align-items: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

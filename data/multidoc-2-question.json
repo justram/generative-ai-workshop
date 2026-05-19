@@ -1,8 +1,9 @@
 {
-	"question": "The main differences and improvements between Android World and AITW are",
-	"choice_A": "Android World utilizes open-source models to train a more powerful open-source Android agent model",
-	"choice_B": "Android World has expanded the testing scope of AITW to include more difficult testing tasks that can be networked and vary with the environment",
-	"choice_C": "Android World provides an interactive testing environment that allows models to be tested during the exploration process",
-	"choice_D": "Android World has a larger training and testing set",
-	"answer": "C"
+	"question": "根據會議紀錄與資安清單，客服 GenAI 試點第一版最重要的產品要求是什麼？",
+	"choice_A": "讓回答更像真人，並優先支援外部客戶自助客服。",
+	"choice_B": "把原始客服對話全部放進知識庫，讓模型學會真實客服語氣。",
+	"choice_C": "回答必須可查證、可追溯；找不到來源時要拒答或要求人工確認。",
+	"choice_D": "先支援英文客服資料，因為英文資料比較容易被模型理解。",
+	"answer": "C",
+	"explanation": "文件 A 的會議結論說第一版追求可查證、可追溯、可拒答，不是最像真人。文件 B 也要求模型根據文件內容回答，找不到資料時拒答或人工確認，並記錄使用的文件片段。教學重點：多文件任務不能只抓一句話，要把需求、限制與排除項目一起讀。"
 }

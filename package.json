@@ -8,8 +8,11 @@
   "scripts": {
     "postinstall": "node scripts/patch-pi-oauth-page.mjs",
     "prestart": "node scripts/patch-pi-oauth-page.mjs",
+    "icons": "node scripts/generate-app-icons.mjs",
+    "predist": "node scripts/generate-app-icons.mjs",
     "start": "node server.mjs",
     "electron": "electron .",
+    "audit:localization": "electron scripts/audit-localization.cjs",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win nsis portable --x64"
   },
@@ -38,10 +41,14 @@
     ],
     "asar": true,
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         "nsis",
         "portable"
       ]
+    },
+    "mac": {
+      "icon": "build/icon.icns"
     },
     "nsis": {
       "artifactName": "${productName}-${version}-win-${arch}-installer.${ext}",

@@ -25,11 +25,18 @@ root.innerHTML = `
       border-radius: 999px;
       background: transparent;
       color: inherit;
-      cursor: pointer;
+      cursor: default;
       padding: 0;
     }
     #local-pi-auth .auth-light:hover {
       background: rgba(148, 163, 184, 0.12);
+    }
+    #local-pi-auth .auth-light:active {
+      transform: translateY(1px);
+    }
+    #local-pi-auth .auth-light:focus-visible {
+      outline: 2px solid rgba(96, 165, 250, 0.9);
+      outline-offset: 2px;
     }
     #local-pi-auth .dot {
       width: 9px;
@@ -59,15 +66,23 @@ root.innerHTML = `
       word-break: break-word;
     }
   </style>
-  <button class="auth-light" type="button" aria-label="ChatGPT login status">
+  <button class="auth-light" type="button" aria-label="ChatGPT 登入狀態">
     <span class="dot" aria-hidden="true"></span>
-    <span class="label">Checking ChatGPT login</span>
+    <span class="label">正在檢查 ChatGPT 登入狀態</span>
   </button>
 `;
 
 const button = root.querySelector(".auth-light");
 const label = root.querySelector(".label");
 let loggedIn = false;
+
+function isEnglish() {
+  return localStorage.getItem("language") === "en";
+}
+
+function copy(en, zhTw) {
+  return isEnglish() ? en : zhTw;
+}
 
 function mount() {
   const anchor = document.querySelector("language-selector") || document.querySelector("theme-toggle");
@@ -83,9 +98,15 @@ function setState({ loggedIn: isLoggedIn, loginPending }) {
   loggedIn = Boolean(isLoggedIn);
   root.classList.toggle("connected", loggedIn);
   root.classList.toggle("pending", Boolean(loginPending) && !loggedIn);
-  const status = loggedIn ? "ChatGPT connected" : loginPending ? "Waiting for ChatGPT login" : "ChatGPT not connected";
+  const status = loggedIn
+    ? copy("ChatGPT connected", "ChatGPT 已連線")
+    : loginPending
+      ? copy("Waiting for ChatGPT login", "等待 ChatGPT 登入完成")
+      : copy("ChatGPT not connected", "ChatGPT 未連線");
   label.textContent = status;
-  button.title = loggedIn ? "ChatGPT connected. Click to log out." : "ChatGPT not connected. Click to log in.";
+  button.title = loggedIn
+    ? copy("ChatGPT connected. Click to log out.", "ChatGPT 已連線。點一下可登出。")
+    : copy("ChatGPT not connected. Click to log in.", "ChatGPT 未連線。點一下登入。");
   button.setAttribute("aria-label", button.title);
 }
 
@@ -100,7 +121,7 @@ async function refresh() {
     setState(await getStatus());
   } catch {
     setState({ loggedIn: false, loginPending: false });
-    button.title = "Local GPT backend is unavailable";
+    button.title = copy("Local GPT backend is not reachable", "本機 GPT 後端目前無法連線");
   }
 }
 
@@ -108,10 +129,19 @@ async function pollUntilConnected() {
   for (let attempt = 0; attempt < 240; attempt += 1) {
     const status = await getStatus();
     setState(status);
-    if (status.loggedIn) return;
+    if (status.loggedIn) return true;
     await new Promise((resolve) => setTimeout(resolve, 1500));
   }
   await refresh();
+  return false;
+}
+
+function closeLoginWindow(popup) {
+  try {
+    if (popup && !popup.closed) popup.close();
+  } catch {
+    // Some OAuth pages briefly move across origins; Electron also cleans up the child window.
+  }
 }
 
 button.addEventListener("click", async () => {
@@ -127,7 +157,12 @@ button.addEventListener("click", async () => {
     window.location.href = redirectUrl;
     return;
   }
-  await pollUntilConnected();
+  const connected = await pollUntilConnected();
+  if (connected) {
+    closeLoginWindow(popup);
+    window.focus();
+    await refresh();
+  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {

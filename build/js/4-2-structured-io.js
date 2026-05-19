@@ -1,42 +1,42 @@
-import{Button as e,__decorate as t,i18n as n,iconPlayLine as r,r as i,t$1 as a,x as o}from"./ThemeToggle-zh-tw7.js";import"./CodeBlock-SUyIenKs.js";import{AgentInterface as s,getModel as c}from"./app-C9nW8ndw.js";import{Badge as l,Card as u,CardContent as d,CardHeader as f,CardTitle as p}from"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js";import{DemoBase as m}from"./DemoBase-7724hyNv.js";import"./proxy-client-DO8A5rUF.js";import{AgentSession as h}from"./agent-session-CtmWvP9t.js";let g=class extends m{constructor(){super(),this.headerTitle=n(`Structured Input & Output`),this.sectionId=`4.2`,this.selectedFormat=``,this.feedbackExamples=[{id:`shipping`,text:n(`The product arrived late and was damaged. The packaging was terrible. I tried calling support but waited 45 minutes. When I finally got through, Sarah was very helpful and resolved my issue. Price was good though.`)},{id:`quality`,text:n(`Amazing product! Works exactly as advertised. Setup was a breeze - took less than 5 minutes. The build quality feels premium. My only complaint is the price point, but honestly it's worth it for the quality you get.`)},{id:`service`,text:n(`Ordered on Monday, arrived Wednesday as promised. Product works but the instructions were confusing. Had to watch YouTube videos to figure it out. Customer service chat was instant and helpful. Would be 5 stars with better documentation.`)}],this.approaches=[{id:`unstructured`,name:n(`A. Unstructured (Bad)`),description:n(`Vague prompt, unpredictable output`),systemPrompt:n(`You are a helpful assistant that analyzes customer feedback.`),prompt:`${n(`Analyze these customer reviews:`)}\n\n${this.feedbackExamples.map(e=>e.text).join(`
+import{Button as e,__decorate as t,i18n as n,iconPlayLine as r,r as i,t$1 as a,x as o}from"./ThemeToggle-zh-tw7.js?v=proper-i18n-1";import"./CodeBlock-SUyIenKs.js?v=msg-placeholder-1";import{AgentInterface as s,getModel as c}from"./app-C9nW8ndw.js";import{Badge as l,Card as u,CardContent as d,CardHeader as f,CardTitle as p}from"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js?v=proper-i18n-1";import{DemoBase as m}from"./DemoBase-7724hyNv.js?v=section4-polish1";import"./proxy-client-DO8A5rUF.js";import{AgentSession as h}from"./agent-session-CtmWvP9t.js";let g=class extends m{constructor(){super(),this.headerTitle=n(`結構化輸入與輸出`),this.sectionId=`4.2`,this.selectedFormat=``,this.feedbackExamples=[{id:`shipping`,text:n(`商品晚到而且有破損，包裝很糟。我打給客服等了 45 分鐘才接通，不過 Sarah 很有幫助，最後解決了我的問題。價格倒是還不錯。`)},{id:`quality`,text:n(`很棒的產品！功能跟廣告說的一樣，設定超簡單，不到 5 分鐘就完成。做工很有質感。唯一抱怨是價格偏高，但以品質來說我覺得值得。`)},{id:`service`,text:n(`星期一下單，星期三如期到貨。產品可以用，但說明書很難懂，我還得看 YouTube 才弄清楚。線上客服回覆很快也很有幫助。如果文件寫好一點，我會給 5 顆星。`)}],this.approaches=[{id:`unstructured`,name:n(`A. 未結構化（不理想）`),description:n(`提示太模糊，輸出難預測`),systemPrompt:n(`你是一位協助分析客戶回饋的助理。`),prompt:`${n(`請分析以下客戶評論：`)}\n\n${this.feedbackExamples.map(e=>e.text).join(`
 
-`)}`},{id:`semi-structured`,name:n(`B. Semi-Structured (Better)`),description:n(`Some structure, but still prose-based`),systemPrompt:n(`You are a helpful assistant that analyzes customer feedback. Provide clear analysis with specific sections.`),prompt:`Analyze the customer feedback below. For each review, provide a summary that includes the main sentiment and key points.\n\nReview 1: ${this.feedbackExamples[0].text}\n\nReview 2: ${this.feedbackExamples[1].text}\n\nReview 3: ${this.feedbackExamples[2].text}`},{id:`fully-structured`,name:n(`C. Fully Structured (Best)`),description:n(`Clear delimiters, structured output format`),systemPrompt:n(`You are a customer feedback analyst. Extract specific data points from reviews in the requested format.`),prompt:`Analyze the customer feedback below. Each review is delimited by triple quotes.
+`)}`},{id:`semi-structured`,name:n(`B. 半結構化（較好）`),description:n(`有一點結構，但仍以散文回答為主`),systemPrompt:n(`你是一位協助分析客戶回饋的助理。 請用清楚的小節整理分析。`),prompt:`請分析以下客戶回饋。針對每則評論，整理主要情緒與重點。\n\n評論 1: ${this.feedbackExamples[0].text}\n\n評論 2: ${this.feedbackExamples[1].text}\n\n評論 3: ${this.feedbackExamples[2].text}`},{id:`fully-structured`,name:n(`C. 完整結構化（最好）`),description:n(`明確分隔符與固定輸出格式`),systemPrompt:n(`你是一位客戶回饋分析師。請依照指定格式，從評論中抽出具體資料點。`),prompt:`請分析以下客戶回饋。每則評論都用三個引號分隔。
 
-REVIEW 1:
+評論 1:
 """
 ${this.feedbackExamples[0].text}
 """
 
-REVIEW 2:
+評論 2:
 """
 ${this.feedbackExamples[1].text}
 """
 
-REVIEW 3:
+評論 3:
 """
 ${this.feedbackExamples[2].text}
 """
 
-For each review, output in this exact format:
+請針對每則評論，完全依照以下格式輸出：
 
-Review 1:
-- Sentiment: positive/negative/mixed
-- Issues: list each problem, or "none"
-- Positives: list good points, or "none"
-- Employee mentioned: name or "none"
-- Priority action: most important thing to fix, or "none needed"`}],this.session=new h,this.session.setModel(c(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new s,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runApproach(e){this.selectedFormat=e.id,this.session.setSystemPrompt(e.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(e.prompt)}renderContentPanel(){return o`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return o`
+評論 1:
+- 情緒：正面／負面／混合
+- 問題：列出每個問題，若沒有請寫「無」
+- 優點：列出正面重點，若沒有請寫「無」
+- 提到的員工：姓名，若沒有請寫「無」
+- 優先處理：最重要的改善項目，若沒有請寫「無需處理」`}],this.session=new h,this.session.setModel(c(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new s,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runApproach(e){this.selectedFormat=e.id,this.session.setSystemPrompt(e.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(e.prompt)}renderContentPanel(){return o`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return o`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
 				<p class="text-sm text-muted-foreground">
-					${n(`Compare how different prompting approaches handle the same customer feedback data.`)}
+					${n(`比較不同提示寫法，如何處理同一組客戶回饋。`)}
 				</p>
 
 				${u(o`
-					${f(p(n(`Customer Feedback Samples`)))}
+					${f(p(n(`客戶回饋範例`)))}
 					${d(o`
 						<div class="space-y-3">
 							${this.feedbackExamples.map((e,t)=>o`
 									<div class="text-xs">
-										<div class="font-semibold text-foreground mb-1">${n(`Review {idx}:`)(t+1)}</div>
+										<div class="font-semibold text-foreground mb-1">${n(`評論`)} ${t+1}:</div>
 										<div class="text-muted-foreground pl-2">${e.text}</div>
 									</div>
 								`)}
@@ -45,10 +45,10 @@ Review 1:
 				`)}
 				${this.approaches.map(t=>u(o`
 						${f(p(o`${t.name}
-								${this.selectedFormat===t.id?l(n(`Active`),`secondary`,`ml-2`):``}`))}
+								${this.selectedFormat===t.id?l(n(`已選取`),`secondary`,`ml-2`):``}`))}
 						${d(o`
 							<div class="text-xs text-muted-foreground mb-3">${t.description}</div>
-							${e({variant:this.selectedFormat===t.id?`default`:`secondary`,size:`sm`,onClick:async()=>{try{await this.runApproach(t)}catch(e){console.error(`Failed to run approach`,e)}},children:o`${r(`sm`)}<span class="ml-1">${n(`Run This Approach`)}</span>`})}
+							${e({variant:this.selectedFormat===t.id?`default`:`secondary`,size:`sm`,onClick:async()=>{try{await this.runApproach(t)}catch(e){console.error(`Failed to run approach`,e)}},children:o`${r(`sm`)}<span class="ml-1">${n(`執行這個方法`)}</span>`})}
 						`)}
 					`))}
 			</div>

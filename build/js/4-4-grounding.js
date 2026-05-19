@@ -1,18 +1,18 @@
-import{Button as e,__decorate as t,i18n as n,r,t$1 as i,x as a}from"./ThemeToggle-zh-tw7.js";import"./CodeBlock-SUyIenKs.js";import{AgentInterface as o,getModel as s}from"./app-C9nW8ndw.js";import{Badge as c,Card as l,CardContent as u,CardHeader as d,CardTitle as f}from"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js";import{DemoBase as p}from"./DemoBase-7724hyNv.js";import"./proxy-client-DO8A5rUF.js";import{AgentSession as m}from"./agent-session-CtmWvP9t.js";import{COMPANY_INFO as h,COMPANY_NAME as g,PRODUCT_INFO as _,PRODUCT_NAME as v}from"./demo-company-config-DwX2XOme.js";let y=class extends p{constructor(){super(),this.headerTitle=n(`Grounding Through References`),this.sectionId=`4.4`,this.selectedExample=``,this.useGrounding=!1,this.examples=[{id:`company`,name:`${g} Info`,question:`What can you tell me about ${g}?`,withoutGrounding:{systemPrompt:n(`You are a helpful assistant that answers questions about companies.`)},withGrounding:{systemPrompt:`You are an assistant who answers questions about ${g}.
+import{Button as e,__decorate as t,i18n as n,r,t$1 as i,x as a}from"./ThemeToggle-zh-tw7.js?v=proper-i18n-1";import"./CodeBlock-SUyIenKs.js?v=msg-placeholder-1";import{AgentInterface as o,getModel as s}from"./app-C9nW8ndw.js";import{Badge as c,Card as l,CardContent as u,CardHeader as d,CardTitle as f}from"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js?v=proper-i18n-1";import{DemoBase as p}from"./DemoBase-7724hyNv.js?v=section4-polish1";import"./proxy-client-DO8A5rUF.js";import{AgentSession as m}from"./agent-session-CtmWvP9t.js";import{COMPANY_INFO as h,COMPANY_NAME as g,PRODUCT_INFO as _,PRODUCT_NAME as v}from"./demo-company-config-DwX2XOme.js";let y=class extends p{constructor(){super(),this.headerTitle=n(`用參考資料讓回答有根據`),this.sectionId=`4.4`,this.selectedExample=``,this.useGrounding=!1,this.examples=[{id:`company`,name:`${g} 資訊`,question:`你可以介紹一下 ${g} 嗎？`,withoutGrounding:{systemPrompt:n(`你是一位協助回答公司問題的助理。`)},withGrounding:{systemPrompt:`你是一位回答 ${g} 相關問題的助理。
 
-IMPORTANT: Only answer based on the information provided below. If the information is not available in the reference material, say "${n(`I don't have that information in my reference material.`)}"
+重要：只能根據下方提供的資訊回答。如果參考資料裡沒有答案，請說 "${n(`我的參考資料裡沒有這項資訊。`)}"
 
-Company Information:
+公司資訊：
 \`\`\`
 ${h}
-\`\`\``,reference:`${g} company facts`}},{id:`product`,name:n(`Product Details`),question:`What are the main features of ${v}?`,withoutGrounding:{systemPrompt:n(`You are a helpful assistant that answers questions about software products.`)},withGrounding:{systemPrompt:`You are a technical assistant for ${v} software.
+\`\`\``,reference:`${g} 公司資料`}},{id:`product`,name:n(`產品細節`),question:`${v} 的主要功能有哪些？`,withoutGrounding:{systemPrompt:n(`你是一位協助回答軟體產品問題的助理。`)},withGrounding:{systemPrompt:`你是 ${v} 軟體的技術助理。
 
-IMPORTANT: Only provide information from the reference documentation below. Do not make up features or specifications.
+重要：只能使用下方參考文件中的資訊，不要編造功能或規格。
 
-Product Information:
+產品資訊：
 \`\`\`
 ${_}
-\`\`\``,reference:`${v} documentation`}}],this.session=new m,this.session.setModel(s(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.useGrounding=t;let n=t?e.withGrounding.systemPrompt:e.withoutGrounding.systemPrompt;this.session.setSystemPrompt(n),this.session.clearMessages(),await this.agentInterface.sendMessage(e.question)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){let t=this.examples.find(e=>e.id===this.selectedExample);return a`
+\`\`\``,reference:`${v} 文件`}}],this.session=new m,this.session.setModel(s(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.useGrounding=t;let n=t?e.withGrounding.systemPrompt:e.withoutGrounding.systemPrompt;this.session.setSystemPrompt(n),this.session.clearMessages(),await this.agentInterface.sendMessage(e.question)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){let t=this.examples.find(e=>e.id===this.selectedExample);return a`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
 				<p class="text-sm text-muted-foreground">
 					${n(`See how providing reference material improves accuracy and reduces hallucination.`)}
@@ -20,12 +20,12 @@ ${_}
 
 				${this.examples.map(t=>l(a`
 						${d(f(a`${t.name}
-								${this.selectedExample===t.id?c(this.useGrounding?`Grounded`:`Ungrounded`,`secondary`,`ml-2`):``}`))}
+								${this.selectedExample===t.id?c(this.useGrounding?`有參考資料`:`無參考資料`,`secondary`,`ml-2`):``}`))}
 						${u(a`
 							<div class="text-xs text-muted-foreground mb-2">"${t.question}"</div>
 							<div class="flex flex-col gap-2">
-								${e({variant:this.selectedExample===t.id&&!this.useGrounding?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,!1),children:n(`Run without reference`)})}
-								${e({variant:this.selectedExample===t.id&&this.useGrounding?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,!0),children:n(`Run with reference`)})}
+								${e({variant:this.selectedExample===t.id&&!this.useGrounding?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,!1),children:n(`不使用參考資料執行`)})}
+								${e({variant:this.selectedExample===t.id&&this.useGrounding?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,!0),children:n(`使用參考資料執行`)})}
 							</div>
 						`)}
 					`))}

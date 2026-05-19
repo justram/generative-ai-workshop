@@ -1,9 +1,9 @@
 <!doctype html>
-<html class="bg-background" lang="en">
+<html class="bg-background" lang="zh-Hant-TW">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>GenAI Workshop</title>
+		<title>生成式人工智慧工作坊</title>
 		<!-- Immediately set theme to prevent flicker -->
 		<script>
 			(function () {
@@ -11,11 +11,13 @@
 				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 				const actualTheme = theme === "system" ? systemTheme : theme;
 				document.documentElement.setAttribute("data-theme", actualTheme);
+				document.documentElement.classList.toggle("dark", actualTheme === "dark");
 			})();
 		</script>
 		<link rel="stylesheet" href="build/css/styles.css?v=zh-tw8" />
-		<script type="module" src="build/js/index.js?v=zh-tw8"></script>
+		<link rel="stylesheet" href="native-polish.css?v=4" />
+		<script type="module" src="build/js/index.js?v=section5-mcp-title1"></script>
 	</head>
-	<body><script type="module" src="local-pi-auth.js?v=pi1"></script>
+	<body><script type="module" src="local-pi-auth.js?v=proper-i18n-1"></script>
 </body>
 </html>

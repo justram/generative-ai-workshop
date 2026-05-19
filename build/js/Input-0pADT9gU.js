@@ -1,4 +1,4 @@
-import{fc as e,i18n as t,n,x as r}from"./ThemeToggle-zh-tw7.js";const i=e(({type:e=`text`,size:i=`md`,value:a=``,placeholder:o=``,label:s=``,error:c=``,disabled:l=!1,required:u=!1,name:d=``,autocomplete:f=``,min:p,max:m,step:h,inputRef:g,onInput:_,onChange:v,onKeyDown:y,onKeyUp:b,className:x=``})=>{let S={sm:`h-8 px-3 py-1 text-sm`,md:`h-9 px-3 py-1 text-sm md:text-sm`,lg:`h-10 px-4 py-1 text-base`},C=c?`border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40`:`border-input`;return r`
+import{fc as e,i18n as t,n,x as r}from"./ThemeToggle-zh-tw7.js?v=proper-i18n-1";const i=e(({type:e=`text`,size:i=`md`,value:a=``,placeholder:o=``,label:s=``,error:c=``,disabled:l=!1,required:u=!1,name:d=``,autocomplete:f=``,min:p,max:m,step:h,inputRef:g,onInput:_,onChange:v,onKeyDown:y,onKeyUp:b,className:x=``})=>{let S={sm:`h-8 px-3 py-1 text-sm`,md:`h-9 px-3 py-1 text-sm md:text-sm`,lg:`h-10 px-4 py-1 text-base`},C=c?`border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40`:`border-input`;return r`
 			<div class="flex flex-col gap-1.5 ${x}">
 				${s?r`
 							<label class="text-sm font-medium text-foreground">

@@ -1,4 +1,4 @@
-import{fc as e,i18n as t,x as n}from"./ThemeToggle-zh-tw7.js";const r=e(({isOpen:e,onClose:r,children:i,width:a=`min(600px, 90vw)`,height:o=`auto`,className:s=``})=>e?n`
+import{fc as e,i18n as t,x as n}from"./ThemeToggle-zh-tw7.js?v=proper-i18n-1";const r=e(({isOpen:e,onClose:r,children:i,width:a=`min(600px, 90vw)`,height:o=`auto`,className:s=``})=>e?n`
 		<!-- Backdrop -->
 		<div class="fixed inset-0 bg-black/50 z-40" @click=${e=>{e.target===e.currentTarget&&r?.()}}>
 			<!-- Modal -->

@@ -1,8 +1,9 @@
 {
-	"question": "Which of the following statements is right\uff1f",
-	"choice_A": "Only the method proposed in  \"Disentangling visual and written concepts in CLIP\" adjust or add the network structure of the model based on the original CLIP.",
-	"choice_B": "The synthetic typographic attack datasets proposed by Defense-Prefix is more various than that proposed in the other article.",
-	"choice_C": "Experiment in Defense-Prefix paper shows that it is more capable of defending against typographic attack in the object detection task than the method proposed by the other article.",
-	"choice_D": "The identity loss in Defense-Prefix aims to prevent typographic attacks.",
-	"answer": "A"
+	"question": "根據兩份文件，B14-48 電池模組應該選哪一個充電器方案？",
+	"choice_A": "CX-546，因為它也被供應商標成 48V 系列，而且是現貨。",
+	"choice_B": "CX-588，因為它是 58.8V CC/CV、5A、14S，且可使用 XT90 並確認中心正極。",
+	"choice_C": "CX-672，因為同樣是 XT90，而且 67.2V 可以更快充滿。",
+	"choice_D": "CX-420，因為 42.0V 比較安全，不容易過壓。",
+	"answer": "B",
+	"explanation": "文件 A 說 B14-48 是 14S NMC，滿充電壓 58.8V，建議 CC/CV、4A 到 8A，最大 10A，XT90 且中心正極。文件 B 中只有 CX-588 同時符合 58.8V、14S、5A、XT90 與可確認極性。教學重點：不能只看市場標稱的「48V」，必須跨文件核對串數、滿充電壓、電流、接頭與極性。"
 }

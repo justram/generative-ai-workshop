@@ -1,27 +1,27 @@
-import{Button as e,__decorate as t,i18n as n,r,t$1 as i,x as a}from"./ThemeToggle-zh-tw7.js";import"./CodeBlock-SUyIenKs.js";import{AgentInterface as o,getModel as s}from"./app-C9nW8ndw.js";import"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js";import{DemoBase as c}from"./DemoBase-7724hyNv.js";import"./proxy-client-DO8A5rUF.js";import{AgentSession as l}from"./agent-session-CtmWvP9t.js";let u=class extends c{constructor(){super(),this.headerTitle=`Few-Shot Learning`,this.sectionId=`4.6`,this.selectedExample=``,this.shotCount=0,this.examples=[{id:`sentiment`,name:`Product Review Sentiment`,description:`Analyze sentiment consistently`,testData:`The hotel was clean but the staff were rude`,zeroShot:{systemPrompt:`You are a sentiment analysis assistant.`,prompt:`What's the sentiment of: The hotel was clean but the staff were rude`},oneShot:{systemPrompt:`You are a sentiment analysis assistant.`,prompt:`Analyze sentiment using this example:
+import{Button as e,__decorate as t,i18n as n,r,t$1 as i,x as a}from"./ThemeToggle-zh-tw7.js?v=proper-i18n-1";import"./CodeBlock-SUyIenKs.js?v=msg-placeholder-1";import{AgentInterface as o,getModel as s}from"./app-C9nW8ndw.js";import"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js?v=proper-i18n-1";import{DemoBase as c}from"./DemoBase-7724hyNv.js?v=section4-polish1";import"./proxy-client-DO8A5rUF.js";import{AgentSession as l}from"./agent-session-CtmWvP9t.js";let u=class extends c{constructor(){super(),this.headerTitle=n(`少樣本提示：提供範例`),this.sectionId=`4.6`,this.selectedExample=``,this.shotCount=0,this.examples=[{id:`sentiment`,name:`產品評論情緒`,description:`穩定分析情緒`,testData:`旅館很乾淨，但員工很沒禮貌`,zeroShot:{systemPrompt:`你是一位情緒分析助理。`,prompt:`請判斷這句話的情緒：旅館很乾淨，但員工很沒禮貌`},oneShot:{systemPrompt:`你是一位情緒分析助理。`,prompt:`請根據這個範例分析情緒：
 
-Review: "Great food but terrible service"
-Sentiment: Mixed (positive: food, negative: service)
+評論： "食物很好，但服務很糟"
+情緒： 混合（正面：食物；負面：服務）
 
-Review: "The hotel was clean but the staff were rude"
-Sentiment:`},threeShot:{systemPrompt:`You are a sentiment analysis assistant.`,prompt:`Analyze sentiment using these examples:
+評論： "旅館很乾淨，但員工很沒禮貌"
+情緒：`},threeShot:{systemPrompt:`你是一位情緒分析助理。`,prompt:`請根據這些範例分析情緒：
 
-Review: "Great food but terrible service"
-Sentiment: Mixed (positive: food, negative: service)
+評論： "食物很好，但服務很糟"
+情緒： 混合（正面：食物；負面：服務）
 
-Review: "Everything was perfect from start to finish"
-Sentiment: Positive (all aspects positive)
+評論： "從開始到結束一切都很完美"
+情緒： 正面（各方面都正面）
 
-Review: "Long wait times and cold food"
-Sentiment: Negative (wait time, food quality)
+評論： "等很久，食物也是冷的"
+情緒： 負面（等待時間、食物品質）
 
-Review: "The hotel was clean but the staff were rude"
-Sentiment:`}},{id:`thankyou`,name:`Thank You Notes`,description:`Write consistent thank you notes`,testData:`Kitchen knives from Uncle Bob`,zeroShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write a thank you note for a wedding gift of kitchen knives from Uncle Bob`},oneShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write thank you notes following this example:
+評論： "旅館很乾淨，但員工很沒禮貌"
+情緒：`}},{id:`thankyou`,name:`感謝卡`,description:`寫出風格一致的感謝卡`,testData:`Bob 叔叔送的廚房刀具`,zeroShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write a thank you note for a wedding gift of kitchen knives from Uncle Bob`},oneShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write thank you notes following this example:
 
 Gift: Blanket from Aunt Mary
 Note: Dear Aunt Mary, Thank you so much for the beautiful blanket! We've already put it on our couch and it adds such warmth to our living room. It was lovely seeing you at the wedding. Love, Sarah & Tom
 
-Gift: Kitchen knives from Uncle Bob
+Gift: Bob 叔叔送的廚房刀具
 Note:`},threeShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write thank you notes following these examples:
 
 Gift: Blanket from Aunt Mary
@@ -33,31 +33,31 @@ Note: Dear Mr. & Mrs. Johnson, Thank you for the elegant wine glasses! We can't 
 Gift: Photo album from cousin Lisa
 Note: Dear Lisa, Thank you for the thoughtful photo album! We're excited to fill it with memories from our new life together. Having you celebrate with us was so special. Love, Sarah & Tom
 
-Gift: Kitchen knives from Uncle Bob
-Note:`}},{id:`expense`,name:`Expense Categories`,description:`Categorize expenses consistently`,testData:`Lunch with client at Italian restaurant`,zeroShot:{systemPrompt:`You are an expense categorization assistant.`,prompt:`Categorize this expense: Lunch with client at Italian restaurant`},oneShot:{systemPrompt:`You are an expense categorization assistant.`,prompt:`Categorize expenses using this example:
+Gift: Bob 叔叔送的廚房刀具
+Note:`}},{id:`expense`,name:`費用分類`,description:`穩定分類費用`,testData:`在義大利餐廳與客戶午餐`,zeroShot:{systemPrompt:`你是一位協助分類費用的助理。`,prompt:`Categorize this expense: 在義大利餐廳與客戶午餐`},oneShot:{systemPrompt:`你是一位協助分類費用的助理。`,prompt:`請根據這個範例分類費用：
 
 Expense: "Taxi to airport"
-Category: Transportation
+類別： Transportation
 
-Expense: "Lunch with client at Italian restaurant"
-Category:`},threeShot:{systemPrompt:`You are an expense categorization assistant.`,prompt:`Categorize expenses using these examples:
+Expense: "在義大利餐廳與客戶午餐"
+類別：`},threeShot:{systemPrompt:`你是一位協助分類費用的助理。`,prompt:`Categorize expenses using these examples:
 
 Expense: "Taxi to airport"
-Category: Transportation
+類別： Transportation
 
 Expense: "Dinner with team after project completion"
-Category: Team Building
+類別： Team Building
 
 Expense: "Coffee with potential customer"
-Category: Business Development
+類別： Business Development
 
-Expense: "Lunch with client at Italian restaurant"
-Category:`}},{id:`specs`,name:`Product Specs Extraction`,description:`Extract specifications in JSON format`,testData:`Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,zeroShot:{systemPrompt:`You are a product specification extraction assistant.`,prompt:`Extract specs from: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`},oneShot:{systemPrompt:`You are a product specification extraction assistant.`,prompt:`Extract the technical specifications from the text below in a JSON format.
+Expense: "在義大利餐廳與客戶午餐"
+類別：`}},{id:`specs`,name:`產品規格抽取`,description:`用 JSON 格式抽取規格`,testData:`Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,zeroShot:{systemPrompt:`你是一位產品規格抽取助理。`,prompt:`請抽取規格： Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`},oneShot:{systemPrompt:`你是一位產品規格抽取助理。`,prompt:`請從下列文字抽取技術規格，並用 JSON 格式輸出。
 
 <EXAMPLE>
-INPUT: Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
+輸入： Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
 
-OUTPUT:
+輸出：
 {
   "product": "Google Nest Wifi",
   "speed": "1200Mpbs",
@@ -66,13 +66,13 @@ OUTPUT:
 }
 </EXAMPLE>
 
-INPUT: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
+輸入： Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-OUTPUT:`},threeShot:{systemPrompt:`You are a product specification extraction assistant.`,prompt:`Extract the technical specifications from the text below in a JSON format.
+輸出：`},threeShot:{systemPrompt:`你是一位產品規格抽取助理。`,prompt:`請從下列文字抽取技術規格，並用 JSON 格式輸出。
 
 <EXAMPLE>
-INPUT: Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
-OUTPUT:
+輸入： Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
+輸出：
 {
   "product": "Google Nest Wifi",
   "speed": "1200Mpbs",
@@ -82,8 +82,8 @@ OUTPUT:
 </EXAMPLE>
 
 <EXAMPLE>
-INPUT: iPhone 14 Pro, A16 Bionic chip, 6GB RAM, 256GB storage, Deep Purple
-OUTPUT:
+輸入： iPhone 14 Pro, A16 Bionic chip, 6GB RAM, 256GB storage, Deep Purple
+輸出：
 {
   "product": "iPhone 14 Pro",
   "chip": "A16 Bionic",
@@ -94,8 +94,8 @@ OUTPUT:
 </EXAMPLE>
 
 <EXAMPLE>
-INPUT: Samsung Galaxy S23, Snapdragon 8 Gen 2, 8GB memory, 512GB capacity, Green
-OUTPUT:
+輸入： Samsung Galaxy S23, Snapdragon 8 Gen 2, 8GB memory, 512GB capacity, Green
+輸出：
 {
   "product": "Samsung Galaxy S23",
   "processor": "Snapdragon 8 Gen 2",
@@ -105,23 +105,23 @@ OUTPUT:
 }
 </EXAMPLE>
 
-INPUT: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
+輸入： Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-OUTPUT:`}}],this.session=new l,this.session.setModel(s(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.shotCount=t;let n=t===0?e.zeroShot:t===1?e.oneShot:e.threeShot;this.session.setSystemPrompt(n.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(n.prompt)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return a`
+輸出：`}}],n(`Run`)===`Run`&&(this.headerTitle=`Few-Shot Prompting: Teach with Examples`,this.examples=[{id:`sentiment`,name:`Review sentiment`,description:`Make sentiment labels more consistent`,testData:`The hotel was clean, but the staff was rude`,zeroShot:{systemPrompt:`You are a sentiment analysis assistant.`,prompt:`Classify the sentiment: The hotel was clean, but the staff was rude`},oneShot:{systemPrompt:`You are a sentiment analysis assistant.`,prompt:`Use the example, then classify the new review.\n\nReview: The food was great, but the service was awful.\nSentiment: mixed (positive: food; negative: service)\n\nReview: The hotel was clean, but the staff was rude.\nSentiment:`},threeShot:{systemPrompt:`You are a sentiment analysis assistant.`,prompt:`Use the examples, then classify the new review.\n\nReview: The food was great, but the service was awful.\nSentiment: mixed (positive: food; negative: service)\n\nReview: Everything was perfect from start to finish.\nSentiment: positive\n\nReview: We waited forever and the food was cold.\nSentiment: negative\n\nReview: The hotel was clean, but the staff was rude.\nSentiment:`}},{id:`thankyou`,name:`Thank-you note`,description:`Keep a consistent writing style`,testData:`Kitchen knives from Uncle Bob`,zeroShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write a thank-you note for: kitchen knives from Uncle Bob`},oneShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Example:\nGift: watercolor set from Aunt May\nNote: Dear Aunt May, thank you for the beautiful watercolor set. I have already started using it, and it makes painting feel even more fun.\n\nGift: kitchen knives from Uncle Bob\nNote:`},threeShot:{systemPrompt:`You are a helpful writing assistant.`,prompt:`Write in the same warm, specific style as these examples.\n\nGift: watercolor set from Aunt May\nNote: Dear Aunt May, thank you for the beautiful watercolor set. I have already started using it, and it makes painting feel even more fun.\n\nGift: cookbook from Grandma\nNote: Dear Grandma, thank you for the cookbook. I love that you picked recipes we can try together.\n\nGift: scarf from Sam\nNote: Dear Sam, thank you for the soft scarf. It is exactly what I needed for chilly mornings.\n\nGift: kitchen knives from Uncle Bob\nNote:`}},{id:`expense`,name:`Expense category`,description:`Classify expenses consistently`,testData:`Client lunch at an Italian restaurant`,zeroShot:{systemPrompt:`You categorize business expenses.`,prompt:`Categorize this expense: client lunch at an Italian restaurant`},oneShot:{systemPrompt:`You categorize business expenses.`,prompt:`Example: taxi to airport -> travel\nExpense: client lunch at an Italian restaurant ->`},threeShot:{systemPrompt:`You categorize business expenses.`,prompt:`Examples:\nTaxi to airport -> travel\nHotel for conference -> lodging\nDinner with client -> meals and entertainment\nExpense: client lunch at an Italian restaurant ->`}},{id:`specs`,name:`Product spec extraction`,description:`Extract specs as JSON`,testData:`Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,zeroShot:{systemPrompt:`You extract product specifications.`,prompt:`Extract specs from: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`},oneShot:{systemPrompt:`You extract product specifications as JSON.`,prompt:`Example input: Google Nest Wifi, network speed up to 1200Mbps, 2.4GHz and 5GHz frequencies, WPA3 protocol\nExample output: {"product":"Google Nest Wifi","speed":"1200Mbps","frequencies":["2.4GHz","5GHz"],"protocol":"WPA3"}\n\nInput: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass\nOutput:`},threeShot:{systemPrompt:`You extract product specifications as JSON.`,prompt:`Use the examples to extract product specs as JSON.\n\nInput: Google Nest Wifi, network speed up to 1200Mbps, 2.4GHz and 5GHz frequencies, WPA3 protocol\nOutput: {"product":"Google Nest Wifi","speed":"1200Mbps","frequencies":["2.4GHz","5GHz"],"protocol":"WPA3"}\n\nInput: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass\nOutput:`}}]),this.session=new l,this.session.setModel(s(`openai-codex`,`gpt-5.4-mini`)),this.agentInterface=new o,this.agentInterface.session=this.session,this.agentInterface.enableAttachments=!1,this.agentInterface.enableModelSelector=!0,this.agentInterface.enableThinking=!1,this.agentInterface.style.width=`100%`,this.agentInterface.style.height=`100%`}async runExample(e,t){this.selectedExample=e.id,this.shotCount=t;let n=t===0?e.zeroShot:t===1?e.oneShot:e.threeShot;this.session.setSystemPrompt(n.systemPrompt),this.session.clearMessages(),await this.agentInterface.sendMessage(n.prompt)}renderContentPanel(){return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`}renderLeftDemoPanel(){return a`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
-				<p class="text-sm text-muted-foreground">See how providing examples improves consistency and accuracy.</p>
+				<p class="text-sm text-muted-foreground">${n(`Run`)===`Run`?`See how examples improve consistency and accuracy.`:`看看提供範例如何提升一致性與準確度。`}</p>
 
 				<div class="space-y-2">
 					${this.examples.map(t=>a`
 							<div class="p-3 rounded-md border border-border">
 								<div class="font-medium text-sm text-foreground mb-1">${t.name}</div>
 								<div class="text-xs text-muted-foreground mb-2">
-									${n(`{description} • Test: "{testData}"`)(t.description,t.testData.substring(0,50)+(t.testData.length>50?`...`:``))}
+									${t.description} • ${n(`測試`)}："${t.testData.substring(0,50)+(t.testData.length>50?`...`:``)}"
 								</div>
 								<div class="flex gap-2">
-									${e({variant:this.selectedExample===t.id&&this.shotCount===0?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,0),children:`Zero-shot`})}
-									${e({variant:this.selectedExample===t.id&&this.shotCount===1?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,1),children:`One-shot`})}
-									${e({variant:this.selectedExample===t.id&&this.shotCount===3?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,3),children:`Three-shot`})}
+									${e({variant:this.selectedExample===t.id&&this.shotCount===0?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,0),children:`${n(`Run`)===`Run`?`Zero-shot`:`零樣本`}`})}
+									${e({variant:this.selectedExample===t.id&&this.shotCount===1?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,1),children:`${n(`Run`)===`Run`?`One example`:`單一範例`}`})}
+									${e({variant:this.selectedExample===t.id&&this.shotCount===3?`secondary`:`outline`,size:`sm`,onClick:()=>this.runExample(t,3),children:`${n(`Run`)===`Run`?`Three examples`:`三個範例`}`})}
 								</div>
 							</div>
 						`)}

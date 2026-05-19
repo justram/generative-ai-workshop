@@ -1,0 +1,190 @@
+@font-face {
+  font-family: "Departure Mono";
+  src: url("./assets/cozy/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("./assets/cozy/fonts/EBGaramond-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("./assets/cozy/fonts/EBGaramond-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --workshop-serif: "EB Garamond", "Garamond", Georgia, "Noto Serif TC", serif;
+  --workshop-mono: "Departure Mono", "SFMono-Regular", ui-monospace, monospace;
+  --workshop-ink: #241b16;
+  --workshop-muted: rgba(36, 27, 22, 0.62);
+  --workshop-faint: rgba(36, 27, 22, 0.34);
+  --workshop-paper: #fffaf0;
+  --workshop-paper-soft: #f6ecd9;
+  --workshop-line: rgba(92, 69, 48, 0.14);
+  --workshop-coffee: #7a4a2b;
+  --workshop-coffee-dark: #3b2519;
+  --workshop-leaf: #6f8f61;
+  --workshop-moss: #456f55;
+  --workshop-sun: #d99b52;
+  --workshop-rose: #b96a57;
+
+  --background: oklch(98.5% 0.018 82);
+  --foreground: oklch(19% 0.023 54);
+  --card: oklch(99.2% 0.012 82);
+  --card-foreground: oklch(19% 0.023 54);
+  --popover: oklch(99.2% 0.012 82);
+  --popover-foreground: oklch(19% 0.023 54);
+  --primary: oklch(34% 0.065 55);
+  --primary-foreground: oklch(98.5% 0.018 82);
+  --secondary: oklch(95.4% 0.026 84);
+  --secondary-foreground: oklch(25% 0.035 56);
+  --muted: oklch(94.8% 0.024 84);
+  --muted-foreground: oklch(49% 0.032 61);
+  --accent: oklch(94.5% 0.026 84);
+  --accent-foreground: oklch(25% 0.035 56);
+  --border: oklch(86.5% 0.028 75);
+  --input: oklch(83.5% 0.028 75);
+  --ring: oklch(62% 0.17 255);
+  --chart-1: oklch(62% 0.14 144);
+  --chart-2: oklch(59% 0.12 72);
+  --chart-3: oklch(56% 0.12 35);
+  --chart-4: oklch(50% 0.09 250);
+  --chart-5: oklch(47% 0.09 22);
+}
+
+.dark {
+  --background: oklch(14.5% 0.006 66);
+  --foreground: oklch(95% 0.01 82);
+  --card: oklch(19.5% 0.007 66);
+  --card-foreground: oklch(95% 0.01 82);
+  --popover: oklch(20% 0.007 66);
+  --popover-foreground: oklch(95% 0.01 82);
+  --primary: oklch(91% 0.025 82);
+  --primary-foreground: oklch(17% 0.008 66);
+  --secondary: oklch(25% 0.008 66);
+  --secondary-foreground: oklch(93% 0.01 82);
+  --muted: oklch(25.5% 0.008 66);
+  --muted-foreground: oklch(72% 0.015 78);
+  --accent: oklch(25% 0.008 66);
+  --accent-foreground: oklch(93% 0.01 82);
+  --border: oklch(30% 0.008 66);
+  --input: oklch(33% 0.008 66);
+  --ring: oklch(68% 0.15 255);
+  --chart-1: oklch(72% 0.12 145);
+  --chart-2: oklch(75% 0.11 78);
+  --chart-3: oklch(70% 0.11 38);
+  --chart-4: oklch(68% 0.08 250);
+  --chart-5: oklch(68% 0.1 20);
+}
+
+body {
+  color: var(--foreground);
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in oklab, var(--workshop-sun) 13%, transparent) 0 28rem, transparent 44rem),
+    var(--background);
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in oklab, var(--workshop-sun) 4%, transparent) 0 24rem, transparent 42rem),
+    var(--background);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -8vmax;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("./assets/cozy/vibe-shadows-only.webp");
+  background-size: 118% 118%;
+  background-position: center;
+  opacity: 0.18;
+  filter: saturate(0.86) brightness(1.14);
+  transform: translate3d(-4%, -2.5%, 0) scale(1.06) rotate(-0.2deg);
+  transform-origin: 55% 34%;
+  animation: workshopShadowPlateDrift 9s ease-in-out infinite alternate;
+  backface-visibility: hidden;
+  contain: paint;
+  will-change: transform, opacity;
+}
+
+.dark body::before body::before {
+  opacity: 0.045;
+  filter: saturate(0.58) brightness(0.62) contrast(1.08);
+  mix-blend-mode: screen;
+}
+
+h1,
+.markdown-content h1,
+.markdown-content h2,
+.text-3xl.text-foreground,
+.text-4xl.text-foreground {
+  font-family:
+    var(--workshop-serif),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+code,
+pre,
+.font-mono,
+.native-model-value,
+.native-overview-value,
+.native-setting-value,
+.native-stack-badge {
+  font-family: var(--workshop-mono);
+}
+
+.markdown-content blockquote {
+  border-left-color: color-mix(in oklab, var(--workshop-moss) 46%, var(--border) 54%);
+}
+
+.markdown-content a {
+  color: color-mix(in oklab, var(--workshop-moss) 76%, var(--foreground) 24%);
+}
+
+.bg-card {
+  background-color: color-mix(in oklab, var(--card) 92%, transparent);
+}
+
+.border-border {
+  border-color: color-mix(in oklab, var(--border) 88%, var(--foreground) 12%);
+}
+
+@keyframes workshopShadowPlateDrift {
+  from {
+    transform: translate3d(-4%, -2.5%, 0) scale(1.06) rotate(-0.2deg);
+    opacity: 0.13;
+  }
+  45% {
+    transform: translate3d(3.5%, 1.4%, 0) scale(1.07) rotate(0.18deg);
+    opacity: 0.2;
+  }
+  to {
+    transform: translate3d(0.8%, 3.6%, 0) scale(1.065) rotate(-0.06deg);
+    opacity: 0.17;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}

@@ -91,7 +91,7 @@ async function startLogin() {
     onAuth: (info) => resolveUrl(info),
     onProgress: (message) => console.log(`[auth] ${message}`),
     onPrompt: async () => {
-      throw new Error("Browser callback was not received. Restart login and finish the ChatGPT sign-in page.");
+      throw new Error("沒有收到瀏覽器登入回呼。請重新登入，並完成 ChatGPT 登入頁面。");
     },
   })
     .then(async (credentials) => {
@@ -169,7 +169,7 @@ async function handleStream(req, res) {
     const body = await readJson(req);
     const apiKey = await getApiKeyFromLocalLogin();
     if (!apiKey) {
-      sendJson(res, 401, { error: "Not logged in. Click 'Log in with ChatGPT' on this local page first." });
+      sendJson(res, 401, { error: "尚未登入。請先點選右上角的 ChatGPT 狀態燈，完成 ChatGPT 登入。" });
       return;
     }
 
@@ -255,6 +255,251 @@ async function handleEmbed(req, res) {
   sendJson(res, 200, { embedding: localEmbedding(text, dim), local: true });
 }
 
+function decodeHtml(value = "") {
+  return String(value)
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function curatedSearchResults(query = "") {
+  const normalized = query.toLowerCase();
+  if (!/jheng|jheng-hong|matt|justram|楊政紘|stencilzeit/.test(normalized)) return [];
+  return [
+    {
+      title: "justram (Jheng-Hong (Matt) Yang) - Hugging Face",
+      url: "https://huggingface.co/justram",
+      snippet:
+        "Hugging Face profile for Jheng-Hong (Matt) Yang, username justram. The profile links to justram.github.io/mypage/about and lists AI & ML interests: Information Retrieval, Multi-modal representation learning, Recommender Systems.",
+      source: "curated-fallback",
+    },
+    {
+      title: "dblp: Jheng-Hong Yang",
+      url: "https://dblp.org/pid/227/0821.html",
+      snippet:
+        "DBLP author page for Jheng-Hong Yang. It lists publications including AToMiC: An Image/Text Retrieval Test Collection to Support Multimedia Content Creation (SIGIR 2023) and Gosling Grows Up (SIGIR 2025).",
+      source: "curated-fallback",
+    },
+    {
+      title: "Jheng-Hong (Matt) Yang - Stencilzeit | LinkedIn",
+      url: "https://tw.linkedin.com/in/jheng-hong-matt-yang-64692685",
+      snippet:
+        "Search snippets identify Jheng-Hong (Matt) Yang with Stencilzeit and describe him as an engineer and researcher building agentic systems. Because LinkedIn content may require login, treat this as lower-confidence unless verified from the page directly.",
+      source: "curated-fallback",
+    },
+  ];
+}
+
+function parseDuckDuckGoResults(html) {
+  const results = [];
+  const blocks = html.match(/<div class="result[\s\S]*?<\/div>\s*<\/div>/g) || [];
+  for (const block of blocks) {
+    const titleMatch = block.match(/<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/);
+    if (!titleMatch) continue;
+    const snippetMatch = block.match(/<a[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/a>|<div[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/div>/);
+    let url = decodeHtml(titleMatch[1]);
+    try {
+      const parsed = new URL(url);
+      const uddg = parsed.searchParams.get("uddg");
+      if (uddg) url = uddg;
+    } catch {}
+    results.push({
+      title: decodeHtml(titleMatch[2]),
+      url,
+      snippet: decodeHtml(snippetMatch?.[1] || snippetMatch?.[2] || ""),
+      source: "duckduckgo-html",
+    });
+  }
+  return results;
+}
+
+async function handleWebSearch(req, res) {
+  const body = await readJson(req);
+  const query = String(body.query || "").trim();
+  if (!query) {
+    sendJson(res, 400, { error: "query is required" });
+    return;
+  }
+
+  try {
+    const url = `https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+    const response = await fetch(url, {
+      headers: {
+        "user-agent": "Mozilla/5.0 (compatible; GenAIWorkshop/1.0; +https://justram.github.io)",
+      },
+    });
+    const html = await response.text();
+    let results = parseDuckDuckGoResults(html).slice(0, Number(body.numResults || 5));
+    if (/jheng|jheng-hong|matt|justram|楊政紘|stencilzeit/i.test(query)) {
+      const curated = curatedSearchResults(query);
+      const seen = new Set(results.map((result) => result.url));
+      results = [...curated.filter((result) => !seen.has(result.url)), ...results].slice(0, Number(body.numResults || 5));
+    }
+    sendJson(res, 200, {
+      query,
+      searchedAt: new Date().toISOString(),
+      results,
+      fallback: results.some((result) => result.source === "curated-fallback"),
+    });
+  } catch (error) {
+    const results = curatedSearchResults(query).slice(0, Number(body.numResults || 5));
+    sendJson(res, 200, {
+      query,
+      searchedAt: new Date().toISOString(),
+      results,
+      fallback: true,
+      warning: error.message || String(error),
+    });
+  }
+}
+
+const MCP_DEMO_TOOLS = [
+  {
+    name: "shell.date",
+    title: "讀取目前日期時間",
+    description: "回傳本機伺服器目前時間。只讀。",
+    inputSchema: { type: "object", properties: {}, required: [] },
+    risk: "read",
+  },
+  {
+    name: "shell.pwd_list",
+    title: "讀取目前資料夾",
+    description: "回傳教學 app 的工作目錄與前幾個檔案。只讀。",
+    inputSchema: { type: "object", properties: { limit: { type: "number" } }, required: [] },
+    risk: "read",
+  },
+  {
+    name: "runtime.node_version",
+    title: "讀取 Node.js 版本",
+    description: "回傳本機 Node.js 版本。只讀。",
+    inputSchema: { type: "object", properties: {}, required: [] },
+    risk: "read",
+  },
+  {
+    name: "project.package_summary",
+    title: "讀取 package.json 摘要",
+    description: "讀取 app 名稱、scripts 與 Electron 打包設定。只讀。",
+    inputSchema: { type: "object", properties: {}, required: [] },
+    risk: "read",
+  },
+  {
+    name: "notes.write_practice",
+    title: "寫入練習筆記",
+    description: "只允許寫入本機教學沙盒裡的 mcp-practice-note.txt。",
+    inputSchema: { type: "object", properties: { content: { type: "string" } }, required: ["content"] },
+    risk: "write",
+  },
+  {
+    name: "notes.read_practice",
+    title: "讀取練習筆記",
+    description: "讀取本機教學沙盒裡的 mcp-practice-note.txt。",
+    inputSchema: { type: "object", properties: {}, required: [] },
+    risk: "read",
+  },
+];
+
+async function handleMcpDemo(req, res) {
+  const body = await readJson(req);
+  const requestId = body.id ?? 1;
+  const method = String(body.method || "");
+  if (method === "tools/list") {
+    sendJson(res, 200, {
+      jsonrpc: "2.0",
+      id: requestId,
+      result: {
+        tools: MCP_DEMO_TOOLS,
+      },
+    });
+    return;
+  }
+
+  if (method !== "tools/call") {
+    sendJson(res, 400, {
+      jsonrpc: "2.0",
+      id: requestId,
+      error: { code: -32601, message: `Unknown MCP demo method: ${method}` },
+    });
+    return;
+  }
+
+  const name = String(body.params?.name || "");
+  const args = body.params?.arguments && typeof body.params.arguments === "object" ? body.params.arguments : {};
+  const noteDir = path.join(authDir, "mcp-demo");
+  const notePath = path.join(noteDir, "mcp-practice-note.txt");
+
+  try {
+    let text = "";
+    let structuredContent = {};
+    if (name === "shell.date") {
+      const now = new Date();
+      structuredContent = { iso: now.toISOString(), locale: now.toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }) };
+      text = `Asia/Taipei：${structuredContent.locale}\nISO：${structuredContent.iso}`;
+    } else if (name === "shell.pwd_list") {
+      const limit = Math.max(1, Math.min(Number(args.limit || 10), 30));
+      const entries = (await fs.readdir(__dirname)).slice(0, limit);
+      structuredContent = { cwd: __dirname, entries };
+      text = `cwd: ${__dirname}\n\n${entries.map((entry) => `- ${entry}`).join("\n")}`;
+    } else if (name === "runtime.node_version") {
+      structuredContent = { version: process.version, platform: process.platform, arch: process.arch };
+      text = `Node.js ${process.version}\nplatform: ${process.platform}\narch: ${process.arch}`;
+    } else if (name === "project.package_summary") {
+      const pkg = JSON.parse(await fs.readFile(path.join(__dirname, "package.json"), "utf8"));
+      structuredContent = {
+        name: pkg.name,
+        version: pkg.version,
+        scripts: pkg.scripts || {},
+        build: pkg.build || {},
+      };
+      text = JSON.stringify(structuredContent, null, 2);
+    } else if (name === "notes.write_practice") {
+      const content = String(args.content || "").trim();
+      if (!content) throw new Error("content is required");
+      await fs.mkdir(noteDir, { recursive: true });
+      await fs.writeFile(notePath, content, "utf8");
+      structuredContent = { path: notePath, bytes: Buffer.byteLength(content, "utf8") };
+      text = `已寫入 ${notePath}\n${structuredContent.bytes} bytes`;
+    } else if (name === "notes.read_practice") {
+      const content = await fs.readFile(notePath, "utf8");
+      structuredContent = { path: notePath, content };
+      text = `path: ${notePath}\n\n${content}`;
+    } else {
+      sendJson(res, 400, {
+        jsonrpc: "2.0",
+        id: requestId,
+        error: { code: -32602, message: `Unknown MCP demo tool: ${name}` },
+      });
+      return;
+    }
+
+    sendJson(res, 200, {
+      jsonrpc: "2.0",
+      id: requestId,
+      result: {
+        content: [{ type: "text", text }],
+        structuredContent,
+        isError: false,
+      },
+    });
+  } catch (error) {
+    sendJson(res, 200, {
+      jsonrpc: "2.0",
+      id: requestId,
+      result: {
+        content: [{ type: "text", text: error.message || String(error) }],
+        structuredContent: {},
+        isError: true,
+      },
+    });
+  }
+}
+
 async function handleStatic(req, res, url) {
   const requestedPath = decodeURIComponent(url.pathname === "/" ? "/index.html" : url.pathname);
   const safePath = path.normalize(requestedPath).replace(/^(\.\.[/\\])+/, "");
@@ -322,6 +567,14 @@ async function route(req, res) {
     }
     if (req.method === "POST" && url.pathname === "/api/embed") {
       await handleEmbed(req, res);
+      return;
+    }
+    if (req.method === "POST" && url.pathname === "/api/web-search") {
+      await handleWebSearch(req, res);
+      return;
+    }
+    if (req.method === "POST" && url.pathname === "/api/mcp-demo") {
+      await handleMcpDemo(req, res);
       return;
     }
     if (req.method === "GET" || req.method === "HEAD") {

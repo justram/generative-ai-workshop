@@ -1,3 +1,7 @@
-import{__decorate as e,i18n as t,t$1 as n,x as r}from"./ThemeToggle-zh-tw7.js";import"./CodeBlock-SUyIenKs.js";import"./app-C9nW8ndw.js";import"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js";import{DemoBase as i}from"./DemoBase-7724hyNv.js";let a=class extends i{constructor(...e){super(...e),this.headerTitle=t(`Retrieval Augmented Generation (RAG)`),this.sectionId=`5`,this.sectionMode=`single`,this.iframeUrl=`https://excalidraw.com`}renderContentPanel(){return r`<iframe src="${this.iframeUrl}" class="w-full h-full border-0" title="${t(`Interactive Demo`)}"></iframe>`}renderRightDemoPanel(){return r`<div class="flex-1 p-6 overflow-y-auto min-h-0">
-			<markdown-block .content=${this.sectionContent??``} .escapeHtml=${!1}></markdown-block>
-		</div>`}};a=e([n(`rag-demo`)],a);const o=document.createElement(`rag-demo`);document.body.appendChild(o);export{a as RagDemo};
+import{__decorate as e,i18n as t,t$1 as n,x as r}from"./ThemeToggle-zh-tw7.js?v=proper-i18n-1";import"./CodeBlock-SUyIenKs.js?v=msg-placeholder-1";import"./app-C9nW8ndw.js";import"./Textarea-DCZnYrSo.js";import"./Dialog-C7MHz9Dg.js";import"./Input-0pADT9gU.js";import"./auth-token-Dkh_JH49.js";import"./MarkdownBlock-CNBIWDl3.js";import"./mini-zh-tw7.js?v=proper-i18n-1";import{DemoBase as i}from"./DemoBase-7724hyNv.js?v=section5-polish4";let a=class extends i{constructor(...e){super(...e),this.headerTitle=t(`AI 代理人：讓大型語言模型使用工具`),this.sectionId=`5`,this.sectionMode=`subtree`}renderContentPanel(){return r`
+			<div class="flex-1 overflow-y-auto h-full">
+				<div class="max-w-4xl mx-auto p-6">
+					<markdown-block .content=${this.sectionContent??``} .escapeHtml=${!1}></markdown-block>
+				</div>
+			</div>
+		`}};a=e([n(`agents-overview`)],a),document.body.innerHTML=`<agents-overview></agents-overview>`;export{a as AgentsOverviewDemo};

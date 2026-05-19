@@ -51,4 +51,4 @@ The OAuth callback uses `127.0.0.1:1455`, which is started temporarily by `pi-ai
 
 ## Notes
 
-The workshop’s `/api/stream` endpoint is implemented by `server.mjs` and forwards local requests to the ChatGPT-backed OpenAI Codex provider through `pi-ai`. The `/api/embed` endpoint uses a deterministic local embedding fallback so the embedding demos keep running without a remote embedding API.
+The workshop’s `/api/stream` endpoint is implemented by `server.mjs` and forwards local requests to the ChatGPT-backed OpenAI Codex provider through `pi-ai`.
