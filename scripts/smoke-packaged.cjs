@@ -8,6 +8,9 @@ const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
 const timeoutMs = Number(process.env.GENAI_SMOKE_TIMEOUT_MS || 60000);
+const outputDir = process.env.GENAI_SMOKE_OUTPUT_DIR
+  ? path.resolve(process.env.GENAI_SMOKE_OUTPUT_DIR)
+  : null;
 
 function findDefaultExecutable() {
   const dist = path.join(root, "dist-electron");
@@ -88,6 +91,11 @@ async function main() {
   }
   if (!result.ok) {
     throw new Error(`Packaged app smoke failed:\n${JSON.stringify(result, null, 2)}\n${stderr}`);
+  }
+
+  if (outputDir) {
+    await fsp.mkdir(outputDir, { recursive: true });
+    await fsp.copyFile(resultPath, path.join(outputDir, `packaged-smoke-${process.platform}.json`));
   }
 
   console.log(JSON.stringify({ executable, result }, null, 2));
