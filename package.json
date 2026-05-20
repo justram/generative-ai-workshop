@@ -16,7 +16,7 @@
     "smoke:packaged": "node scripts/smoke-packaged.cjs",
     "verify:upload": "node scripts/verify-upload-folder.cjs",
     "dist": "electron-builder",
-    "dist:win": "electron-builder --win nsis portable --x64"
+    "dist:win": "electron-builder --win nsis portable --x64 --publish never"
   },
   "keywords": [],
   "author": "Mario Zechner; Traditional Chinese translation and maintenance by Jheng-Hong (Matt) Yang / 楊政紘, Stencilzeit",
