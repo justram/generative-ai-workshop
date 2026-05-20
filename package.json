@@ -13,6 +13,8 @@
     "start": "node server.mjs",
     "electron": "electron .",
     "audit:localization": "electron scripts/audit-localization.cjs",
+    "smoke:packaged": "node scripts/smoke-packaged.cjs",
+    "verify:upload": "node scripts/verify-upload-folder.cjs",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win nsis portable --x64"
   },

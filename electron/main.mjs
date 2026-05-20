@@ -1,5 +1,5 @@
 import path from "node:path";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, Menu, shell } from "electron";
 import { startServer } from "../server.mjs";
@@ -18,6 +18,10 @@ const singleInstanceLock = app.requestSingleInstanceLock();
 
 if (!singleInstanceLock) {
   app.quit();
+}
+
+if (process.env.GENAI_ELECTRON_USER_DATA_DIR) {
+  app.setPath("userData", path.resolve(process.env.GENAI_ELECTRON_USER_DATA_DIR));
 }
 
 function windowStatePath() {
@@ -45,6 +49,49 @@ async function saveWindowState(window) {
   if (!window || window.isDestroyed()) return;
   const bounds = window.getBounds();
   await writeFile(windowStatePath(), JSON.stringify(bounds, null, 2)).catch(() => {});
+}
+
+async function writeSmokeResult(result) {
+  const resultPath = process.env.GENAI_ELECTRON_SMOKE_RESULT;
+  if (!resultPath) return;
+  await mkdir(path.dirname(resultPath), { recursive: true });
+  await writeFile(resultPath, JSON.stringify(result, null, 2), "utf8");
+}
+
+async function runSmokeProbe() {
+  if (!process.env.GENAI_ELECTRON_SMOKE_RESULT || !mainWindow || !serverInstance) return;
+  try {
+    const authResponse = await fetch(new URL("/api/auth/status", serverInstance.url), { cache: "no-store" });
+    const authStatus = await authResponse.json();
+    const pageState = await mainWindow.webContents.executeJavaScript(
+      `({
+        title: document.title,
+        lang: document.documentElement.lang,
+        heading: document.querySelector("h1")?.textContent?.trim() || "",
+        bodyLength: document.body?.innerText?.length || 0
+      })`,
+    );
+    await writeSmokeResult({
+      ok: authResponse.ok && pageState.bodyLength > 100,
+      platform: process.platform,
+      arch: process.arch,
+      appVersion: app.getVersion(),
+      serverUrl: serverInstance.url,
+      userData: app.getPath("userData"),
+      resourcesPath: process.resourcesPath,
+      authStatus,
+      pageState,
+    });
+    setTimeout(() => app.quit(), 150);
+  } catch (error) {
+    await writeSmokeResult({
+      ok: false,
+      platform: process.platform,
+      arch: process.arch,
+      error: error?.stack || error?.message || String(error),
+    });
+    setTimeout(() => app.exit(1), 150);
+  }
 }
 
 function buildMenu() {
@@ -237,6 +284,7 @@ async function createMainWindow() {
 
   mainWindow.once("ready-to-show", () => {
     mainWindow?.show();
+    runSmokeProbe();
   });
 
   mainWindow.on("close", () => {

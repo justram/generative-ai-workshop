@@ -27,6 +27,7 @@ On a Windows machine or a GitHub Actions Windows runner:
 ```bash
 npm ci
 npm run dist:win
+npm run smoke:packaged
 ```
 
 Build artifacts are written to `dist-electron/`. The build config produces both an NSIS installer and a portable `.exe`.
@@ -37,6 +38,21 @@ Expected Windows artifacts:
 - `dist-electron/Generative AI Workshop-1.0.0-win-x64-portable.exe`
 
 These builds are not code-signed yet, so Windows SmartScreen may warn users before first launch.
+
+## Release Checks
+
+Use three levels of checks before sharing a build:
+
+```bash
+npm run audit:localization
+npm run verify:upload
+```
+
+- `npm run audit:localization` catches broken pages, wrong-language UI, bad placeholders, and console errors in the rendered Electron pages.
+- `npm run smoke:packaged` must run on the target platform after packaging. On Windows it launches the real portable `.exe`, waits for the local backend and first page to render, writes a smoke result, then exits.
+- `npm run verify:upload` checks that `dist-electron/google-drive-upload/` contains only the two upload zips and the README.
+
+The GitHub Actions workflow `.github/workflows/windows-release-smoke.yml` runs the Windows build and packaged `.exe` smoke test on a real Windows runner.
 
 ## How Auth Works
 
