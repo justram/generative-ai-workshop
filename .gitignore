@@ -1,4 +1,5 @@
 .local-auth/
+build/js/
 node_modules/
 dist-electron/
 .tmp-auth-*/

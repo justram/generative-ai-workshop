@@ -16,6 +16,7 @@
     "predist": "npm run build:ui && node scripts/generate-app-icons.mjs",
     "predist:win": "npm run build:ui && node scripts/generate-app-icons.mjs",
     "build:ui": "node scripts/build-mini-lit-ui.mjs",
+    "audit:source-boundaries": "node scripts/audit-source-boundaries.cjs",
     "lint": "oxlint . --type-aware --tsconfig tsconfig.json -A no-floating-promises -A no-implied-eval -A await-thenable",
     "lint:ci": "oxlint . --type-aware --tsconfig tsconfig.json -A no-floating-promises -A no-implied-eval -A await-thenable --deny-warnings",
     "start": "node server.mjs",
@@ -29,7 +30,7 @@
     "format": "oxfmt --write \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
     "format:check": "oxfmt --check \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "check": "npm run lint:ci && npm run format:check && npm run typecheck"
+    "check": "npm run audit:source-boundaries && npm run lint:ci && npm run format:check && npm run typecheck"
   },
   "dependencies": {
     "@earendil-works/pi-ai": "^0.74.0",

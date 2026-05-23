@@ -1,13 +1,13 @@
 import { __decorate as e, i18n as t, t$1 as n, x as r } from "../mini-lit/index.js";
-import "../workshop-runtime/CodeBlock-SUyIenKs.js";
-import "../workshop-runtime/app-C9nW8ndw.js";
-import "../workshop-runtime/Textarea-DCZnYrSo.js";
-import "../workshop-runtime/Dialog-C7MHz9Dg.js";
-import "../workshop-runtime/Input-0pADT9gU.js";
-import "../workshop-runtime/auth-token-Dkh_JH49.js";
+import "../workshop-runtime/CodeBlock.js";
+import "../workshop-runtime/AgentRuntime.js";
+import "../workshop-runtime/UiPrimitives.js";
+import "../workshop-runtime/Dialog.js";
+import "../workshop-runtime/Input.js";
+import "../workshop-runtime/AuthToken.js";
 import "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase as i } from "../workshop-runtime/DemoBase-7724hyNv.js";
+import { DemoBase as i } from "../workshop-runtime/DemoBase.js";
 let a = class extends i {
   constructor(...e) {
     (super(...e),

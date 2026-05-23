@@ -1,25 +1,25 @@
 import { __decorate as e, i18n as t, t$1 as n, x as r } from "../mini-lit/index.js";
-import "../workshop-runtime/CodeBlock-SUyIenKs.js";
+import "../workshop-runtime/CodeBlock.js";
 import {
   AgentInterface as i,
   formatCost as a,
   formatTokenCount as o,
   getModel as s,
-} from "../workshop-runtime/app-C9nW8ndw.js";
+} from "../workshop-runtime/AgentRuntime.js";
 import {
   Card as c,
   CardContent as l,
   CardHeader as u,
   CardTitle as d,
-} from "../workshop-runtime/Textarea-DCZnYrSo.js";
-import "../workshop-runtime/Dialog-C7MHz9Dg.js";
-import "../workshop-runtime/Input-0pADT9gU.js";
-import "../workshop-runtime/auth-token-Dkh_JH49.js";
+} from "../workshop-runtime/UiPrimitives.js";
+import "../workshop-runtime/Dialog.js";
+import "../workshop-runtime/Input.js";
+import "../workshop-runtime/AuthToken.js";
 import "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase as f } from "../workshop-runtime/DemoBase-7724hyNv.js";
-import "../workshop-runtime/proxy-client-DO8A5rUF.js";
-import { AgentSession as p } from "../workshop-runtime/agent-session-CtmWvP9t.js";
+import { DemoBase as f } from "../workshop-runtime/DemoBase.js";
+import "../workshop-runtime/ProxyClient.js";
+import { AgentSession as p } from "../workshop-runtime/AgentSession.js";
 
 function h(e) {
   if (!e) return ``;

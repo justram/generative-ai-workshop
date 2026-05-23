@@ -1,22 +1,22 @@
 import { Button as e, __decorate as t, i18n as n, r, t$1 as i, x as a } from "../mini-lit/index.js";
-import "../workshop-runtime/CodeBlock-SUyIenKs.js";
-import { AgentInterface as o, getModel as s } from "../workshop-runtime/app-C9nW8ndw.js";
+import "../workshop-runtime/CodeBlock.js";
+import { AgentInterface as o, getModel as s } from "../workshop-runtime/AgentRuntime.js";
 import {
   Badge as c,
   Card as l,
   CardContent as u,
   CardHeader as d,
   CardTitle as f,
-} from "../workshop-runtime/Textarea-DCZnYrSo.js";
-import "../workshop-runtime/Dialog-C7MHz9Dg.js";
-import "../workshop-runtime/Input-0pADT9gU.js";
-import "../workshop-runtime/auth-token-Dkh_JH49.js";
+} from "../workshop-runtime/UiPrimitives.js";
+import "../workshop-runtime/Dialog.js";
+import "../workshop-runtime/Input.js";
+import "../workshop-runtime/AuthToken.js";
 import "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase as p } from "../workshop-runtime/DemoBase-7724hyNv.js";
-import "../workshop-runtime/proxy-client-DO8A5rUF.js";
-import { AgentSession as m } from "../workshop-runtime/agent-session-CtmWvP9t.js";
-import { COMPANY_NAME as h } from "../workshop-runtime/demo-company-config-DwX2XOme.js";
+import { DemoBase as p } from "../workshop-runtime/DemoBase.js";
+import "../workshop-runtime/ProxyClient.js";
+import { AgentSession as m } from "../workshop-runtime/AgentSession.js";
+import { COMPANY_NAME as h } from "../workshop-runtime/demoCompanyConfig.js";
 let g = class extends p {
   constructor() {
     (super(),

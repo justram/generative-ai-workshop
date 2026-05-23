@@ -8,8 +8,8 @@ import {
   t$1 as o,
   x as s,
 } from "../mini-lit/index.js";
-import "../workshop-runtime/CodeBlock-SUyIenKs.js";
-import { AgentInterface as c, getModel as l } from "../workshop-runtime/app-C9nW8ndw.js";
+import "../workshop-runtime/CodeBlock.js";
+import { AgentInterface as c, getModel as l } from "../workshop-runtime/AgentRuntime.js";
 import {
   Badge as u,
   Card as d,
@@ -17,15 +17,15 @@ import {
   CardContent as p,
   CardHeader as m,
   CardTitle as h,
-} from "../workshop-runtime/Textarea-DCZnYrSo.js";
-import "../workshop-runtime/Dialog-C7MHz9Dg.js";
-import "../workshop-runtime/Input-0pADT9gU.js";
-import "../workshop-runtime/auth-token-Dkh_JH49.js";
+} from "../workshop-runtime/UiPrimitives.js";
+import "../workshop-runtime/Dialog.js";
+import "../workshop-runtime/Input.js";
+import "../workshop-runtime/AuthToken.js";
 import "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase as g } from "../workshop-runtime/DemoBase-7724hyNv.js";
-import "../workshop-runtime/proxy-client-DO8A5rUF.js";
-import { AgentSession as _ } from "../workshop-runtime/agent-session-CtmWvP9t.js";
+import { DemoBase as g } from "../workshop-runtime/DemoBase.js";
+import "../workshop-runtime/ProxyClient.js";
+import { AgentSession as _ } from "../workshop-runtime/AgentSession.js";
 let v = class extends g {
   constructor() {
     (super(),

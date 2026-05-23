@@ -1,21 +1,21 @@
 import { __decorate, i18n, r, t$1, x } from "../mini-lit/index.js";
-import "../workshop-runtime/CodeBlock-SUyIenKs.js";
+import "../workshop-runtime/CodeBlock.js";
 import {
   AgentInterface,
   getModel,
   registerToolRenderer,
-} from "../workshop-runtime/app-C9nW8ndw.js";
-import { Badge } from "../workshop-runtime/Textarea-DCZnYrSo.js";
-import "../workshop-runtime/Dialog-C7MHz9Dg.js";
-import "../workshop-runtime/Input-0pADT9gU.js";
-import { getAuthToken } from "../workshop-runtime/auth-token-Dkh_JH49.js";
+} from "../workshop-runtime/AgentRuntime.js";
+import { Badge } from "../workshop-runtime/UiPrimitives.js";
+import "../workshop-runtime/Dialog.js";
+import "../workshop-runtime/Input.js";
+import { getAuthToken } from "../workshop-runtime/AuthToken.js";
 import "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase } from "../workshop-runtime/DemoBase-7724hyNv.js";
-import { AgentSession } from "../workshop-runtime/agent-session-CtmWvP9t.js";
-import "../workshop-runtime/PreviewCodeToggle-BU28TKE5.js";
-import { ArtifactsPanel } from "../workshop-runtime/artifacts-BhLRFxu0.js";
-import { streamSimpleProxy } from "../workshop-runtime/proxy-client-DO8A5rUF.js";
+import { DemoBase } from "../workshop-runtime/DemoBase.js";
+import { AgentSession } from "../workshop-runtime/AgentSession.js";
+import "../workshop-runtime/PreviewCodeToggle.js";
+import { ArtifactsPanel } from "../workshop-runtime/Artifacts.js";
+import { streamSimpleProxy } from "../workshop-runtime/ProxyClient.js";
 
 function extractJsonObject(text) {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
