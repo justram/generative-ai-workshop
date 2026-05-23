@@ -5,7 +5,7 @@ import {
   i,
   i18n,
   t2 as t
-} from "../chunks/chunk-FDFAIUKR.js";
+} from "../chunks/chunk-2NPHVPQR.js";
 
 // src/pages/index.js
 var attribution = {

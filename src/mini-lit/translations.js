@@ -815,6 +815,12 @@ Object.assign(EN_TO_ZH_TW, {
 Object.assign(ZH_TW_TO_EN, {
   "編輯系統提示，並使用下方偵錯檢視檢查請求與回應。":
     "Edit the system prompt and use the debug view below to inspect requests and responses.",
+  上下文視窗: "Context Window",
+  "先送幾則訊息，再問「我叫什麼名字？」觀察上下文塞滿後，較早的訊息如何被移出模型這一輪看得到的範圍。":
+    'Send a few messages, then ask "what is my name?" to see how older messages move out of what the model can read on this request.',
+  "估算目前仍在上下文中的訊息 token；送出更多訊息時會累積，超過上限後會丟掉最早的對話。":
+    "Estimated message tokens still inside the active context. Sending more messages makes it grow; once it exceeds the limit, the oldest turns are dropped.",
+  已移出上下文: "Moved out of context",
   一頁式工作坊講義: "One-page workshop handout",
   "請模型建立可改寫的 Markdown 講義": "Ask the model to create an editable Markdown handout",
   "請用 artifacts 工具建立一份 Markdown 講義，檔名用 tool-risk-handout.md。主題是「LLM 工具呼叫的三個風險」。請包含：一段開場、三個風險、每個風險一個生活例子、三題課後檢查題。":

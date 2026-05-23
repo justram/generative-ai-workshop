@@ -1,15 +1,15 @@
 import {
   r as r2,
   t as t2
-} from "../chunks/chunk-IVS2DJXG.js";
+} from "../chunks/chunk-IIG3EIFQ.js";
 import {
   o
-} from "../chunks/chunk-ASOE6ZTL.js";
+} from "../chunks/chunk-6TTNE7IQ.js";
 import {
   Pi,
   bR,
   m
-} from "../chunks/chunk-737EQ6X6.js";
+} from "../chunks/chunk-QLBDILTC.js";
 import {
   Button,
   __decorate,
@@ -17,7 +17,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-FDFAIUKR.js";
+} from "../chunks/chunk-2NPHVPQR.js";
 
 // src/pages/4-5-nlp-tasks.js
 var f = class extends m {
