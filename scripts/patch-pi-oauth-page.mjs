@@ -3,7 +3,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const oauthPagePath = path.join(root, "node_modules/@earendil-works/pi-ai/dist/utils/oauth/oauth-page.js");
+const oauthPagePath = path.join(
+  root,
+  "node_modules/@earendil-works/pi-ai/dist/utils/oauth/oauth-page.js",
+);
 
 const returnScript = String.raw`
     <script>
@@ -43,18 +46,23 @@ if (!source.includes("data-close-hint")) {
   );
   source = source.replace(
     '    ${details ? `<div class="details">${details}</div>` : ""}',
-    '    ${details ? `<div class="details">${details}</div>` : ""}\\n    ${options.success ? `' + returnScript.replaceAll("`", "\\`") + '` : ""}',
+    '    ${details ? `<div class="details">${details}</div>` : ""}\\n    ${options.success ? `' +
+      returnScript.replaceAll("`", "\\`") +
+      '` : ""}',
   );
   source = source.replace(
-    '        message,\n    });\n}',
-    '        message,\n        success: true,\n    });\n}',
+    "        message,\n    });\n}",
+    "        message,\n        success: true,\n    });\n}",
   );
   changed = true;
 }
 
 if (source.includes("Login is complete.")) {
   source = source
-    .replace("Login is complete. You can close this window and return to the workshop.", "ChatGPT 登入已完成。可以關閉這個視窗，回到工作坊。")
+    .replace(
+      "Login is complete. You can close this window and return to the workshop.",
+      "ChatGPT 登入已完成。可以關閉這個視窗，回到工作坊。",
+    )
     .replace("Open port 4174", "開啟 4174 埠")
     .replace("Open port 4175", "開啟 4175 埠");
   changed = true;

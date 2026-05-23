@@ -1,0 +1,246 @@
+import { i18n as e } from "../mini-lit/index.js";
+import {
+  AssistantMessageEventStream as t,
+  parseStreamingJson as n,
+} from "./app-C9nW8ndw.js";
+import { clearAuthToken as r } from "./auth-token-Dkh_JH49.js";
+function i(i, a, o) {
+  let s = new t();
+  return (
+    (async () => {
+      let t = {
+          role: `assistant`,
+          stopReason: `stop`,
+          content: [],
+          api: i.api,
+          provider: i.provider,
+          model: i.id,
+          usage: {
+            input: 0,
+            output: 0,
+            cacheRead: 0,
+            cacheWrite: 0,
+            cost: {
+              input: 0,
+              output: 0,
+              cacheRead: 0,
+              cacheWrite: 0,
+              total: 0,
+            },
+          },
+          timestamp: Date.now(),
+        },
+        c,
+        l = () => {
+          c && c.cancel(`Request aborted by user`).catch(() => {});
+        };
+      o.signal && o.signal.addEventListener(`abort`, l);
+      try {
+        let r = await fetch(`/api/stream`, {
+          method: `POST`,
+          headers: {
+            Authorization: `Bearer ${o.authToken}`,
+            "Content-Type": `application/json`,
+          },
+          body: JSON.stringify({
+            model: i,
+            context: a,
+            options: {
+              temperature: o.temperature,
+              maxTokens: o.maxTokens,
+              reasoning: o.reasoning,
+            },
+          }),
+          signal: o.signal,
+        });
+        if (!r.ok) {
+          let t = e(`Proxy error: {status} {statusText}`)(
+            r.status,
+            r.statusText,
+          );
+          try {
+            let n = await r.json();
+            n.error && (t = e(`Proxy error: {error}`)(n.error));
+          } catch {}
+          throw Error(t);
+        }
+        c = r.body.getReader();
+        let l = new TextDecoder(),
+          u = ``;
+        for (;;) {
+          let { done: e, value: r } = await c.read();
+          if (e) break;
+          if (o.signal?.aborted) throw Error(`Request aborted by user`);
+          u += l.decode(r, { stream: !0 });
+          let i = u.split(`
+`);
+          u = i.pop() || ``;
+          for (let e of i)
+            if (e.startsWith(`data: `)) {
+              let r = e.slice(6).trim();
+              if (r) {
+                let e = JSON.parse(r),
+                  i;
+                switch (e.type) {
+                  case `start`:
+                    i = { type: `start`, partial: t };
+                    break;
+                  case `text_start`:
+                    ((t.content[e.contentIndex] = { type: `text`, text: `` }),
+                      (i = {
+                        type: `text_start`,
+                        contentIndex: e.contentIndex,
+                        partial: t,
+                      }));
+                    break;
+                  case `text_delta`: {
+                    let n = t.content[e.contentIndex];
+                    if (n?.type === `text`)
+                      ((n.text += e.delta),
+                        (i = {
+                          type: `text_delta`,
+                          contentIndex: e.contentIndex,
+                          delta: e.delta,
+                          partial: t,
+                        }));
+                    else
+                      throw Error(`Received text_delta for non-text content`);
+                    break;
+                  }
+                  case `text_end`: {
+                    let n = t.content[e.contentIndex];
+                    if (n?.type === `text`)
+                      ((n.textSignature = e.contentSignature),
+                        (i = {
+                          type: `text_end`,
+                          contentIndex: e.contentIndex,
+                          content: n.text,
+                          partial: t,
+                        }));
+                    else throw Error(`Received text_end for non-text content`);
+                    break;
+                  }
+                  case `thinking_start`:
+                    ((t.content[e.contentIndex] = {
+                      type: `thinking`,
+                      thinking: ``,
+                    }),
+                      (i = {
+                        type: `thinking_start`,
+                        contentIndex: e.contentIndex,
+                        partial: t,
+                      }));
+                    break;
+                  case `thinking_delta`: {
+                    let n = t.content[e.contentIndex];
+                    if (n?.type === `thinking`)
+                      ((n.thinking += e.delta),
+                        (i = {
+                          type: `thinking_delta`,
+                          contentIndex: e.contentIndex,
+                          delta: e.delta,
+                          partial: t,
+                        }));
+                    else
+                      throw Error(
+                        `Received thinking_delta for non-thinking content`,
+                      );
+                    break;
+                  }
+                  case `thinking_end`: {
+                    let n = t.content[e.contentIndex];
+                    if (n?.type === `thinking`)
+                      ((n.thinkingSignature = e.contentSignature),
+                        (i = {
+                          type: `thinking_end`,
+                          contentIndex: e.contentIndex,
+                          content: n.thinking,
+                          partial: t,
+                        }));
+                    else
+                      throw Error(
+                        `Received thinking_end for non-thinking content`,
+                      );
+                    break;
+                  }
+                  case `toolcall_start`:
+                    ((t.content[e.contentIndex] = {
+                      type: `toolCall`,
+                      id: e.id,
+                      name: e.toolName,
+                      arguments: {},
+                      partialJson: ``,
+                    }),
+                      (i = {
+                        type: `toolcall_start`,
+                        contentIndex: e.contentIndex,
+                        partial: t,
+                      }));
+                    break;
+                  case `toolcall_delta`: {
+                    let r = t.content[e.contentIndex];
+                    if (r?.type === `toolCall`)
+                      ((r.partialJson += e.delta),
+                        (r.arguments = n(r.partialJson) || {}),
+                        (i = {
+                          type: `toolcall_delta`,
+                          contentIndex: e.contentIndex,
+                          delta: e.delta,
+                          partial: t,
+                        }),
+                        (t.content[e.contentIndex] = { ...r }));
+                    else
+                      throw Error(
+                        `Received toolcall_delta for non-toolCall content`,
+                      );
+                    break;
+                  }
+                  case `toolcall_end`: {
+                    let n = t.content[e.contentIndex];
+                    n?.type === `toolCall` &&
+                      (delete n.partialJson,
+                      (i = {
+                        type: `toolcall_end`,
+                        contentIndex: e.contentIndex,
+                        toolCall: n,
+                        partial: t,
+                      }));
+                    break;
+                  }
+                  case `done`:
+                    ((t.stopReason = e.reason),
+                      (t.usage = e.usage),
+                      (i = { type: `done`, reason: e.reason, message: t }));
+                    break;
+                  case `error`:
+                    ((t.stopReason = e.reason),
+                      (t.errorMessage = e.errorMessage),
+                      (t.usage = e.usage),
+                      (i = { type: `error`, reason: e.reason, error: t }));
+                    break;
+                  default:
+                    console.warn(`Unhandled event type: ${e.type}`);
+                    break;
+                }
+                if (i) s.push(i);
+                else throw Error(`Failed to create event from proxy event`);
+              }
+            }
+        }
+        if (o.signal?.aborted) throw Error(`Request aborted by user`);
+        s.end();
+      } catch (e) {
+        let n = e instanceof Error ? e.message : String(e);
+        (n.toLowerCase().includes(`proxy`) && n.includes(`Unauthorized`) && r(),
+          (t.stopReason = o.signal?.aborted ? `aborted` : `error`),
+          (t.errorMessage = n),
+          s.push({ type: `error`, reason: t.stopReason, error: t }),
+          s.end());
+      } finally {
+        o.signal && o.signal.removeEventListener(`abort`, l);
+      }
+    })(),
+    s
+  );
+}
+export { i as streamSimpleProxy };

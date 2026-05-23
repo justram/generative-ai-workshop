@@ -37,7 +37,9 @@ function findDefaultExecutable() {
     if (fs.existsSync(executable)) return executable;
   }
 
-  throw new Error("Could not find a packaged app executable. Pass the executable path as the first argument.");
+  throw new Error(
+    "Could not find a packaged app executable. Pass the executable path as the first argument.",
+  );
 }
 
 async function readJsonIfExists(filePath) {

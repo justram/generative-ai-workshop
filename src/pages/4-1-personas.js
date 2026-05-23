@@ -1,0 +1,153 @@
+import { Button as e, __decorate as t, i18n as n, r, t$1 as i, x as a } from "../mini-lit/index.js";
+import "../workshop-runtime/CodeBlock-SUyIenKs.js";
+import { AgentInterface as o, getModel as s } from "../workshop-runtime/app-C9nW8ndw.js";
+import {
+  Badge as c,
+  Card as l,
+  CardContent as u,
+  CardHeader as d,
+  CardTitle as f,
+} from "../workshop-runtime/Textarea-DCZnYrSo.js";
+import "../workshop-runtime/Dialog-C7MHz9Dg.js";
+import "../workshop-runtime/Input-0pADT9gU.js";
+import "../workshop-runtime/auth-token-Dkh_JH49.js";
+import "../mini-lit/index.js";
+import "../mini-lit/index.js";
+import { DemoBase as p } from "../workshop-runtime/DemoBase-7724hyNv.js";
+import "../workshop-runtime/proxy-client-DO8A5rUF.js";
+import { AgentSession as m } from "../workshop-runtime/agent-session-CtmWvP9t.js";
+import { COMPANY_NAME as h } from "../workshop-runtime/demo-company-config-DwX2XOme.js";
+let g = class extends p {
+  constructor() {
+    (super(),
+      (this.headerTitle = n(`角色設定 - 讓 LLM 扮演角色`)),
+      (this.sectionId = `4.1`),
+      (this.selectedPersona = ``),
+      (this.selectedQuestion = ``),
+      (this.personas = [
+        {
+          id: `neutral`,
+          name: n(`不設定角色（預設）`),
+          systemPrompt: n(`You are a helpful assistant.`),
+          exampleQuestions: [
+            `你可以介紹一下 ${h} 嗎？`,
+            n(`請解釋量子運算`),
+            n(`義大利麵要怎麼煮？`),
+          ],
+        },
+        {
+          id: `pirate`,
+          name: n(`海盜船長`),
+          systemPrompt: n(
+            `你是一位來自海盜黃金時代、樂於助人的海盜船長。請使用航海用語與海盜口吻回答，但仍然要有幫助並保持角色一致。`,
+          ),
+          exampleQuestions: [
+            `你可以介紹一下 ${h} 嗎？`,
+            n(`請解釋量子運算`),
+            n(`義大利麵要怎麼煮？`),
+          ],
+        },
+        {
+          id: `poet`,
+          name: n(`莎士比亞式詩人`),
+          systemPrompt: n(
+            `你是一位樂於助人的助理，請用莎士比亞式文風回答。語氣要有詩意，但仍然清楚、有幫助。`,
+          ),
+          exampleQuestions: [
+            `你可以介紹一下 ${h} 嗎？`,
+            n(`請解釋量子運算`),
+            n(`義大利麵要怎麼煮？`),
+          ],
+        },
+        {
+          id: `academic`,
+          name: n(`大學教授`),
+          systemPrompt: n(
+            `你是一位有 30 年經驗的大學教授。請使用正式、學術性的語氣，必要時引用理論框架，並用清楚的論點與支持理由組織回答。`,
+          ),
+          exampleQuestions: [
+            `你可以介紹一下 ${h} 嗎？`,
+            n(`請解釋量子運算`),
+            n(`義大利麵要怎麼煮？`),
+          ],
+        },
+        {
+          id: `child`,
+          name: n(`五歲小孩`),
+          systemPrompt: n(
+            `請用好奇的五歲小孩也聽得懂的方式解釋。用很簡單的詞，把概念連到玩具、遊戲、日常生活，而且不要使用複雜術語。`,
+          ),
+          exampleQuestions: [
+            `你可以介紹一下 ${h} 嗎？`,
+            n(`請解釋量子運算`),
+            n(`義大利麵要怎麼煮？`),
+          ],
+        },
+        {
+          id: `technical`,
+          name: n(`資深工程師`),
+          systemPrompt: n(
+            `你是一位有 20 年分散式系統經驗的資深軟體工程師。請用技術細節回答，適度使用工程術語，並聚焦實作、效能與設計取捨。`,
+          ),
+          exampleQuestions: [
+            `你可以介紹一下 ${h} 嗎？`,
+            n(`請解釋量子運算`),
+            n(`義大利麵要怎麼煮？`),
+          ],
+        },
+      ]),
+      (this.session = new m()),
+      this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`)),
+      this.session.setSystemPrompt(this.personas[0].systemPrompt),
+      (this.agentInterface = new o()),
+      (this.agentInterface.session = this.session),
+      (this.agentInterface.enableAttachments = !1),
+      (this.agentInterface.enableModelSelector = !0),
+      (this.agentInterface.enableThinking = !1),
+      (this.agentInterface.style.width = `100%`),
+      (this.agentInterface.style.height = `100%`),
+      (this.selectedPersona = this.personas[0].id));
+  }
+  selectPersona(e) {
+    ((this.selectedPersona = e.id),
+      (this.selectedQuestion = ``),
+      this.session.setSystemPrompt(e.systemPrompt),
+      this.session.clearMessages());
+  }
+  async loadQuestion(e, t) {
+    (this.selectPersona(e), (this.selectedQuestion = t), await this.agentInterface.sendMessage(t));
+  }
+  renderContentPanel() {
+    return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+  }
+  renderLeftDemoPanel() {
+    return a`
+			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
+				<p class="text-sm text-muted-foreground">${n(`選一個角色，再問同一個問題，觀察回答風格如何改變。`)}</p>
+				${this.personas.map((t) =>
+          l(a`
+						${d(f(a`${t.name} ${this.selectedPersona === t.id ? c(n(`Selected`), `secondary`, `ml-2`) : ``}`))}
+						${u(a`
+							<div class="mb-2 p-2 rounded-md bg-muted text-xs whitespace-pre-wrap">${t.systemPrompt}</div>
+							<div class="flex flex-wrap gap-2">
+								${t.exampleQuestions.map((n) => e({ variant: this.selectedPersona === t.id && this.selectedQuestion === n ? `secondary` : `outline`, size: `sm`, onClick: () => this.loadQuestion(t, n), children: n }))}
+							</div>
+						`)}
+					`),
+        )}
+			</div>
+		`;
+  }
+  renderRightDemoPanel() {
+    return a`
+			<div class="flex-1 p-6 overflow-y-auto min-h-0">
+				<markdown-block .content=${this.sectionContent ?? ``} .escapeHtml=${!1}></markdown-block>
+			</div>
+		`;
+  }
+};
+(t([r()], g.prototype, `selectedPersona`, void 0),
+  t([r()], g.prototype, `selectedQuestion`, void 0),
+  (g = t([i(`personas-demo`)], g)),
+  (document.body.innerHTML = `<personas-demo></personas-demo>`));
+export { g as PersonasDemo };

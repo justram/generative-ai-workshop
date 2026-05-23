@@ -157,9 +157,10 @@ function normalizeContext(context = {}) {
 }
 
 function selectModel(requestedModel = {}) {
-  const requestedId = requestedModel.provider === CODEX_PROVIDER && GPT_MODEL_IDS.has(requestedModel.id)
-    ? requestedModel.id
-    : DEFAULT_MODEL_ID;
+  const requestedId =
+    requestedModel.provider === CODEX_PROVIDER && GPT_MODEL_IDS.has(requestedModel.id)
+      ? requestedModel.id
+      : DEFAULT_MODEL_ID;
   return getModel(CODEX_PROVIDER, requestedId);
 }
 
@@ -169,7 +170,9 @@ async function handleStream(req, res) {
     const body = await readJson(req);
     const apiKey = await getApiKeyFromLocalLogin();
     if (!apiKey) {
-      sendJson(res, 401, { error: "尚未登入。請先點選右上角的 ChatGPT 狀態燈，完成 ChatGPT 登入。" });
+      sendJson(res, 401, {
+        error: "尚未登入。請先點選右上角的 ChatGPT 狀態燈，完成 ChatGPT 登入。",
+      });
       return;
     }
 
@@ -230,7 +233,10 @@ function hashString(value) {
 
 function localEmbedding(text, dim) {
   const vector = new Float64Array(dim);
-  const tokens = String(text ?? "").toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
+  const tokens =
+    String(text ?? "")
+      .toLowerCase()
+      .match(/[\p{L}\p{N}]+/gu) || [];
   const features = tokens.length ? tokens : [String(text ?? "").toLowerCase()];
 
   for (const token of features) {
@@ -301,9 +307,13 @@ function parseDuckDuckGoResults(html) {
   const results = [];
   const blocks = html.match(/<div class="result[\s\S]*?<\/div>\s*<\/div>/g) || [];
   for (const block of blocks) {
-    const titleMatch = block.match(/<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/);
+    const titleMatch = block.match(
+      /<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/,
+    );
     if (!titleMatch) continue;
-    const snippetMatch = block.match(/<a[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/a>|<div[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/div>/);
+    const snippetMatch = block.match(
+      /<a[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/a>|<div[^>]+class="result__snippet"[^>]*>([\s\S]*?)<\/div>/,
+    );
     let url = decodeHtml(titleMatch[1]);
     try {
       const parsed = new URL(url);
@@ -340,7 +350,10 @@ async function handleWebSearch(req, res) {
     if (/jheng|jheng-hong|matt|justram|楊政紘|stencilzeit/i.test(query)) {
       const curated = curatedSearchResults(query);
       const seen = new Set(results.map((result) => result.url));
-      results = [...curated.filter((result) => !seen.has(result.url)), ...results].slice(0, Number(body.numResults || 5));
+      results = [...curated.filter((result) => !seen.has(result.url)), ...results].slice(
+        0,
+        Number(body.numResults || 5),
+      );
     }
     sendJson(res, 200, {
       query,
@@ -393,7 +406,11 @@ const MCP_DEMO_TOOLS = [
     name: "notes.write_practice",
     title: "寫入練習筆記",
     description: "只允許寫入本機教學沙盒裡的 mcp-practice-note.txt。",
-    inputSchema: { type: "object", properties: { content: { type: "string" } }, required: ["content"] },
+    inputSchema: {
+      type: "object",
+      properties: { content: { type: "string" } },
+      required: ["content"],
+    },
     risk: "write",
   },
   {
@@ -430,7 +447,10 @@ async function handleMcpDemo(req, res) {
   }
 
   const name = String(body.params?.name || "");
-  const args = body.params?.arguments && typeof body.params.arguments === "object" ? body.params.arguments : {};
+  const args =
+    body.params?.arguments && typeof body.params.arguments === "object"
+      ? body.params.arguments
+      : {};
   const noteDir = path.join(authDir, "mcp-demo");
   const notePath = path.join(noteDir, "mcp-practice-note.txt");
 
@@ -439,7 +459,10 @@ async function handleMcpDemo(req, res) {
     let structuredContent = {};
     if (name === "shell.date") {
       const now = new Date();
-      structuredContent = { iso: now.toISOString(), locale: now.toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }) };
+      structuredContent = {
+        iso: now.toISOString(),
+        locale: now.toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }),
+      };
       text = `Asia/Taipei：${structuredContent.locale}\nISO：${structuredContent.iso}`;
     } else if (name === "shell.pwd_list") {
       const limit = Math.max(1, Math.min(Number(args.limit || 10), 30));
@@ -447,7 +470,11 @@ async function handleMcpDemo(req, res) {
       structuredContent = { cwd: __dirname, entries };
       text = `cwd: ${__dirname}\n\n${entries.map((entry) => `- ${entry}`).join("\n")}`;
     } else if (name === "runtime.node_version") {
-      structuredContent = { version: process.version, platform: process.platform, arch: process.arch };
+      structuredContent = {
+        version: process.version,
+        platform: process.platform,
+        arch: process.arch,
+      };
       text = `Node.js ${process.version}\nplatform: ${process.platform}\narch: ${process.arch}`;
     } else if (name === "project.package_summary") {
       const pkg = JSON.parse(await fs.readFile(path.join(__dirname, "package.json"), "utf8"));
@@ -611,7 +638,10 @@ export async function startServer(options = {}) {
     host,
     url: `http://${host}:${server.address().port}/`,
     authDir,
-    close: () => new Promise((resolve, reject) => server.close((error) => (error ? reject(error) : resolve()))),
+    close: () =>
+      new Promise((resolve, reject) =>
+        server.close((error) => (error ? reject(error) : resolve())),
+      ),
   };
 }
 
@@ -623,5 +653,7 @@ function parseCliPort() {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const instance = await startServer({ port: parseCliPort() });
   console.log(`Local GenAI workshop running at ${instance.url}`);
-  console.log(`Use the page button to log in with ChatGPT. Credentials stay in ${instance.authDir}.`);
+  console.log(
+    `Use the page button to log in with ChatGPT. Credentials stay in ${instance.authDir}.`,
+  );
 }

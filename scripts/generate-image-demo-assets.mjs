@@ -6,8 +6,7 @@ import path from "node:path";
 const execFileAsync = promisify(execFile);
 const outDir = path.resolve("data/images");
 
-const shell = (strings, ...values) =>
-  String.raw({ raw: strings }, ...values).trim();
+const shell = (strings, ...values) => String.raw({ raw: strings }, ...values).trim();
 
 const frame = (title, body, bg = "#f8fafc") => shell`
 <svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480">
@@ -23,10 +22,23 @@ const assets = {
     shell`
       <text x="44" y="105" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#64748b">Count the circles by color.</text>
       ${[
-        [105, 165, "#ef4444"], [195, 160, "#ef4444"], [302, 175, "#ef4444"], [550, 308, "#ef4444"],
-        [430, 160, "#2563eb"], [520, 175, "#2563eb"], [610, 155, "#2563eb"],
-        [145, 310, "#16a34a"], [250, 300, "#16a34a"], [365, 315, "#16a34a"], [475, 300, "#16a34a"],
-      ].map(([cx, cy, fill]) => `<circle cx="${cx}" cy="${cy}" r="34" fill="${fill}" stroke="#0f172a" stroke-width="3"/>`).join("")}
+        [105, 165, "#ef4444"],
+        [195, 160, "#ef4444"],
+        [302, 175, "#ef4444"],
+        [550, 308, "#ef4444"],
+        [430, 160, "#2563eb"],
+        [520, 175, "#2563eb"],
+        [610, 155, "#2563eb"],
+        [145, 310, "#16a34a"],
+        [250, 300, "#16a34a"],
+        [365, 315, "#16a34a"],
+        [475, 300, "#16a34a"],
+      ]
+        .map(
+          ([cx, cy, fill]) =>
+            `<circle cx="${cx}" cy="${cy}" r="34" fill="${fill}" stroke="#0f172a" stroke-width="3"/>`,
+        )
+        .join("")}
       <text x="44" y="425" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#334155">Red: 4, Blue: 3, Green: 4, Total: 11</text>
     `,
   ),
@@ -40,11 +52,15 @@ const assets = {
         ["B", 250, 255, "#f97316", "44.7%"],
         ["C", 370, 196, "#22c55e", "38.6%"],
         ["D", 490, 92, "#a855f7", "22.1%"],
-      ].map(([label, x, h, fill, value]) => `
+      ]
+        .map(
+          ([label, x, h, fill, value]) => `
         <rect x="${x}" y="${365 - h}" width="72" height="${h}" fill="${fill}" stroke="#0f172a" stroke-width="2"/>
         <text x="${Number(x) + 36}" y="394" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#334155">${label}</text>
         <text x="${Number(x) + 36}" y="${365 - h - 12}" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#0f172a">${value}</text>
-      `).join("")}
+      `,
+        )
+        .join("")}
       <text x="104" y="110" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#475569">Note: Product B includes returned units.</text>
     `,
   ),
@@ -63,8 +79,8 @@ const assets = {
   "spatial-relations.png": frame(
     "Spatial relationships",
     shell`
-      ${[0, 1, 2].map(i => `<line x1="${170 + i * 150}" y1="118" x2="${170 + i * 150}" y2="392" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
-      ${[0, 1, 2].map(i => `<line x1="90" y1="${150 + i * 105}" x2="625" y2="${150 + i * 105}" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
+      ${[0, 1, 2].map((i) => `<line x1="${170 + i * 150}" y1="118" x2="${170 + i * 150}" y2="392" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
+      ${[0, 1, 2].map((i) => `<line x1="90" y1="${150 + i * 105}" x2="625" y2="${150 + i * 105}" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
       <circle cx="170" cy="150" r="30" fill="#38bdf8" stroke="#0f172a" stroke-width="3"/><text x="170" y="157" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">A</text>
       <rect x="320" y="120" width="60" height="60" fill="#f97316" stroke="#0f172a" stroke-width="3"/><text x="350" y="158" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">B</text>
       <polygon points="515,116 555,184 475,184" fill="#22c55e" stroke="#0f172a" stroke-width="3"/><text x="515" y="166" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">C</text>
@@ -96,7 +112,7 @@ const assets = {
           return missing
             ? `<circle cx="${135 + x * 62}" cy="${130 + y * 50}" r="12" fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="4 4"/>`
             : `<circle cx="${135 + x * 62}" cy="${130 + y * 50}" r="12" fill="#0f172a"/>`;
-        }).join("")
+        }).join(""),
       ).join("")}
       <text x="60" y="430" font-family="Arial" font-size="18" fill="#475569">Missing dots form an L shape.</text>
     `,
@@ -105,15 +121,24 @@ const assets = {
     "Table precision",
     shell`
       <rect x="82" y="115" width="560" height="260" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
-      ${[0, 1, 2, 3, 4].map(i => `<line x1="82" y1="${167 + i * 52}" x2="642" y2="${167 + i * 52}" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
-      ${[0, 1, 2, 3].map(i => `<line x1="${222 + i * 140}" y1="115" x2="${222 + i * 140}" y2="375" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
+      ${[0, 1, 2, 3, 4].map((i) => `<line x1="82" y1="${167 + i * 52}" x2="642" y2="${167 + i * 52}" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
+      ${[0, 1, 2, 3].map((i) => `<line x1="${222 + i * 140}" y1="115" x2="${222 + i * 140}" y2="375" stroke="#cbd5e1" stroke-width="2"/>`).join("")}
       ${["Row", "A", "B", "C"].map((h, i) => `<text x="${152 + i * 140}" y="150" text-anchor="middle" font-family="Arial" font-size="22" font-weight="700">${h}</text>`).join("")}
       ${[
         ["1", "48.73", "32.10", "47.38"],
         ["2", "47.83", "12.44", "48.37"],
         ["3", "38.47", "59.29", "47.83"],
         ["4", "83.47", "40.01", "74.38"],
-      ].map((row, r) => row.map((v, c) => `<text x="${152 + c * 140}" y="${202 + r * 52}" text-anchor="middle" font-family="Arial" font-size="21" fill="${v === "47.83" ? "#dc2626" : "#0f172a"}">${v}</text>`).join("")).join("")}
+      ]
+        .map((row, r) =>
+          row
+            .map(
+              (v, c) =>
+                `<text x="${152 + c * 140}" y="${202 + r * 52}" text-anchor="middle" font-family="Arial" font-size="21" fill="${v === "47.83" ? "#dc2626" : "#0f172a"}">${v}</text>`,
+            )
+            .join(""),
+        )
+        .join("")}
     `,
   ),
   "paper-table.png": frame(
@@ -121,15 +146,24 @@ const assets = {
     shell`
       <text x="70" y="116" font-family="Arial" font-size="18" fill="#334155">Benchmark accuracy by task</text>
       <rect x="70" y="140" width="580" height="230" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
-      ${[0, 1, 2, 3].map(i => `<line x1="70" y1="${185 + i * 46}" x2="650" y2="${185 + i * 46}" stroke="#cbd5e1"/>`).join("")}
-      ${[0, 1, 2, 3].map(i => `<line x1="${215 + i * 145}" y1="140" x2="${215 + i * 145}" y2="370" stroke="#cbd5e1"/>`).join("")}
+      ${[0, 1, 2, 3].map((i) => `<line x1="70" y1="${185 + i * 46}" x2="650" y2="${185 + i * 46}" stroke="#cbd5e1"/>`).join("")}
+      ${[0, 1, 2, 3].map((i) => `<line x1="${215 + i * 145}" y1="140" x2="${215 + i * 145}" y2="370" stroke="#cbd5e1"/>`).join("")}
       ${["Model", "Task 1", "Task 2", "Task 3"].map((h, i) => `<text x="${142 + i * 145}" y="170" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700">${h}</text>`).join("")}
       ${[
         ["BERT", "83.4", "78.2", "91.6"],
         ["RoBERTa", "84.1", "81.9†", "90.8"],
         ["GPT-small", "79.5", "76.0", "88.3"],
         ["Human", "92.0", "90.5", "96.2"],
-      ].map((row, r) => row.map((v, c) => `<text x="${142 + c * 145}" y="${216 + r * 46}" text-anchor="middle" font-family="Arial" font-size="18">${v}</text>`).join("")).join("")}
+      ]
+        .map((row, r) =>
+          row
+            .map(
+              (v, c) =>
+                `<text x="${142 + c * 145}" y="${216 + r * 46}" text-anchor="middle" font-family="Arial" font-size="18">${v}</text>`,
+            )
+            .join(""),
+        )
+        .join("")}
       <text x="78" y="415" font-family="Arial" font-size="16" fill="#475569">† score measured with extra validation data.</text>
     `,
   ),

@@ -28,7 +28,14 @@ const sizes = [
 ];
 
 for (const [size, filename] of sizes) {
-  await execFileAsync("sips", ["-z", String(size), String(size), sourcePng, "--out", path.join(iconsetDir, filename)]);
+  await execFileAsync("sips", [
+    "-z",
+    String(size),
+    String(size),
+    sourcePng,
+    "--out",
+    path.join(iconsetDir, filename),
+  ]);
 }
 
 await execFileAsync("iconutil", ["-c", "icns", iconsetDir, "-o", path.join(buildDir, "icon.icns")]);

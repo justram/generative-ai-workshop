@@ -96,11 +96,21 @@ function auditSnapshot(page, lang, snapshot) {
     }
     const cjkSeverity = EN_ALLOWED_CJK_PAGES.has(page) ? "warning" : "error";
     if (CJK_RE.test(body)) {
-      findings.push(lineFor(page, lang, "visible-cjk", cjkSeverity, body.match(/.{0,70}[\u3400-\u4dbf\u4e00-\u9fff].{0,110}/u)?.[0] || body));
+      findings.push(
+        lineFor(
+          page,
+          lang,
+          "visible-cjk",
+          cjkSeverity,
+          body.match(/.{0,70}[\u3400-\u4dbf\u4e00-\u9fff].{0,110}/u)?.[0] || body,
+        ),
+      );
     }
     for (const attr of snapshot.attrs) {
       if (CJK_RE.test(attr.value)) {
-        findings.push(lineFor(page, lang, `attr-cjk:${attr.tag}[${attr.name}]`, cjkSeverity, attr.value));
+        findings.push(
+          lineFor(page, lang, `attr-cjk:${attr.tag}[${attr.name}]`, cjkSeverity, attr.value),
+        );
       }
     }
     for (const match of allText.matchAll(MIXED_TOKEN_RE)) {
@@ -125,7 +135,11 @@ function auditSnapshot(page, lang, snapshot) {
     }
     for (const match of allText.matchAll(MIXED_TOKEN_RE)) {
       const token = match[0];
-      if (!/^(API|MCP|LLM|GPT|RAG|OCR|JSON|PDF|Word|Excel|ChatGPT|OpenAI|Hugging|Face|KV|VRAM|MoE|Apple|Mac|Studio|DGX|RTX|CPU|GPU)/.test(token)) {
+      if (
+        !/^(API|MCP|LLM|GPT|RAG|OCR|JSON|PDF|Word|Excel|ChatGPT|OpenAI|Hugging|Face|KV|VRAM|MoE|Apple|Mac|Studio|DGX|RTX|CPU|GPU)/.test(
+          token,
+        )
+      ) {
         findings.push(lineFor(page, lang, "mixed-token", "warning", token));
       }
     }
@@ -167,7 +181,9 @@ async function main() {
         const snapshot = await loadPage(win, page, lang);
         allFindings.push(...auditSnapshot(page, lang, snapshot));
       } catch (error) {
-        allFindings.push(lineFor(page, lang, "load-failed", "error", error.message || String(error)));
+        allFindings.push(
+          lineFor(page, lang, "load-failed", "error", error.message || String(error)),
+        );
       }
     }
   }
@@ -188,14 +204,19 @@ async function main() {
   }
 
   if (allFindings.length > MAX_FINDINGS) {
-    console.log(`... ${allFindings.length - MAX_FINDINGS} more findings omitted. Increase MAX_FINDINGS to print all.`);
+    console.log(
+      `... ${allFindings.length - MAX_FINDINGS} more findings omitted. Increase MAX_FINDINGS to print all.`,
+    );
   }
 
   await win.close();
   app.exit(errors.length ? 1 : 0);
 }
 
-app.whenReady().then(main).catch((error) => {
-  console.error(error);
-  app.exit(1);
-});
+app
+  .whenReady()
+  .then(main)
+  .catch((error) => {
+    console.error(error);
+    app.exit(1);
+  });

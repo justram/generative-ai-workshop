@@ -1,32 +1,48 @@
 {
   "name": "generative-ai-workshop-tw",
   "version": "1.0.0",
-  "description": "Local Generative AI Workshop clone with ChatGPT subscription login via pi.",
   "private": true,
+  "description": "Local Generative AI Workshop clone with ChatGPT subscription login via pi.",
+  "keywords": [],
+  "license": "UNLICENSED",
+  "author": "Mario Zechner; Traditional Chinese translation and maintenance by Jheng-Hong (Matt) Yang / 楊政紘, Stencilzeit",
   "type": "module",
   "main": "electron/main.mjs",
   "scripts": {
     "postinstall": "node scripts/patch-pi-oauth-page.mjs",
-    "prestart": "node scripts/patch-pi-oauth-page.mjs",
+    "prestart": "npm run build:ui && node scripts/patch-pi-oauth-page.mjs",
     "icons": "node scripts/generate-app-icons.mjs",
-    "predist": "node scripts/generate-app-icons.mjs",
+    "prelectron": "npm run build:ui",
+    "predist": "npm run build:ui && node scripts/generate-app-icons.mjs",
+    "predist:win": "npm run build:ui && node scripts/generate-app-icons.mjs",
+    "build:ui": "node scripts/build-mini-lit-ui.mjs",
+    "lint": "oxlint . --type-aware --tsconfig tsconfig.json -A no-floating-promises -A no-implied-eval -A await-thenable",
+    "lint:ci": "oxlint . --type-aware --tsconfig tsconfig.json -A no-floating-promises -A no-implied-eval -A await-thenable --deny-warnings",
     "start": "node server.mjs",
     "electron": "electron .",
     "audit:localization": "electron scripts/audit-localization.cjs",
     "smoke:packaged": "node scripts/smoke-packaged.cjs",
     "verify:upload": "node scripts/verify-upload-folder.cjs",
     "dist": "electron-builder",
-    "dist:win": "electron-builder --win nsis portable --x64 --publish never"
+    "dist:win": "electron-builder --win nsis portable --x64 --publish never",
+    "format": "oxfmt --write \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
+    "format:check": "oxfmt --check \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "check": "npm run lint:ci && npm run format:check && npm run typecheck"
   },
-  "keywords": [],
-  "author": "Mario Zechner; Traditional Chinese translation and maintenance by Jheng-Hong (Matt) Yang / 楊政紘, Stencilzeit",
-  "license": "UNLICENSED",
   "dependencies": {
-    "@earendil-works/pi-ai": "^0.74.0"
+    "@earendil-works/pi-ai": "^0.74.0",
+    "@mariozechner/mini-lit": "^0.2.1",
+    "lit": "^3.3.3"
   },
   "devDependencies": {
     "electron": "^42.0.1",
-    "electron-builder": "^26.8.1"
+    "electron-builder": "^26.8.1",
+    "esbuild": "^0.28.0",
+    "oxfmt": "^0.51.0",
+    "oxlint": "^1.66.0",
+    "oxlint-tsgolint": "^0.23.0",
+    "typescript": "^6.0.3"
   },
   "build": {
     "appId": "com.stencilzeit.generative-ai-workshop",

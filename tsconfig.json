@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "strictNullChecks": true,
+    "target": "ES2022"
+  },
+  "include": [
+    "electron/**/*.mjs",
+    "scripts/**/*.cjs",
+    "scripts/**/*.mjs",
+    "server.mjs",
+    "src/mini-lit/**/*.js",
+    "src/pages/**/*.js"
+  ],
+  "exclude": [
+    "build/**",
+    "dist-electron/**",
+    "node_modules/**",
+    "src/workshop-runtime/**",
+    "vendor/**"
+  ]
+}

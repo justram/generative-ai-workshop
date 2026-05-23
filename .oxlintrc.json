@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    "build/**",
+    "build/js/**",
+    "dist-electron/**",
+    "node_modules/**",
+    "src/workshop-runtime/**",
+    "vendor/**",
+    ".local-auth/**"
+  ],
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "constructor-super": "off",
+    "no-floating-promises": "off",
+    "no-implied-eval": "off",
+    "no-unused-expressions": "off",
+    "typescript/await-thenable": "off"
+  },
+  "env": {
+    "builtin": true
+  }
+}

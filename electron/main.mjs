@@ -61,7 +61,9 @@ async function writeSmokeResult(result) {
 async function runSmokeProbe() {
   if (!process.env.GENAI_ELECTRON_SMOKE_RESULT || !mainWindow || !serverInstance) return;
   try {
-    const authResponse = await fetch(new URL("/api/auth/status", serverInstance.url), { cache: "no-store" });
+    const authResponse = await fetch(new URL("/api/auth/status", serverInstance.url), {
+      cache: "no-store",
+    });
     const authStatus = await authResponse.json();
     const pageState = await mainWindow.webContents.executeJavaScript(
       `({
@@ -173,7 +175,9 @@ function isLocalUrl(url) {
 async function closeAuthWindowIfConnected(window) {
   if (!window || window.isDestroyed() || !serverInstance) return;
   try {
-    const response = await fetch(new URL("/api/auth/status", serverInstance.url), { cache: "no-store" });
+    const response = await fetch(new URL("/api/auth/status", serverInstance.url), {
+      cache: "no-store",
+    });
     if (!response.ok) return;
     const status = await response.json();
     if (!status.loggedIn) return;
