@@ -32,17 +32,21 @@ jobs:
           cache: npm
 
       - name: Install dependencies
+        shell: bash
         run: npm ci
 
       - name: Check release smoke scripts
+        shell: bash
         run: |
           node --check scripts/smoke-packaged.cjs
           node --check electron/main.mjs
 
       - name: Build Windows app
+        shell: bash
         run: npm run dist:win
 
       - name: Smoke-test packaged Windows app
+        shell: bash
         run: npm run smoke:packaged
         env:
           GENAI_SMOKE_TIMEOUT_MS: 90000

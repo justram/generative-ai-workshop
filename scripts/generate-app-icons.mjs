@@ -1,4 +1,5 @@
 import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
@@ -8,11 +9,24 @@ const buildDir = path.resolve("build");
 const iconsetDir = path.join(buildDir, "icon.iconset");
 const sourcePng = path.join(buildDir, "icon-source.png");
 const appPng = path.join(buildDir, "icon.png");
+const icoPath = path.join(buildDir, "icon.ico");
+const icnsPath = path.join(buildDir, "icon.icns");
 
 await mkdir(buildDir, { recursive: true });
+await copyFile(sourcePng, appPng);
+
+if (process.platform !== "darwin") {
+  if (!existsSync(icoPath)) {
+    throw new Error(
+      `Missing ${icoPath}. Regenerate icons on macOS and commit build/icon.ico before building Windows packages.`,
+    );
+  }
+  console.log(`Using committed Windows icon at ${icoPath}`);
+  process.exit(0);
+}
+
 await rm(iconsetDir, { recursive: true, force: true });
 await mkdir(iconsetDir, { recursive: true });
-await copyFile(sourcePng, appPng);
 
 const sizes = [
   [16, "icon_16x16.png"],
@@ -38,7 +52,7 @@ for (const [size, filename] of sizes) {
   ]);
 }
 
-await execFileAsync("iconutil", ["-c", "icns", iconsetDir, "-o", path.join(buildDir, "icon.icns")]);
+await execFileAsync("iconutil", ["-c", "icns", iconsetDir, "-o", icnsPath]);
 
 const icoPng = await readFile(path.join(iconsetDir, "icon_256x256.png"));
 const icoHeader = Buffer.alloc(22);
@@ -53,6 +67,6 @@ icoHeader.writeUInt16LE(1, 10);
 icoHeader.writeUInt16LE(32, 12);
 icoHeader.writeUInt32LE(icoPng.length, 14);
 icoHeader.writeUInt32LE(22, 18);
-await writeFile(path.join(buildDir, "icon.ico"), Buffer.concat([icoHeader, icoPng]));
+await writeFile(icoPath, Buffer.concat([icoHeader, icoPng]));
 
 console.log(`Generated app icons in ${buildDir}`);
