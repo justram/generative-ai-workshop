@@ -1,12 +1,12 @@
 import {
   m
-} from "../chunks/chunk-UHFKU6VN.js";
+} from "../chunks/chunk-737EQ6X6.js";
 import {
   __decorate,
   b,
   i18n,
   t2 as t
-} from "../chunks/chunk-56RMHZX3.js";
+} from "../chunks/chunk-FDFAIUKR.js";
 
 // src/pages/0-full-content.js
 var a = class extends m {

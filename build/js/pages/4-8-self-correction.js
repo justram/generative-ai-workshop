@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-KUWO6TGG.js";
+} from "../chunks/chunk-ASOE6ZTL.js";
 import {
   A,
   E,
@@ -10,7 +10,7 @@ import {
   U,
   bR,
   m
-} from "../chunks/chunk-UHFKU6VN.js";
+} from "../chunks/chunk-737EQ6X6.js";
 import {
   Button,
   __decorate,
@@ -18,7 +18,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-56RMHZX3.js";
+} from "../chunks/chunk-FDFAIUKR.js";
 
 // src/pages/4-8-self-correction.js
 var h = class extends m {

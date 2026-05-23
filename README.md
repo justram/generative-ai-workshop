@@ -54,6 +54,27 @@ npm run verify:upload
 
 The GitHub Actions workflow `.github/workflows/windows-release-smoke.yml` runs the Windows build and packaged `.exe` smoke test on a real Windows runner.
 
+## Mini-Lit Migration Completion Goal
+
+The migration is complete only when the mini-lit source is the canonical UI layer and rendered pages behave correctly in both zh-TW and EN. Do not patch rendered DOM text to hide language bugs; fix the shared translation map or page-local source strings.
+
+Before calling the migration done:
+
+```bash
+npm run build:ui
+npm run audit:localization
+npm run check
+```
+
+When comparing against a pre-migration worktree, create an old checkout and run:
+
+```bash
+git worktree add /tmp/genai-workshop-old HEAD~1
+npm run compare:mini-lit -- /tmp/genai-workshop-old
+```
+
+`compare:mini-lit` renders critical pages in both languages from the old and current build roots, then fails on blank pages, console errors, or changed titles/headings.
+
 ## How Auth Works
 
 - No API key is bundled or required.

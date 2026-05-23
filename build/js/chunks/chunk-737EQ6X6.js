@@ -45,7 +45,7 @@ import {
   t2,
   u,
   v
-} from "./chunk-56RMHZX3.js";
+} from "./chunk-FDFAIUKR.js";
 
 // src/workshop-runtime/chunk-DHFt-Jrn.js
 var e4 = Object.create;
@@ -87842,4 +87842,4 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  * Copyright 2025 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-//# sourceMappingURL=chunk-UHFKU6VN.js.map
+//# sourceMappingURL=chunk-737EQ6X6.js.map

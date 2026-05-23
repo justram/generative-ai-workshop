@@ -21,6 +21,7 @@
     "start": "node server.mjs",
     "electron": "electron .",
     "audit:localization": "electron scripts/audit-localization.cjs",
+    "compare:mini-lit": "electron scripts/compare-mini-lit-migration.cjs \"$PWD\"",
     "smoke:packaged": "node scripts/smoke-packaged.cjs",
     "verify:upload": "node scripts/verify-upload-folder.cjs",
     "dist": "electron-builder",

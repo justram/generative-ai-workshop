@@ -1,7 +1,7 @@
 import {
   getCurrentLanguage,
   i18n
-} from "./chunk-56RMHZX3.js";
+} from "./chunk-FDFAIUKR.js";
 
 // src/workshop-runtime/self-hosting-lab.js
 var SELF_HOSTING_LAB_EN = {
@@ -20,12 +20,14 @@ var SELF_HOSTING_LAB_EN = {
   "\u5E38\u88AB\u62FF\u4F86\u548C RTX 5090 \u985E\u6D88\u8CBB\u5361\u6BD4\u8F03\uFF1B\u5DEE\u50F9\u4E3B\u8981\u8CB7 VRAM\u3001ECC\u3001\u9A45\u52D5\u8207\u4FDD\u56FA\u3002": "Often compared with RTX 5090-class consumer cards; the premium mostly buys VRAM, ECC, drivers, and warranty.",
   \u7C97\u4F30\u9700\u6C42: "Estimated requirement",
   \u53EF\u7528\u7A7A\u9593: "Usable memory",
+  "\u6263\u6389\u7CFB\u7D71\u3001\u684C\u9762 app\u3001\u6846\u67B6\u8207\u4FDD\u5B88\u9918\u88D5\u5F8C\u7684\u4F30\u7B97": "Estimated after reserving memory for the OS, desktop apps, runtime framework, and safety margin",
   \u5224\u65B7: "Verdict",
   "\u6A21\u578B\u6B0A\u91CD + 1 \u4EBA\u4E0A\u4E0B\u6587 + \u57F7\u884C\u9918\u88D5": "Model weights + 1 user's context + runtime headroom",
   \u6A21\u578B\u6B0A\u91CD: "Model weights",
   "\u4E0A\u4E0B\u6587 / \u6BCF\u4EBA": "Context / user",
   \u4F7F\u7528\u8005\u6578: "User count",
   \u57F7\u884C\u9918\u88D5: "Runtime headroom",
+  \u8A18\u61B6\u9AD4\u7528\u5728\u54EA\u88E1: "Where the memory goes",
   "\u6A21\u578B\u672C\u9AD4\uFF0CMoE \u4E5F\u8981\u653E\u4E0B\u5168\u90E8\u5C08\u5BB6\u6B0A\u91CD\u3002": "The model body. MoE still has to fit all expert weights.",
   "8k \u5C0D\u8A71\u6216\u6587\u4EF6\u6703\u4FDD\u7559\u7684 KV cache\u3002": "KV cache kept for an 8k conversation or document.",
   "1 \u500B\u540C\u6642\u5C0D\u8A71\u6642\uFF0CKV cache \u6703\u8DDF\u8457\u653E\u5927\u3002": "With 1 concurrent conversation, KV cache scales with it.",
@@ -1449,23 +1451,23 @@ var SelfHostingLab = class extends HTMLElement {
 							</div>
 							<div class="native-hardware-summary">
 								<div>
-									<div class="text-xs font-semibold text-muted-foreground">\u7C97\u4F30\u9700\u6C42</div>
+									<div class="text-xs font-semibold text-muted-foreground">${this.t("\u7C97\u4F30\u9700\u6C42")}</div>
 									<div class="mt-1 text-3xl font-semibold text-foreground">${projected} GB</div>
-									<div class="mt-1 text-xs leading-5 text-muted-foreground">\u6A21\u578B\u6B0A\u91CD + ${userCount} \u4EBA\u4E0A\u4E0B\u6587 + \u57F7\u884C\u9918\u88D5</div>
+									<div class="mt-1 text-xs leading-5 text-muted-foreground">${this.t("\u6A21\u578B\u6B0A\u91CD")} + ${userCount} ${getCurrentLanguage() === "en" ? userCount === 1 ? "user's context" : "users' context" : "\u4EBA\u4E0A\u4E0B\u6587"} + ${this.t("\u57F7\u884C\u9918\u88D5")}</div>
 								</div>
 								<div>
-									<div class="text-xs font-semibold text-muted-foreground">\u53EF\u7528\u7A7A\u9593</div>
+									<div class="text-xs font-semibold text-muted-foreground">${this.t("\u53EF\u7528\u7A7A\u9593")}</div>
 									<div class="mt-1 text-3xl font-semibold text-foreground">${selected.usable} GB</div>
-									<div class="mt-1 text-xs leading-5 text-muted-foreground">\u6263\u6389\u7CFB\u7D71\u3001\u684C\u9762 app\u3001\u6846\u67B6\u8207\u4FDD\u5B88\u9918\u88D5\u5F8C\u7684\u4F30\u7B97</div>
+									<div class="mt-1 text-xs leading-5 text-muted-foreground">${this.t("\u6263\u6389\u7CFB\u7D71\u3001\u684C\u9762 app\u3001\u6846\u67B6\u8207\u4FDD\u5B88\u9918\u88D5\u5F8C\u7684\u4F30\u7B97")}</div>
 								</div>
 								<div>
-									<div class="text-xs font-semibold text-muted-foreground">\u5224\u65B7</div>
+									<div class="text-xs font-semibold text-muted-foreground">${this.t("\u5224\u65B7")}</div>
 									<div class="mt-1 text-lg font-semibold ${fit[2]}">${fit[0]}</div>
 									<div class="mt-1 text-xs leading-5 text-muted-foreground">${fit[1]}</div>
 								</div>
 							</div>
 							<div class="grid gap-3 p-4">
-								<div class="text-xs font-semibold text-muted-foreground">\u8A18\u61B6\u9AD4\u7528\u5728\u54EA\u88E1</div>
+								<div class="text-xs font-semibold text-muted-foreground">${this.t("\u8A18\u61B6\u9AD4\u7528\u5728\u54EA\u88E1")}</div>
 								${memoryRows.map(([label, value, note]) => {
         const width = Math.max(
           3,
@@ -1660,4 +1662,4 @@ var SelfHostingLab = class extends HTMLElement {
   }
 };
 customElements.define("self-hosting-lab", SelfHostingLab);
-//# sourceMappingURL=chunk-5F3NW7E5.js.map
+//# sourceMappingURL=chunk-IPQKPVAO.js.map

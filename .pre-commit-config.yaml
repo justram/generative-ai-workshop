@@ -1,0 +1,16 @@
+repos:
+  - repo: local
+    hooks:
+      - id: build-mini-lit-ui
+        name: build mini-lit UI
+        entry: npm run build:ui
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: npm-check
+        name: lint, format, and typecheck
+        entry: npm run check
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

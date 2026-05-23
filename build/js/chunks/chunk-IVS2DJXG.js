@@ -1,6 +1,6 @@
 import {
   i18n
-} from "./chunk-56RMHZX3.js";
+} from "./chunk-FDFAIUKR.js";
 
 // src/workshop-runtime/demo-company-config-DwX2XOme.js
 var t = i18n(`BEST`);
@@ -18,4 +18,4 @@ export {
   r,
   i
 };
-//# sourceMappingURL=chunk-ELVBWMWN.js.map
+//# sourceMappingURL=chunk-IVS2DJXG.js.map

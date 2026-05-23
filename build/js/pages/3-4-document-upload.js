@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-KUWO6TGG.js";
+} from "../chunks/chunk-ASOE6ZTL.js";
 import {
   A,
   E,
@@ -10,14 +10,14 @@ import {
   bR,
   m,
   u
-} from "../chunks/chunk-UHFKU6VN.js";
+} from "../chunks/chunk-737EQ6X6.js";
 import {
   __decorate,
   b,
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-56RMHZX3.js";
+} from "../chunks/chunk-FDFAIUKR.js";
 
 // src/pages/3-4-document-upload.js
 var h = `CC-OCR-V2`;

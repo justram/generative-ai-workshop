@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-KUWO6TGG.js";
+} from "../chunks/chunk-ASOE6ZTL.js";
 import {
   A,
   E,
@@ -9,14 +9,14 @@ import {
   _R,
   bR,
   m
-} from "../chunks/chunk-UHFKU6VN.js";
+} from "../chunks/chunk-737EQ6X6.js";
 import {
   __decorate,
   b,
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-56RMHZX3.js";
+} from "../chunks/chunk-FDFAIUKR.js";
 
 // src/pages/3-6-image-demo.js
 var p = class extends m {

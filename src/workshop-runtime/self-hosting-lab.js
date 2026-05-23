@@ -22,6 +22,8 @@ const SELF_HOSTING_LAB_EN = {
     "Often compared with RTX 5090-class consumer cards; the premium mostly buys VRAM, ECC, drivers, and warranty.",
   粗估需求: "Estimated requirement",
   可用空間: "Usable memory",
+  "扣掉系統、桌面 app、框架與保守餘裕後的估算":
+    "Estimated after reserving memory for the OS, desktop apps, runtime framework, and safety margin",
   判斷: "Verdict",
   "模型權重 + 1 人上下文 + 執行餘裕":
     "Model weights + 1 user's context + runtime headroom",
@@ -29,6 +31,7 @@ const SELF_HOSTING_LAB_EN = {
   "上下文 / 每人": "Context / user",
   使用者數: "User count",
   執行餘裕: "Runtime headroom",
+  記憶體用在哪裡: "Where the memory goes",
   "模型本體，MoE 也要放下全部專家權重。":
     "The model body. MoE still has to fit all expert weights.",
   "8k 對話或文件會保留的 KV cache。":
@@ -1700,23 +1703,23 @@ class SelfHostingLab extends HTMLElement {
 							</div>
 							<div class="native-hardware-summary">
 								<div>
-									<div class="text-xs font-semibold text-muted-foreground">粗估需求</div>
+									<div class="text-xs font-semibold text-muted-foreground">${this.t("粗估需求")}</div>
 									<div class="mt-1 text-3xl font-semibold text-foreground">${projected} GB</div>
-									<div class="mt-1 text-xs leading-5 text-muted-foreground">模型權重 + ${userCount} 人上下文 + 執行餘裕</div>
+									<div class="mt-1 text-xs leading-5 text-muted-foreground">${this.t("模型權重")} + ${userCount} ${getCurrentLanguage() === "en" ? userCount === 1 ? "user's context" : "users' context" : "人上下文"} + ${this.t("執行餘裕")}</div>
 								</div>
 								<div>
-									<div class="text-xs font-semibold text-muted-foreground">可用空間</div>
+									<div class="text-xs font-semibold text-muted-foreground">${this.t("可用空間")}</div>
 									<div class="mt-1 text-3xl font-semibold text-foreground">${selected.usable} GB</div>
-									<div class="mt-1 text-xs leading-5 text-muted-foreground">扣掉系統、桌面 app、框架與保守餘裕後的估算</div>
+									<div class="mt-1 text-xs leading-5 text-muted-foreground">${this.t("扣掉系統、桌面 app、框架與保守餘裕後的估算")}</div>
 								</div>
 								<div>
-									<div class="text-xs font-semibold text-muted-foreground">判斷</div>
+									<div class="text-xs font-semibold text-muted-foreground">${this.t("判斷")}</div>
 									<div class="mt-1 text-lg font-semibold ${fit[2]}">${fit[0]}</div>
 									<div class="mt-1 text-xs leading-5 text-muted-foreground">${fit[1]}</div>
 								</div>
 							</div>
 							<div class="grid gap-3 p-4">
-								<div class="text-xs font-semibold text-muted-foreground">記憶體用在哪裡</div>
+								<div class="text-xs font-semibold text-muted-foreground">${this.t("記憶體用在哪裡")}</div>
 								${memoryRows
                   .map(([label, value, note]) => {
                     const width = Math.max(

@@ -56,13 +56,14 @@ import {
   Wrench,
   X,
 } from "lucide";
+import { EN_TO_ZH_TW, ZH_TW_TO_EN } from "./translations.js";
 
 const LANGUAGE_KEY = "language";
 const SUPPORTED_LANGUAGES = new Set(["en", "zh-TW", "zh"]);
 const dictionaries = {
-  en: {},
-  "zh-TW": {},
-  zh: {},
+  en: ZH_TW_TO_EN,
+  "zh-TW": EN_TO_ZH_TW,
+  zh: EN_TO_ZH_TW,
 };
 
 export function setTranslations(language, values) {
@@ -92,7 +93,7 @@ export function i18n(key, fallback) {
   const language = getCurrentLanguage();
   const dictionary = dictionaries[language] || dictionaries.en;
   if (fallback !== undefined) return dictionary[key]?.[fallback] ?? fallback;
-  return dictionary[key] ?? dictionaries.en[key] ?? key;
+  return dictionary[key] ?? key;
 }
 
 export const defaultEnglish = dictionaries.en;
