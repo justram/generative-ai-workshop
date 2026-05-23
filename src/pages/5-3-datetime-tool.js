@@ -64,8 +64,12 @@ let DateTimeToolDemo = class extends DemoBase {
     this.session.setTools([]);
     this.session.setSystemPrompt(
       useTool
-        ? `你是一位謹慎的助教。不要回答問題本身。請判斷要查哪個時區，並只輸出 JSON 物件，格式只能是 {"timezone":"IANA 時區或 UTC"}。例如 {"timezone":"Asia/Taipei"} 或 {"timezone":"UTC"}。`
-        : `你是一位樂於助人的助教。你沒有目前日期與時間的即時資訊。遇到今天、現在、月底、星期、時區或相對日期問題時，請誠實說你需要目前時間才能精確回答，不要猜日期。`,
+        ? i18n(
+            `你是一位謹慎的助教。不要回答問題本身。請判斷要查哪個時區，並只輸出 JSON 物件，格式只能是 {"timezone":"IANA 時區或 UTC"}。例如 {"timezone":"Asia/Taipei"} 或 {"timezone":"UTC"}。`,
+          )
+        : i18n(
+            `你是一位樂於助人的助教。你沒有目前日期與時間的即時資訊。遇到今天、現在、月底、星期、時區或相對日期問題時，請誠實說你需要目前時間才能精確回答，不要猜日期。`,
+          ),
     );
     this.session.clearMessages();
   }
@@ -95,7 +99,9 @@ let DateTimeToolDemo = class extends DemoBase {
     plannerSession.setModel(this.session.state.model ?? getModel(`openai-codex`, `gpt-5.4-mini`));
     plannerSession.setTools([]);
     plannerSession.setSystemPrompt(
-      `你是一位謹慎的助教。不要回答問題本身。請判斷要查哪個時區，並只輸出 JSON 物件，格式只能是 {"timezone":"IANA 時區或 UTC"}。例如 {"timezone":"Asia/Taipei"} 或 {"timezone":"UTC"}。`,
+      i18n(
+        `你是一位謹慎的助教。不要回答問題本身。請判斷要查哪個時區，並只輸出 JSON 物件，格式只能是 {"timezone":"IANA 時區或 UTC"}。例如 {"timezone":"Asia/Taipei"} 或 {"timezone":"UTC"}。`,
+      ),
     );
     const run = plannerSession.prompt(question.prompt).catch(() => {});
     const timezone = await this.waitForTimezone(question.defaultTimezone, plannerSession);
@@ -492,7 +498,7 @@ let DateTimeToolDemo = class extends DemoBase {
 						</div>
 						<div class="rounded-md border border-border bg-muted/40 p-2">
 							<div class="font-bold text-foreground">${i18n(`輸出`)}</div>
-							<code class="block mt-1 break-all">${`{"formatted":"2026/05/16 星期六 13:05:00","utcTimestamp":"..."}`}</code>
+							<code class="block mt-1 break-all">${i18n(`{"formatted":"2026/05/16 星期六 13:05:00","utcTimestamp":"..."}`)}</code>
 						</div>
 						<p>${i18n(`工具只負責回傳時間；「距離月底還有幾天」這種判斷，仍然要看模型或應用程式怎麼使用工具結果。`)}</p>
 					</div>

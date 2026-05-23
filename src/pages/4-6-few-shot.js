@@ -13,7 +13,7 @@ import { AgentSession as l } from "../workshop-runtime/agent-session-CtmWvP9t.js
 let u = class extends c {
   constructor() {
     (super(),
-      (this.headerTitle = n(`少樣本提示：提供範例`)),
+      (this.headerTitle = n(`少樣本提示:提供範例`)),
       (this.sectionId = `4.6`),
       (this.selectedExample = ``),
       (this.shotCount = 0),
@@ -25,33 +25,33 @@ let u = class extends c {
           testData: `旅館很乾淨，但員工很沒禮貌`,
           zeroShot: {
             systemPrompt: `你是一位情緒分析助理。`,
-            prompt: `請判斷這句話的情緒：旅館很乾淨，但員工很沒禮貌`,
+            prompt: `請判斷這句話的情緒:旅館很乾淨，但員工很沒禮貌`,
           },
           oneShot: {
             systemPrompt: `你是一位情緒分析助理。`,
-            prompt: `請根據這個範例分析情緒：
+            prompt: `請根據這個範例分析情緒:
 
-評論： "食物很好，但服務很糟"
-情緒： 混合（正面：食物；負面：服務）
+評論: "食物很好，但服務很糟"
+情緒: 混合（正面:食物；負面:服務）
 
-評論： "旅館很乾淨，但員工很沒禮貌"
-情緒：`,
+評論: "旅館很乾淨，但員工很沒禮貌"
+情緒:`,
           },
           threeShot: {
             systemPrompt: `你是一位情緒分析助理。`,
-            prompt: `請根據這些範例分析情緒：
+            prompt: `請根據這些範例分析情緒:
 
-評論： "食物很好，但服務很糟"
-情緒： 混合（正面：食物；負面：服務）
+評論: "食物很好，但服務很糟"
+情緒: 混合（正面:食物；負面:服務）
 
-評論： "從開始到結束一切都很完美"
-情緒： 正面（各方面都正面）
+評論: "從開始到結束一切都很完美"
+情緒: 正面（各方面都正面）
 
-評論： "等很久，食物也是冷的"
-情緒： 負面（等待時間、食物品質）
+評論: "等很久，食物也是冷的"
+情緒: 負面（等待時間、食物品質）
 
-評論： "旅館很乾淨，但員工很沒禮貌"
-情緒：`,
+評論: "旅館很乾淨，但員工很沒禮貌"
+情緒:`,
           },
         },
         {
@@ -101,29 +101,29 @@ Note:`,
           },
           oneShot: {
             systemPrompt: `你是一位協助分類費用的助理。`,
-            prompt: `請根據這個範例分類費用：
+            prompt: `請根據這個範例分類費用:
 
 Expense: "Taxi to airport"
-類別： Transportation
+類別: Transportation
 
 Expense: "在義大利餐廳與客戶午餐"
-類別：`,
+類別:`,
           },
           threeShot: {
             systemPrompt: `你是一位協助分類費用的助理。`,
             prompt: `Categorize expenses using these examples:
 
 Expense: "Taxi to airport"
-類別： Transportation
+類別: Transportation
 
 Expense: "Dinner with team after project completion"
-類別： Team Building
+類別: Team Building
 
 Expense: "Coffee with potential customer"
-類別： Business Development
+類別: Business Development
 
 Expense: "在義大利餐廳與客戶午餐"
-類別：`,
+類別:`,
           },
         },
         {
@@ -133,16 +133,16 @@ Expense: "在義大利餐廳與客戶午餐"
           testData: `Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,
           zeroShot: {
             systemPrompt: `你是一位產品規格抽取助理。`,
-            prompt: `請抽取規格： Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,
+            prompt: `請抽取規格: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,
           },
           oneShot: {
             systemPrompt: `你是一位產品規格抽取助理。`,
             prompt: `請從下列文字抽取技術規格，並用 JSON 格式輸出。
 
 <EXAMPLE>
-輸入： Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
+輸入: Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
 
-輸出：
+輸出:
 {
   "product": "Google Nest Wifi",
   "speed": "1200Mpbs",
@@ -151,17 +151,17 @@ Expense: "在義大利餐廳與客戶午餐"
 }
 </EXAMPLE>
 
-輸入： Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
+輸入: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-輸出：`,
+輸出:`,
           },
           threeShot: {
             systemPrompt: `你是一位產品規格抽取助理。`,
             prompt: `請從下列文字抽取技術規格，並用 JSON 格式輸出。
 
 <EXAMPLE>
-輸入： Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
-輸出：
+輸入: Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
+輸出:
 {
   "product": "Google Nest Wifi",
   "speed": "1200Mpbs",
@@ -171,8 +171,8 @@ Expense: "在義大利餐廳與客戶午餐"
 </EXAMPLE>
 
 <EXAMPLE>
-輸入： iPhone 14 Pro, A16 Bionic chip, 6GB RAM, 256GB storage, Deep Purple
-輸出：
+輸入: iPhone 14 Pro, A16 Bionic chip, 6GB RAM, 256GB storage, Deep Purple
+輸出:
 {
   "product": "iPhone 14 Pro",
   "chip": "A16 Bionic",
@@ -183,8 +183,8 @@ Expense: "在義大利餐廳與客戶午餐"
 </EXAMPLE>
 
 <EXAMPLE>
-輸入： Samsung Galaxy S23, Snapdragon 8 Gen 2, 8GB memory, 512GB capacity, Green
-輸出：
+輸入: Samsung Galaxy S23, Snapdragon 8 Gen 2, 8GB memory, 512GB capacity, Green
+輸出:
 {
   "product": "Samsung Galaxy S23",
   "processor": "Snapdragon 8 Gen 2",
@@ -194,9 +194,9 @@ Expense: "在義大利餐廳與客戶午餐"
 }
 </EXAMPLE>
 
-輸入： Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
+輸入: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-輸出：`,
+輸出:`,
           },
         },
       ]),
@@ -307,7 +307,7 @@ Expense: "在義大利餐廳與客戶午餐"
 							<div class="p-3 rounded-md border border-border">
 								<div class="font-medium text-sm text-foreground mb-1">${t.name}</div>
 								<div class="text-xs text-muted-foreground mb-2">
-									${t.description} • ${n(`測試`)}："${t.testData.substring(0, 50) + (t.testData.length > 50 ? `...` : ``)}"
+									${t.description} • ${n(`測試`)}:"${t.testData.substring(0, 50) + (t.testData.length > 50 ? `...` : ``)}"
 								</div>
 								<div class="flex gap-2">
 									${e({ variant: this.selectedExample === t.id && this.shotCount === 0 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 0), children: `${n(`Run`) === `Run` ? `Zero-shot` : `零樣本`}` })}

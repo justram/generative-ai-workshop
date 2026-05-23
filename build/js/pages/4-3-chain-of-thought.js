@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   A,
   E,
@@ -10,7 +10,7 @@ import {
   bR,
   m,
   u
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -18,7 +18,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/4-3-chain-of-thought.js
 var h = class extends m {
@@ -63,14 +63,14 @@ var h = class extends m {
         },
         withCoT: {
           systemPrompt: i18n(`\u4F60\u662F\u4E00\u4F4D\u5354\u52A9\u7CFB\u7D71\u5316\u62C6\u89E3\u554F\u984C\u7684\u52A9\u7406\u3002`),
-          prompt: `\u4E00\u500B\u6C34\u69FD\u6709\u5169\u500B\u6C34\u9F8D\u982D\u3002A \u55AE\u7368\u958B 6 \u5C0F\u6642\u6CE8\u6EFF\uFF0CB \u55AE\u7368\u958B 3 \u5C0F\u6642\u6CE8\u6EFF\u3002\u5169\u500B\u4E00\u8D77\u958B 1 \u5C0F\u6642\u5F8C\u95DC\u6389 B\uFF0C\u53EA\u5269 A\u3002\u7E3D\u5171\u9084\u8981\u591A\u4E45\u6CE8\u6EFF\uFF1F
+          prompt: i18n(`\u4E00\u500B\u6C34\u69FD\u6709\u5169\u500B\u6C34\u9F8D\u982D\u3002A \u55AE\u7368\u958B 6 \u5C0F\u6642\u6CE8\u6EFF\uFF0CB \u55AE\u7368\u958B 3 \u5C0F\u6642\u6CE8\u6EFF\u3002\u5169\u500B\u4E00\u8D77\u958B 1 \u5C0F\u6642\u5F8C\u95DC\u6389 B\uFF0C\u53EA\u5269 A\u3002\u7E3D\u5171\u9084\u8981\u591A\u4E45\u6CE8\u6EFF\uFF1F
 
 \u8ACB\u4E00\u6B65\u4E00\u6B65\u89E3\uFF1A
 1. \u7B97\u51FA A \u8207 B \u6BCF\u5C0F\u6642\u6CE8\u6EFF\u6BD4\u4F8B
 2. \u7B97\u4E00\u8D77\u958B 1 \u5C0F\u6642\u5B8C\u6210\u591A\u5C11
 3. \u7B97\u5269\u4E0B\u591A\u5C11
 4. \u7B97 A \u9084\u9700\u8981\u591A\u4E45
-5. \u7D66\u51FA\u7E3D\u6642\u9593`
+5. \u7D66\u51FA\u7E3D\u6642\u9593`)
         }
       },
       {
@@ -84,12 +84,12 @@ var h = class extends m {
         },
         withCoT: {
           systemPrompt: i18n(`\u4F60\u662F\u4E00\u4F4D\u5354\u52A9\u908F\u8F2F\u63A8\u7406\u7684\u52A9\u7406\u3002`),
-          prompt: `\u56DB\u500B\u4EBA\u6392\u968A\u3002A \u5728 B \u524D\u9762\uFF0CC \u5728 A \u5F8C\u9762\u4F46\u5728 D \u524D\u9762\uFF0CB \u4E0D\u5728\u6700\u5F8C\u3002\u8AB0\u4E00\u5B9A\u6392\u7B2C\u4E00\uFF1F
+          prompt: i18n(`\u56DB\u500B\u4EBA\u6392\u968A\u3002A \u5728 B \u524D\u9762\uFF0CC \u5728 A \u5F8C\u9762\u4F46\u5728 D \u524D\u9762\uFF0CB \u4E0D\u5728\u6700\u5F8C\u3002\u8AB0\u4E00\u5B9A\u6392\u7B2C\u4E00\uFF1F
 
 \u8ACB\u4E00\u6B65\u4E00\u6B65\u63A8\u7406\uFF1A
 1. \u5217\u51FA\u6240\u6709\u9650\u5236
 2. \u5617\u8A66\u53EF\u80FD\u7684\u6392\u5E8F
-3. \u5224\u65B7\u662F\u5426\u6709\u552F\u4E00\u7B54\u6848\uFF1B\u5982\u679C\u6C92\u6709\uFF0C\u8ACB\u660E\u78BA\u8AAA\u4E0D\u552F\u4E00`
+3. \u5224\u65B7\u662F\u5426\u6709\u552F\u4E00\u7B54\u6848\uFF1B\u5982\u679C\u6C92\u6709\uFF0C\u8ACB\u660E\u78BA\u8AAA\u4E0D\u552F\u4E00`)
         }
       }
     ], this.session = new o(), this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`)), this.agentInterface = new bR(), this.agentInterface.session = this.session, this.agentInterface.enableAttachments = false, this.agentInterface.enableModelSelector = true, this.agentInterface.enableThinking = true, this.agentInterface.style.width = `100%`, this.agentInterface.style.height = `100%`;

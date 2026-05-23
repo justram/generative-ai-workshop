@@ -61,9 +61,11 @@ let m = class extends f {
     this.sectionId = `3.7`;
     this.session = new p();
     this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`));
-    this.session.setSystemPrompt(`你是一個協助示範大型語言模型隱藏成本的助理。
+    this.session.setSystemPrompt(
+      t(`你是一個協助示範大型語言模型隱藏成本的助理。
 請用繁體中文回答，保持自然、有幫助，並偶爾點出 token 使用量與成本的有趣事實。
-例如，你可以提醒使用者：這段 系統提示 本身也會在每一輪訊息中消耗 token。`);
+例如，你可以提醒使用者：這段 系統提示 本身也會在每一輪訊息中消耗 token。`),
+    );
     this.session.setThinkingLevel(`off`);
     this.agentInterface = new i();
     this.agentInterface.session = this.session;
@@ -72,7 +74,7 @@ let m = class extends f {
     this.agentInterface.enableThinking = true;
     this.agentInterface.style.width = `100%`;
     this.agentInterface.style.height = `100%`;
-    this.agentInterface.setInput(`嗨！可以幫我理解為什麼大型語言模型的成本會累積得這麼快嗎？`);
+    this.agentInterface.setInput(t(`嗨！可以幫我理解為什麼大型語言模型的成本會累積得這麼快嗎？`));
     this.unsubscribe = this.session.subscribe((e) => {
       if (e.type === `state-update`) this.requestUpdate();
     });

@@ -2014,47 +2014,47 @@ _The cards on the left show the GPT options this standalone package can actually
 - Larger context windows has more tokens → costs more
 - Even huge context windows don't guarantee the model will "see" everything
 
-### 3.4 當你上傳文件時
+### 3.4 When You Upload Documents
 
-**本頁學習目標**
+**Learning goals**
 
-- 看到文件影像如何先被產品供應商的前處理流程轉成文字、表格、JSON 或其他中間格式。
-- 練習把模型回答對回「資料集參考答案」，而不是只看回答是否通順。
-- 判斷錯誤可能發生在原始影像、文字抽取、表格結構、單位保留，還是模型推論。
-- 比較「直接用視覺模型讀原圖」和「先抽成可檢查文字/表格」的成本、除錯與控制差異。
+- See how document images are often preprocessed into text, tables, JSON, or another intermediate representation before the model answers.
+- Compare the model answer against a reference answer, not only against fluent prose.
+- Locate where errors may enter: the original image, OCR, table structure, unit preservation, or model reasoning.
+- Compare native vision against OCR/preprocessing in cost, debuggability, reuse, and control.
 
-**上傳 PDF 或文件後會發生什麼事？**
+**What happens after a PDF or document upload?**
 
-- 文件通常會先被轉成可放進上下文的文字或結構化資料；這一步多半藏在產品背後。
-- 掃描文件依賴 OCR；表格文件可能變成 HTML、CSV、JSON 或類似 Markdown 的文字。
-- 抽出的內容會占用上下文長度，長文件仍可能被截斷或只取片段。
-- 模型回答時看的多半是「抽取後的內容」，不是完整原始版面。
-- 實際產品裡，使用者通常只需要直接問問題；「只能根據文件回答」這類限制，應該由服務的隱藏system prompt與前處理流程處理。
+- The product usually converts the file into text or structured data that can fit into context. This step is often hidden behind the chat UI.
+- Scanned files depend on OCR. Tables may become HTML, CSV, JSON, Markdown-like text, or another intermediate format.
+- Extracted content consumes context tokens, so long files may still be truncated or chunked.
+- The model often answers from the extracted representation, not from the full original layout.
+- In real products, users should usually ask natural questions. Constraints such as “answer only from the document” belong in the service's hidden system prompt and preprocessing pipeline.
 
-**為什麼不永遠直接把原圖丟給視覺模型？**
+**Why not always send the raw image to a vision model?**
 
-直接讀圖很方便，適合一次性看大意、辨識版面或處理前處理管線還沒支援的格式。但文件問答通常不是只問一次。今天問金額，下一輪問日期，第三輪問表格某一列；如果每一輪都把整張高解析圖片重新塞進上下文，還沒開始回答，模型就先花掉一段 context budget。
+Direct image reading is convenient for one-off summaries, layout checks, or formats your preprocessing pipeline does not support yet. But document QA is rarely one question. You may ask about an amount, then a date, then a row in a table. If every turn resends the full high-resolution page, the model spends part of the context budget before it even starts answering.
 
-OpenAI API 文件裡，影像也是用 token 計算。以 GPT-5 high detail 為例，大致是 70 個 base image tokens，加上每個 512px tile 140 tokens；GPT-4o high detail 則是 85 + 每 tile 170 tokens。這頁的真實文件影像約落在數百到兩千多個 image tokens。這不等於 ChatGPT 訂閱帳單，但它提醒我們：圖片不是免費背景，它會佔上下文，也會影響速度與成本。
+OpenAI's API documentation also prices and counts images as tokens. For GPT-5 high detail, the rough formula is 70 base image tokens plus 140 tokens per 512px tile. For GPT-4o high detail, it is 85 plus 170 per tile. The examples on this page land from hundreds to a few thousand image tokens. That is not the same as a ChatGPT subscription bill, but it is a useful reminder: images are not free background. They occupy context and affect speed and cost.
 
-更重要的是除錯。轉成 Markdown、HTML 表格或 JSON 之後，如果數字錯了，你還可以看是哪一列、哪個欄位、哪段 OCR 出問題，甚至對中間結果打 patch。直接讀圖讀錯或幻覺時，你常常只能反覆改 prompt、重送整張圖，像在問神明。文件越複雜，越需要把圖、表格、前言、附註分 scope；先抽取、再分段、再回答，才有空間做系統調整。
+Debuggability matters even more. If Markdown, an HTML table, or JSON has the wrong number, you can inspect the row, field, and OCR segment, then patch the intermediate result. If a model reads the image directly and hallucinates, you often end up changing the prompt and resending the whole image. Complex documents need scope control: figures, tables, prefaces, and notes should be separable before the model answers.
 
-**轉換過程可能遺失什麼？**
+**What can be lost during conversion?**
 
-- 視覺線索：章節位置、表格邊線、印章、手寫註記。
-- 格式與版面：欄位標題、合併儲存格、頁首頁尾。
-- 表格結構：列與欄可能錯位，數字可能被放到錯欄。
-- 單位與上下文：例如「人民幣千元」和「人民幣元」不能混用。
-- 影像品質：歪斜、反光、模糊、低解析度都會影響抽取結果。
+- Visual cues: section position, table borders, stamps, handwritten notes.
+- Layout: field headers, merged cells, headers and footers.
+- Table structure: rows and columns can drift; numbers can land in the wrong column.
+- Units and local context: “RMB thousand” and “RMB yuan” are not interchangeable.
+- Image quality: skew, glare, blur, and low resolution all affect extraction.
 
-**為什麼模型會對文件亂講？**
+**Why do models still make things up about documents?**
 
-- 抽取結果本身可能已經錯了，模型只是把錯誤整理得更漂亮。
-- 表格結構遺失後，模型會猜測欄位關係。
-- 看到長欄位或法律條文時，模型容易把「事實、依據、結論」混成一段。
-- 模型傾向給答案；除非你明確要求引用來源與保留格式，它不一定會主動說「文件裡沒有」。
+- The extracted text may already be wrong; the model only rewrites the error more fluently.
+- Once table structure is lost, the model guesses relationships between fields.
+- Long legal or financial fields can blur facts, basis, and conclusion.
+- The model tends to answer. Unless the prompt requires citations and format preservation, it may not volunteer that the document does not contain enough information.
 
-這頁的四個案例都來自 CC-OCR-V2。請先看原始影像，再看系統抽出的內容，最後檢查模型回答是否對得上資料集參考答案。
+The four cases on this page come from CC-OCR-V2. First inspect the original image, then inspect the extracted representation, and finally check whether the answer matches the dataset reference.
 
 ### 3.5 When You Upload Multiple Documents
 
@@ -2185,7 +2185,7 @@ The tracker in this page is an estimate, but it teaches the right accounting hab
 
 **Model variability**: Different GPT-family models and versions can react differently to the same prompt. Even version updates of the same model can break previously working prompts. While the techniques below generally transfer across GPT models, nothing beats actual experimentation and testing with your specific use case.
 
-### 4.1 角色設定 - 讓 LLM 扮演角色
+### 4.1 Personas
 
 **Why use this**: LLMs trained on internet text have seen millions of examples of experts writing in their fields. When you tell the model to act as a specific expert, it draws on relevant patterns from its training data, using appropriate terminology and focusing on domain-specific concerns.
 
@@ -2220,7 +2220,7 @@ which stands for Electronic Transaction Management..."
 
 ### 4.2 Structured Input & Output
 
-**Why use this**: Structured inputs help the model understand exactly what information belongs together and how to process it. 明確分隔符 prevent the model from confusing your instructions with your data. Structured outputs are easy to parse programmatically and ensure you get all the data you need in a format you can actually use.
+**Why use this**: Structured inputs help the model understand exactly what information belongs together and how to process it. Clear delimiters prevent the model from confusing your instructions with your data. Structured outputs are easy to parse programmatically and ensure you get all the data you need in a format you can actually use.
 
 **The technique**: Use delimiters and formats to organize information clearly.
 
@@ -2280,7 +2280,7 @@ Result:
 - Specify exact output format upfront
 - Keep formats simple (lists before JSON)
 
-### 4.3 逐步推理（Chain of Thought） (Step-by-Step Reasoning)
+### 4.3 Chain of Thought (Step-by-Step Reasoning)
 
 **Why use this**: Complex problems benefit from intermediate reasoning steps. When models work through problems step-by-step, they reference their own reasoning in the context, often leading to more accurate answers. Research shows simply adding "let's think step by step" can dramatically improve performance on math, logic, and reasoning tasks.
 
@@ -2301,9 +2301,9 @@ Result:
 
 **Why it works**: Transformers use attention mechanisms that let later tokens "look back" at earlier ones. When reasoning steps are in the context, the model can reference them when generating the answer, like having scratch paper available while solving a problem.
 
-**Example: 文字應用題**
+**Example: word problem**
 
-**Without 逐步推理（Chain of Thought）:**
+**Without chain-of-thought prompting:**
 
 \`\`\`
 Sarah has 23 apples. She gives 7 to Tom, buys 12 more, then splits
@@ -2313,7 +2313,7 @@ Answer: 6 apples each
 [Often wrong - model jumps to answer without working through steps]
 \`\`\`
 
-**With 逐步推理（Chain of Thought）:**
+**With chain-of-thought prompting:**
 
 \`\`\`
 Sarah has 23 apples. She gives 7 to Tom, buys 12 more, then splits
@@ -2381,33 +2381,33 @@ Products: SIMATIC WinCC Open Architecture...
 
 Grounding is not magic. It narrows the problem from “does the model know this?” to “did the model use the evidence I gave it correctly?”
 
-### 4.5 自然語言處理任務
+### 4.5 NLP Tasks
 
-**本頁學習目標**
+**Learning goals**
 
-- 把翻譯、摘要、分類、抽取、改寫視為不同任務，而不是都叫「幫我處理文字」。
-- 練習為每個任務定義輸入、輸出、受眾與品質標準。
-- 看見台灣用語、格式、語氣和專有名詞會影響結果是否可用。
+- Treat translation, summarization, classification, extraction, and rewriting as distinct tasks, not one vague “process this text” request.
+- Practice defining the input, output, audience, and quality bar for each task.
+- Notice that local terminology, format, tone, and proper nouns affect whether the result is usable.
 
 **Why use this**: LLMs are excellent at language manipulation tasks: translation, summarization, extraction. Simple directive verbs activate these capabilities without complex prompting.
 
 **The technique**: Use simple verbs to trigger NLP capabilities.
 
-**翻譯:**
+**Translation:**
 
 \`\`\`
-翻譯成德文： "The system is operational"
+Translate to German: "The system is operational"
 → "Das System ist betriebsbereit"
 \`\`\`
 
-**摘要:**
+**Summarization:**
 
 \`\`\`
-用一句話摘要： [long text]
+Summarize in one sentence: [long text]
 → [concise summary]
 \`\`\`
 
-**改寫:**
+**Paraphrasing:**
 
 \`\`\`
 Paraphrase: "Our staff have diverse backgrounds"
@@ -2421,7 +2421,7 @@ Improve the writing style: [awkward text]
 → [polished text]
 \`\`\`
 
-**情緒分析:**
+**Sentiment analysis:**
 
 \`\`\`
 Analyze the sentiment: "This product is terrible!"
@@ -2458,7 +2458,7 @@ Convert to bullet points: [paragraph]
   • Key point 3
 \`\`\`
 
-**命名實體辨識:**
+**Named entity recognition:**
 
 \`\`\`
 Extract entities: "Dr. Johnson from TechCorp announced the new facility in Munich"
@@ -2468,28 +2468,28 @@ Companies: TechCorp
 Locations: Munich
 \`\`\`
 
-**文字分類:**
+**Text classification:**
 
 \`\`\`
 Classify this customer feedback:
-Categories: 錯誤回報, 功能需求, Complaint, Praise, Question
+Categories: Bug report, Feature request, Complaint, Praise, Question
 
 Feedback: "The export function doesn't work with files over 100MB"
-→ "錯誤回報"
+→ "Bug report"
 \`\`\`
 
-### 4.6 少樣本提示：提供範例
+### 4.6 Few-Shot Prompting: Teach with Examples
 
 **Why use this**: When instructions alone aren't clear enough, examples show exactly what you want. The model learns the pattern from your examples and applies it to new inputs, much more reliable than trying to describe complex formats in words.
 
 **The technique**: Provide examples of input→output to teach the pattern.
 
-**Example 1: 產品評論情緒**
+**Example 1: product-review sentiment**
 
-零樣本 (misses nuance):
+Zero-shot (misses nuance):
 
 \`\`\`
-What's the sentiment of: "旅館很乾淨，但員工很沒禮貌"
+What's the sentiment of: "The hotel was clean, but the staff was rude."
 Result: Might say "negative" or "mixed" or focus on only one aspect
 \`\`\`
 
@@ -2504,13 +2504,13 @@ Sentiment: Mixed (positive: food, negative: service)
 Review: "Everything was perfect from start to finish"
 Sentiment: Positive (all aspects positive)
 
-Review: "旅館很乾淨，但員工很沒禮貌"
+Review: "The hotel was clean, but the staff was rude."
 Sentiment: Mixed (positive: cleanliness, negative: staff)
 \`\`\`
 
-**Example 2: Writing 感謝卡**
+**Example 2: writing a thank-you note**
 
-零樣本 (generic):
+Zero-shot (generic):
 
 \`\`\`
 Write a thank you note for a wedding gift of kitchen knives
@@ -2528,16 +2528,16 @@ Note: Dear Aunt Mary, Thank you so much for the beautiful blanket! We've already
 Gift: Wine glasses from the Johnsons
 Note: Dear Mr. & Mrs. Johnson, Thank you for the elegant wine glasses! We can't wait to use them for our first dinner party. Your presence at our wedding meant the world to us. Warmly, Sarah & Tom
 
-Gift: Bob 叔叔送的廚房刀具
+Gift: kitchen knives from Uncle Bob
 Note: Dear Uncle Bob, Thank you for the wonderful kitchen knives! We've already used them to prepare several meals and they work beautifully. It was so special having you celebrate with us. Love, Sarah & Tom
 \`\`\`
 
 **Example 3: Expense Report Categories**
 
-零樣本 (inconsistent):
+Zero-shot (inconsistent):
 
 \`\`\`
-Categorize: "在義大利餐廳與客戶午餐"
+Categorize: "Lunch with a client at an Italian restaurant"
 Result: Could be "Food", "Entertainment", "Client Meeting", "Meals"
 \`\`\`
 
@@ -2555,13 +2555,13 @@ Category: Team Building
 Expense: "Coffee with potential customer"
 Category: Business Development
 
-Expense: "在義大利餐廳與客戶午餐"
+Expense: "Lunch with a client at an Italian restaurant"
 Category: Business Development
 \`\`\`
 
 **Example 4: Product Specification Extraction**
 
-零樣本 (incomplete or wrong format):
+Zero-shot (incomplete or wrong format):
 
 \`\`\`
 Extract specs from: "Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage"
@@ -2759,9 +2759,9 @@ MCP adds one more layer. Instead of the app hardcoding every tool, an external s
 - The model can still choose the wrong tool or pass bad arguments.
 - Good agent UI shows the process instead of hiding it behind a spinner.
 
-## 6. 自架 LLM：在自己的電腦或基礎設施上跑模型
+## 6. Self-Hosting LLMs: Running Models on Your Own Infrastructure
 
-### 6.0 什麼是自架？
+### 6.0 What Is Self-Hosting?
 
 **Self-hosting** means running AI models on infrastructure you control, rather than using services like ChatGPT or Claude through their websites. Think of it like cooking at home versus going to a restaurant - you have more control, potentially lower costs, and complete privacy, but you need to understand the kitchen equipment.
 
@@ -2794,9 +2794,9 @@ MCP adds one more layer. Instead of the app hardcoding every tool, an external s
 - Need the absolute best quality (GPT/Claude win on hardest tasks)
 - Don't have technical expertise or resources
 
-### 6.1 模型：要跑什麼、去哪裡找
+### 6.1 Models: What to Run and Where to Find Them
 
-#### 閉源模型與開放權重模型
+#### Closed models and open-weight models
 
 Before diving into specific models, it's important to understand the two categories:
 
@@ -2820,7 +2820,7 @@ Before diving into specific models, it's important to understand the two categor
 
 **Why "open-weights" not "open source"?** The model files (weights) are released, but the training code and data often aren't. It's more accurate to call them "open-weights" models.
 
-#### 了解模型大小
+#### Understanding model size
 
 Models are measured in **parameters** - the billions of numbers that make up the AI's "brain".
 
@@ -2841,7 +2841,7 @@ Depends on precision (how accurately each number is stored):
 
 **Remember:** These numbers are just for the model. Add 20-30% for overhead (conversation history, processing).
 
-#### 目前常見的開放權重模型
+#### Common open-weight model families
 
 **[GPT-OSS (OpenAI)](https://huggingface.co/openai)** - [Model Card](https://openai.com/index/gpt-oss-model-card/)
 
@@ -2880,7 +2880,7 @@ Depends on precision (how accurately each number is stored):
 - **Mistral models**: Unfortunately not very good despite being popular
 - Many other models on Hugging Face are undertrained or poorly tuned
 
-#### 去哪裡找模型
+#### Where to find models
 
 **[Ollama Library](https://ollama.com/library)** (easiest):
 
@@ -2895,9 +2895,9 @@ Depends on precision (how accurately each number is stored):
 - Check licenses and evaluation scores
 - Download raw model files
 
-### 6.2 了解軟體堆疊
+### 6.2 Understanding the Software Stack
 
-#### 推論引擎與 API Server
+#### Inference engines and API servers
 
 These tools load models and provide APIs to interact with them. Most provide OpenAI-compatible endpoints:
 
@@ -2942,7 +2942,7 @@ These tools load models and provide APIs to interact with them. Most provide Ope
 - Lower-level, more flexible but slower
 - **When to use:** Research, custom implementations
 
-#### 使用者介面：連到上面的 API
+#### User interfaces: connecting to the API
 
 **[Open-WebUI](https://github.com/open-webui/open-webui)**
 
@@ -2962,9 +2962,9 @@ These tools load models and provide APIs to interact with them. Most provide Ope
 - Ollama has simple web interface
 - LM Studio has native desktop UI
 
-### 6.3 硬體：你實際需要什麼
+### 6.3 Hardware: What You Actually Need
 
-#### 我現在的電腦能用嗎？
+#### Can I use my current computer?
 
 **Probably yes for experimentation!** Modern laptops and desktops can run smaller models surprisingly well.
 
@@ -2984,7 +2984,7 @@ These tools load models and provide APIs to interact with them. Most provide Ope
 
 **What about regular laptops without discrete GPUs?** Don't bother. CPU-only inference is painfully slow and impractical even for small models.
 
-#### 需要更多算力時：買硬體
+#### Buying hardware when you need more compute
 
 If you're serious about self-hosting, a dedicated GPU makes sense.
 
@@ -3052,7 +3052,7 @@ If you're serious about self-hosting, a dedicated GPU makes sense.
 - You want guaranteed availability
 - Privacy/security requires on-premises hardware
 
-#### 租用雲端 GPU
+#### Renting cloud GPUs
 
 For most people, renting cloud GPUs is more practical than buying hardware.
 
@@ -3063,11 +3063,11 @@ For most people, renting cloud GPUs is more practical than buying hardware.
 - **[Lambda Labs](https://lambdalabs.com)**: Reliable, enterprise-focused
 - **[Vast.ai](https://vast.ai)**: Cheapest (peer-to-peer), variable quality
 
-### 6.4 實作示範
+### 6.4 Practical Validation Checklist
 
-This section walks through three practical demos showing different ways to run models locally and in the cloud.
+This section is not about installing one specific tool. It teaches a validation habit: when someone says “this model can run locally” or “this local API can replace the cloud API,” what evidence would convince you that it fits your own workflow?
 
-#### 示範 1：Ollama 快速本機啟動
+#### Check 1: prove the local route is usable
 
 **Goal:** Run GPT-OSS-20B on your local machine and see how it performs.
 
@@ -3081,7 +3081,7 @@ This section walks through three practical demos showing different ways to run m
 
 **Why Ollama:** Easiest way to get started, one-command setup, works on consumer hardware.
 
-#### Demo 2: LM Studio - Beyond the Basics
+#### Check 2: prove the API behaves like your product needs
 
 **Goal:** Run GPT-OSS-20B in LM Studio and explore additional features not available in Ollama.
 
@@ -3095,7 +3095,7 @@ This section walks through three practical demos showing different ways to run m
 
 **Why LM Studio:** Desktop UI for non-technical users, built-in API server, advanced controls, model discovery.
 
-#### Demo 3: DataCrunch + Jan.ai - Cloud Power
+#### Check 3: run a small task evaluation
 
 **Goal:** Run GPT-OSS-120B on a rented cloud GPU and access it through Jan.ai.
 

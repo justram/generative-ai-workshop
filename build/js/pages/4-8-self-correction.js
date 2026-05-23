@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   A,
   E,
@@ -10,7 +10,7 @@ import {
   U,
   bR,
   m
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -18,7 +18,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/4-8-self-correction.js
 var h = class extends m {
@@ -52,7 +52,11 @@ var h = class extends m {
     ];
   }
   constructor() {
-    super(), this.headerTitle = i18n(`\u81EA\u6211\u4FEE\u6B63 - \u53CD\u8986\u6539\u9032`), this.sectionId = `4.8`, this.currentStep = 0, this.isProcessing = false, this.completed = /* @__PURE__ */ new Set(), this.reportData = `2024 Q3 \u7D50\u679C\uFF1A\u71DF\u6536\u6210\u9577 15%\uFF0C\u65B0\u5BA2\u6236\u589E\u52A0 22%\uFF0C\u4F46\u56E0\u64F4\u5F35\u6210\u672C\u589E\u52A0 18%\u3002\u9032\u5165 3 \u500B\u65B0\u5E02\u5834\u3002\u5BA2\u6236\u6EFF\u610F\u5EA6\u9054\u5230\u6B77\u53F2\u65B0\u9AD8 94%\u3002`, this.session = new o(), this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`)), this.agentInterface = new bR(), this.agentInterface.session = this.session, this.agentInterface.enableAttachments = false, this.agentInterface.enableModelSelector = true, this.agentInterface.enableThinking = false, this.agentInterface.style.width = `100%`, this.agentInterface.style.height = `100%`, this.session.setSystemPrompt(`\u4F60\u662F\u4E00\u4F4D\u6709\u5E6B\u52A9\u7684\u52A9\u7406\u3002\u8ACB\u56B4\u683C\u9075\u5B88\u6307\u793A\u4E26\u4FDD\u6301\u7CBE\u7C21\u3002`), this.session.clearMessages();
+    super(), this.headerTitle = i18n(`\u81EA\u6211\u4FEE\u6B63 - \u53CD\u8986\u6539\u9032`), this.sectionId = `4.8`, this.currentStep = 0, this.isProcessing = false, this.completed = /* @__PURE__ */ new Set(), this.reportData = i18n(
+      `2024 Q3 results: revenue grew 15%, new customers increased 22%, but expansion costs rose 18%. We entered three new markets. Customer satisfaction reached a record high of 94%.`
+    ), this.session = new o(), this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`)), this.agentInterface = new bR(), this.agentInterface.session = this.session, this.agentInterface.enableAttachments = false, this.agentInterface.enableModelSelector = true, this.agentInterface.enableThinking = false, this.agentInterface.style.width = `100%`, this.agentInterface.style.height = `100%`, this.session.setSystemPrompt(
+      i18n(`You are a helpful assistant. Follow the instructions exactly and be concise.`)
+    ), this.session.clearMessages();
   }
   async runStep(e) {
     this.isProcessing || e < 0 || e >= this.steps.length || e > 0 && !this.completed.has(this.steps[e - 1].id) || (this.isProcessing = true, await this.agentInterface.sendMessage(this.steps[e].prompt), this.completed.add(this.steps[e].id), this.currentStep = e + 1, this.isProcessing = false);

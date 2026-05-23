@@ -388,6 +388,40 @@ const SELF_HOSTING_LAB_EN = {
   "證明 app 能呼叫本機服務。": "Prove the app can call the local service.",
   "3. 最後評測": "3. Finally evaluate",
   "證明品質符合你的任務。": "Prove quality fits your task.",
+  "200 次 / 天": "200 times / day",
+  模型記憶體預算: "Model memory budget",
+  "調整左側設定，觀察右側記憶體預算怎麼變。Dense 看總參數；MoE 要同時看總權重、啟用參數與上下文。":
+    "Adjust the settings on the left and watch how the memory budget changes. Dense models depend on total parameters; MoE needs total weights, active parameters, and context considered separately.",
+  模型設定: "Model settings",
+  "B 是 billion parameters。越大通常能力越強，也越吃記憶體。":
+    "B means billion parameters. Larger usually means stronger, and also more memory-hungry.",
+  "token 大概能放多少資料": "Roughly how much data tokens can hold",
+  "16GB VRAM / 32GB unified memory 較舒服":
+    "16GB VRAM / 32GB unified memory is more comfortable",
+  "可以做比較像樣的本機 demo，但長上下文或多人使用會吃緊。":
+    "Good enough for a more realistic local demo, but long context or multiple users will get tight.",
+  可替換: "Replaceable",
+  內建: "Built in",
+  你負責: "You manage it",
+  推論引擎: "Inference engine",
+  "本機 llama.cpp 系列路徑，適合單機與低併發。":
+    "A local llama.cpp-family path, suitable for single-machine and low-concurrency use.",
+  "本機 HTTP API；很多 app 只要改 baseURL 就能接。":
+    "A local HTTP API; many apps can connect by changing only the baseURL.",
+  "6.4 實作示範": "6.4 Practical validation",
+  "先確認模型真的能在自己的電腦上回應，而且速度與記憶體不是只在展示影片裡好看。":
+    "First verify that the model can really respond on your own computer, and that speed and memory look good outside a demo video.",
+  "選模型、啟動服務、記下硬體條件。":
+    "Choose a model, start the service, and record hardware conditions.",
+  "能順跑簡單聊天不代表能處理長文件或正式服務；它只證明「本機推論這條路打得開」。":
+    "Smooth simple chat does not prove it can handle long documents or production service; it only proves the local-inference path opens.",
+  要留下的證據: "Evidence to keep",
+  第一次回應要等多久: "How long the first response takes",
+  連續追問三輪後是否還穩: "Whether it stays stable after three follow-up turns",
+  "CPU/GPU/記憶體是否逼近上限": "Whether CPU/GPU/memory approach their limits",
+  常見誤判: "Common misread",
+  "回答流暢但事實不穩、長上下文變慢、筆電風扇與耗電讓課堂 demo 很快失控。":
+    "Fluent answers can still be factually unstable; long context slows down; laptop fan noise and power draw can quickly derail a classroom demo.",
 };
 
 class SelfHostingLab extends HTMLElement {
@@ -411,6 +445,23 @@ class SelfHostingLab extends HTMLElement {
       }
       if (/^\d+ 次$/.test(trimmed))
         return value.replace(trimmed, `${trimmed.replace(/\D/g, "")} times`);
+      if (/^\d+ 次 \/ 天$/.test(trimmed))
+        return value.replace(trimmed, `${trimmed.replace(/\D/g, "")} times / day`);
+      if (trimmed.startsWith("Dense："))
+        return value.replace(
+          trimmed,
+          trimmed
+            .replace("Dense：", "Dense: ")
+            .replace(" 參數每 token 都會參與", " parameters participate for every token"),
+        );
+      if (trimmed.startsWith("MoE："))
+        return value.replace(
+          trimmed,
+          trimmed
+            .replace("MoE：", "MoE: ")
+            .replace(" 總權重，約 ", " total weights, about ")
+            .replace(" 參數/每 token 啟用", " active parameters per token"),
+        );
       if (trimmed.startsWith("目前選到：")) {
         const selected = trimmed.replace("目前選到：", "");
         const translatedSelected =

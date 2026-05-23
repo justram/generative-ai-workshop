@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   A,
   E,
@@ -10,7 +10,7 @@ import {
   U,
   bR,
   m
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -18,7 +18,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/4-7-prompt-chaining.js
 var h = class extends m {
@@ -63,7 +63,9 @@ var h = class extends m {
   }
   constructor() {
     super(), this.headerTitle = i18n(`\u63D0\u793A\u4E32\u63A5\uFF1A\u628A\u8907\u96DC\u4EFB\u52D9\u62C6\u6210\u5C0F\u6B65\u9A5F`), this.sectionId = `4.7`, this.currentStep = 0, this.isProcessing = false, this.completed = /* @__PURE__ */ new Set(), this.rawInput = i18n(
-      `\u6211\u5011\u516C\u53F8\u525B\u7A81\u7834 100 \u842C\u4F7F\u7528\u8005\uFF0C\u672C\u5B63\u71DF\u6536\u6210\u9577 40%\uFF0C\u9032\u5165 3 \u500B\u65B0\u570B\u5BB6\uFF08\u5FB7\u570B\u3001\u6CD5\u570B\u3001\u65E5\u672C\uFF09\uFF0C\u4E26\u65B0\u8058 50 \u4F4D\u540C\u4E8B`
+      i18n(
+        `Our company just passed 1 million users, revenue grew 40% this quarter, we entered three new countries (Germany, France, Japan), and hired 50 new colleagues`
+      )
     ), this.session = new o(), this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`)), this.agentInterface = new bR(), this.agentInterface.session = this.session, this.agentInterface.enableAttachments = false, this.agentInterface.enableModelSelector = true, this.agentInterface.enableThinking = false, this.agentInterface.style.width = `100%`, this.agentInterface.style.height = `100%`, this.session.setSystemPrompt(
       i18n(`You are a helpful assistant. Follow the instructions exactly and be concise.`)
     ), this.session.clearMessages();

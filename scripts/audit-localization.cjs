@@ -20,6 +20,9 @@ const EN_ALLOWED_CJK_PAGES = new Set([
   "3-6-image-demo.html",
 ]);
 
+const SOURCE_LABEL_RE =
+  /\b(Source|source document|source data|original document|reference answer|dataset|OCR|extracted|attachment|uploaded file|example document)\b|來源|原始|資料集|參考答案|抽出|上傳|附件|文件內容/i;
+
 function listPages() {
   if (PAGE_ARG) return PAGE_ARG.slice("--pages=".length).split(",").filter(Boolean);
   return fs
@@ -62,22 +65,110 @@ async function loadPage(win, page, lang) {
   await new Promise((resolve) => setTimeout(resolve, 450));
   return win.webContents.executeJavaScript(`
     (() => {
+      const isElementVisible = (el) => {
+        const style = getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+      };
+      const elementPath = (el) => {
+        const parts = [];
+        let node = el;
+        while (node && node.nodeType === Node.ELEMENT_NODE && parts.length < 6) {
+          let part = node.tagName.toLowerCase();
+          if (node.id) part += "#" + node.id;
+          else if (node.className && typeof node.className === "string") {
+            const classes = node.className.trim().split(/\\s+/).slice(0, 2).join(".");
+            if (classes) part += "." + classes;
+          }
+          parts.unshift(part);
+          node = node.parentElement;
+        }
+        return parts.join(" > ");
+      };
+      const isSourceLike = (el, text = "") => {
+        let node = el;
+        let hops = 0;
+        while (node && hops < 4) {
+          const labelText = [
+            node.getAttribute?.("aria-label"),
+            node.getAttribute?.("title"),
+            node.getAttribute?.("data-audit-context"),
+            node.querySelector?.("h1,h2,h3,h4,.text-xs,.text-sm")?.textContent,
+          ]
+            .filter(Boolean)
+            .join(" ");
+          if (${SOURCE_LABEL_RE}.test(labelText) || ${SOURCE_LABEL_RE}.test(text)) return true;
+          node = node.parentElement;
+          hops += 1;
+        }
+        return false;
+      };
       const visibleText = document.body ? document.body.innerText || "" : "";
+      const textNodes = [];
+      if (document.body) {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+          acceptNode(node) {
+            const parent = node.parentElement;
+            if (!parent) return NodeFilter.FILTER_REJECT;
+            if (["SCRIPT", "STYLE", "NOSCRIPT", "SVG"].includes(parent.tagName)) {
+              return NodeFilter.FILTER_REJECT;
+            }
+            const value = node.nodeValue.replace(/\\s+/g, " ").trim();
+            if (!value) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          },
+        });
+        while (walker.nextNode()) {
+          const node = walker.currentNode;
+          const parent = node.parentElement;
+          const value = node.nodeValue.replace(/\\s+/g, " ").trim();
+          textNodes.push({
+            value,
+            visible: isElementVisible(parent),
+            sourceLike: isSourceLike(parent, value),
+            path: elementPath(parent),
+          });
+        }
+      }
       const attrs = [];
       const attrNames = ["aria-label", "aria-valuetext", "title", "placeholder", "alt"];
       for (const el of document.querySelectorAll("*")) {
-        const style = getComputedStyle(el);
-        const rect = el.getBoundingClientRect();
-        const visible = style.display !== "none" && style.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
-        if (!visible) continue;
+        const visible = isElementVisible(el);
         for (const name of attrNames) {
           const value = el.getAttribute(name);
-          if (value && value.trim()) attrs.push({ name, tag: el.tagName.toLowerCase(), value });
+          if (value && value.trim()) {
+            attrs.push({
+              name,
+              tag: el.tagName.toLowerCase(),
+              value,
+              visible,
+              sourceLike: isSourceLike(el, value),
+              path: elementPath(el),
+            });
+          }
+        }
+        if (["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName)) {
+          let value = "";
+          if (el.tagName === "SELECT") {
+            value = el.selectedOptions && el.selectedOptions[0] ? el.selectedOptions[0].textContent : el.value;
+          } else {
+            value = el.value;
+          }
+          if (value && value.trim()) {
+            attrs.push({
+              name: "value",
+              tag: el.tagName.toLowerCase(),
+              value,
+              visible,
+              sourceLike: isSourceLike(el, value),
+              path: elementPath(el),
+            });
+          }
         }
       }
       const title = document.title || "";
       const langAttr = document.documentElement.lang || "";
-      return { title, langAttr, visibleText, attrs };
+      return { title, langAttr, visibleText, textNodes, attrs };
     })()
   `);
 }
@@ -85,7 +176,14 @@ async function loadPage(win, page, lang) {
 function auditSnapshot(page, lang, snapshot) {
   const findings = [];
   const body = normalize(snapshot.visibleText);
-  const allText = [snapshot.title, body, ...snapshot.attrs.map((attr) => attr.value)].join("\n");
+  const nodeTexts = snapshot.textNodes || [];
+  const allNodeText = nodeTexts.map((node) => node.value).join("\n");
+  const allText = [
+    snapshot.title,
+    body,
+    allNodeText,
+    ...snapshot.attrs.map((attr) => attr.value),
+  ].join("\n");
 
   if (lang === "en") {
     if (snapshot.langAttr && !snapshot.langAttr.startsWith("en")) {
@@ -94,22 +192,29 @@ function auditSnapshot(page, lang, snapshot) {
     if (CJK_RE.test(snapshot.title)) {
       findings.push(lineFor(page, lang, "document-title-cjk", "error", snapshot.title));
     }
-    const cjkSeverity = EN_ALLOWED_CJK_PAGES.has(page) ? "warning" : "error";
-    if (CJK_RE.test(body)) {
+    for (const node of nodeTexts) {
+      if (!CJK_RE.test(node.value)) continue;
+      const allowedSource = EN_ALLOWED_CJK_PAGES.has(page) && node.sourceLike;
       findings.push(
         lineFor(
           page,
           lang,
-          "visible-cjk",
-          cjkSeverity,
-          body.match(/.{0,70}[\u3400-\u4dbf\u4e00-\u9fff].{0,110}/u)?.[0] || body,
+          node.visible ? "text-cjk" : "hidden-text-cjk",
+          allowedSource ? "warning" : "error",
+          `${node.path}: ${node.value}`,
         ),
       );
     }
     for (const attr of snapshot.attrs) {
       if (CJK_RE.test(attr.value)) {
         findings.push(
-          lineFor(page, lang, `attr-cjk:${attr.tag}[${attr.name}]`, cjkSeverity, attr.value),
+          lineFor(
+            page,
+            lang,
+            `attr-cjk:${attr.tag}[${attr.name}]`,
+            EN_ALLOWED_CJK_PAGES.has(page) && attr.sourceLike ? "warning" : "error",
+            `${attr.path}: ${attr.value}`,
+          ),
         );
       }
     }
@@ -151,32 +256,32 @@ function auditSnapshot(page, lang, snapshot) {
 async function main() {
   const pages = listPages();
   const langs = listLangs();
-  const consoleErrors = [];
-  const win = new BrowserWindow({
-    width: 1280,
-    height: 1000,
-    show: false,
-    webPreferences: { nodeIntegration: false, contextIsolation: true },
-  });
-  win.webContents.on("console-message", (event) => {
-    if (event.level === "error") {
-      consoleErrors.push({
-        page: currentPage || "(unknown)",
-        lang: currentLang || "(unknown)",
-        message: short(`${event.message} ${event.sourceId || ""}:${event.lineNumber || ""}`, 220),
-      });
-    }
-  });
 
   await session.defaultSession.clearCache();
   const allFindings = [];
-  let currentPage = "";
-  let currentLang = "";
 
   for (const lang of langs) {
     for (const page of pages) {
-      currentPage = page;
-      currentLang = lang;
+      const consoleErrors = [];
+      const win = new BrowserWindow({
+        width: 1280,
+        height: 1000,
+        show: false,
+        webPreferences: { nodeIntegration: false, contextIsolation: true },
+      });
+      const onConsoleMessage = (event) => {
+        if (event.level === "error") {
+          consoleErrors.push({
+            page,
+            lang,
+            message: short(
+              `${event.message} ${event.sourceId || ""}:${event.lineNumber || ""}`,
+              220,
+            ),
+          });
+        }
+      };
+      win.webContents.on("console-message", onConsoleMessage);
       try {
         const snapshot = await loadPage(win, page, lang);
         allFindings.push(...auditSnapshot(page, lang, snapshot));
@@ -184,11 +289,21 @@ async function main() {
         allFindings.push(
           lineFor(page, lang, "load-failed", "error", error.message || String(error)),
         );
+      } finally {
+        for (const error of consoleErrors) {
+          allFindings.push(
+            lineFor(error.page, error.lang, "console-error", "error", error.message),
+          );
+        }
+        win.webContents.off("console-message", onConsoleMessage);
+        if (!win.isDestroyed()) {
+          await new Promise((resolve) => {
+            win.once("closed", resolve);
+            win.close();
+          });
+        }
       }
     }
-  }
-  for (const error of consoleErrors) {
-    allFindings.push(lineFor(error.page, error.lang, "console-error", "error", error.message));
   }
 
   const errors = allFindings.filter((finding) => finding.severity === "error");
@@ -209,7 +324,6 @@ async function main() {
     );
   }
 
-  await win.close();
   app.exit(errors.length ? 1 : 0);
 }
 

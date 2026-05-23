@@ -10,17 +10,13 @@ import "../mini-lit/index.js";
 import { DemoBase as c } from "../workshop-runtime/DemoBase-7724hyNv.js";
 import "../workshop-runtime/proxy-client-DO8A5rUF.js";
 import { AgentSession as l } from "../workshop-runtime/agent-session-CtmWvP9t.js";
-import {
-  COMPANY_NAME as u,
-  PRODUCT_NAME as d,
-} from "../workshop-runtime/demo-company-config-DwX2XOme.js";
 let f = class extends c {
   constructor() {
     (super(),
       (this.headerTitle = n(`自然語言處理任務`)),
       (this.sectionId = `4.5`),
       (this.selectedTask = ``),
-      (this.defaultText = `${u} 宣布最新一季大幅成長。公司表示，旗艦產品 ${d} 的客戶採用率增加了 35%。執行長在季度財報會議上表示：「我們對這些成果非常滿意。」隨著新合作夥伴推動進一步擴張，這股正向動能預計會延續到第四季。`),
+      (this.defaultText = ` announced strong growth in the latest quarter. The company said customer adoption of its flagship product, , increased by 35%. In the quarterly earnings call, the CEO said: “We are very pleased with these results.” With new partners driving further expansion, this positive momentum is expected to continue into Q4.`),
       (this.nlpTasks = [
         {
           id: `translate`,
@@ -53,15 +49,15 @@ let f = class extends c {
         {
           id: `ner`,
           name: n(`命名實體辨識`),
-          prompt: `請從這段文字抽出所有實體並分類：
-- 人物（若有職稱也列出）
-- 公司
-- 產品
-- 地點
-- 百分比／數字
-- 日期／時間
+          prompt: n(`Extract all entities from this text and classify them:
+- People (include titles if present)
+- Companies
+- Products
+- Locations
+- Percentages/numbers
+- Dates/times
 
-文字：`,
+Text:`),
           sampleInput: this.defaultText,
         },
         {
@@ -75,14 +71,14 @@ let f = class extends c {
         {
           id: `classify`,
           name: n(`文字分類`),
-          prompt: `請把這則客戶回饋分類到以下其中一類：
-- 錯誤回報
-- 功能需求
-- 抱怨
-- 稱讚
-- 問題
+          prompt: n(`Classify this customer feedback into one category:
+- Bug report
+- Feature request
+- Complaint
+- Praise
+- Question
 
-Feedback:`,
+Feedback:`),
           sampleInput: n(
             `當我嘗試儲存超過 100MB 的檔案時，匯出功能無法運作。它會卡住，最後逾時。這阻礙了我們的部署。`,
           ),
@@ -117,7 +113,9 @@ Feedback:`,
       (this.session = new l()),
       this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`)),
       this.session.setSystemPrompt(
-        `你是一位專門處理自然語言任務的助理。請精確完成每個任務，並保持正確性與適當格式。`,
+        n(
+          `You are an assistant specialized in natural-language tasks. Complete each task precisely, with correct formatting.`,
+        ),
       ),
       (this.agentInterface = new o()),
       (this.agentInterface.session = this.session),

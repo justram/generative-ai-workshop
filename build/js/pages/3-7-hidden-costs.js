@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   A,
   E,
@@ -11,13 +11,13 @@ import {
   ft,
   lt,
   m
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   __decorate,
   b,
   i18n,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/3-7-hidden-costs.js
 function h(e) {
@@ -58,9 +58,11 @@ var m2 = class extends m {
     this.sectionId = `3.7`;
     this.session = new o();
     this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`));
-    this.session.setSystemPrompt(`\u4F60\u662F\u4E00\u500B\u5354\u52A9\u793A\u7BC4\u5927\u578B\u8A9E\u8A00\u6A21\u578B\u96B1\u85CF\u6210\u672C\u7684\u52A9\u7406\u3002
+    this.session.setSystemPrompt(
+      i18n(`\u4F60\u662F\u4E00\u500B\u5354\u52A9\u793A\u7BC4\u5927\u578B\u8A9E\u8A00\u6A21\u578B\u96B1\u85CF\u6210\u672C\u7684\u52A9\u7406\u3002
 \u8ACB\u7528\u7E41\u9AD4\u4E2D\u6587\u56DE\u7B54\uFF0C\u4FDD\u6301\u81EA\u7136\u3001\u6709\u5E6B\u52A9\uFF0C\u4E26\u5076\u723E\u9EDE\u51FA token \u4F7F\u7528\u91CF\u8207\u6210\u672C\u7684\u6709\u8DA3\u4E8B\u5BE6\u3002
-\u4F8B\u5982\uFF0C\u4F60\u53EF\u4EE5\u63D0\u9192\u4F7F\u7528\u8005\uFF1A\u9019\u6BB5 \u7CFB\u7D71\u63D0\u793A \u672C\u8EAB\u4E5F\u6703\u5728\u6BCF\u4E00\u8F2A\u8A0A\u606F\u4E2D\u6D88\u8017 token\u3002`);
+\u4F8B\u5982\uFF0C\u4F60\u53EF\u4EE5\u63D0\u9192\u4F7F\u7528\u8005\uFF1A\u9019\u6BB5 \u7CFB\u7D71\u63D0\u793A \u672C\u8EAB\u4E5F\u6703\u5728\u6BCF\u4E00\u8F2A\u8A0A\u606F\u4E2D\u6D88\u8017 token\u3002`)
+    );
     this.session.setThinkingLevel(`off`);
     this.agentInterface = new bR();
     this.agentInterface.session = this.session;
@@ -69,7 +71,7 @@ var m2 = class extends m {
     this.agentInterface.enableThinking = true;
     this.agentInterface.style.width = `100%`;
     this.agentInterface.style.height = `100%`;
-    this.agentInterface.setInput(`\u55E8\uFF01\u53EF\u4EE5\u5E6B\u6211\u7406\u89E3\u70BA\u4EC0\u9EBC\u5927\u578B\u8A9E\u8A00\u6A21\u578B\u7684\u6210\u672C\u6703\u7D2F\u7A4D\u5F97\u9019\u9EBC\u5FEB\u55CE\uFF1F`);
+    this.agentInterface.setInput(i18n(`\u55E8\uFF01\u53EF\u4EE5\u5E6B\u6211\u7406\u89E3\u70BA\u4EC0\u9EBC\u5927\u578B\u8A9E\u8A00\u6A21\u578B\u7684\u6210\u672C\u6703\u7D2F\u7A4D\u5F97\u9019\u9EBC\u5FEB\u55CE\uFF1F`));
     this.unsubscribe = this.session.subscribe((e) => {
       if (e.type === `state-update`) this.requestUpdate();
     });

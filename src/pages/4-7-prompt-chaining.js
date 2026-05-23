@@ -53,7 +53,9 @@ let h = class extends p {
       (this.isProcessing = !1),
       (this.completed = new Set()),
       (this.rawInput = n(
-        `我們公司剛突破 100 萬使用者，本季營收成長 40%，進入 3 個新國家（德國、法國、日本），並新聘 50 位同事`,
+        n(
+          `Our company just passed 1 million users, revenue grew 40% this quarter, we entered three new countries (Germany, France, Japan), and hired 50 new colleagues`,
+        ),
       )),
       (this.session = new m()),
       this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`)),

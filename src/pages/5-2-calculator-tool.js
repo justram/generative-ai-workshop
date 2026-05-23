@@ -19,7 +19,9 @@ let CalculatorToolDemo = class extends DemoBase {
     this.liveExpression = ``;
     this.localResult = ``;
     this.problem = {
-      prompt: `請精確計算：(9,876,543,219 × 12,345,679) - 88,888,888,888。請直接給答案，並簡短說明你怎麼算。`,
+      prompt: i18n(
+        `請精確計算：(9,876,543,219 × 12,345,679) - 88,888,888,888。請直接給答案，並簡短說明你怎麼算。`,
+      ),
       expression: `(9876543219 * 12345679) - 88888888888`,
       reference: `121,932,543,322,511,813`,
     };
@@ -48,8 +50,10 @@ let CalculatorToolDemo = class extends DemoBase {
     this.session.setTools([]);
     this.session.setSystemPrompt(
       useTool
-        ? `你是一位謹慎的助教。不要直接回答最後數字。請先把使用者的算術題轉成 JSON，格式只能是 {"expression":"算式"}，expression 使用 JavaScript 可執行的 + - * / 和括號，不要加逗號、中文或解釋。`
-        : `你是一位樂於助人的助教。請不要使用任何工具，直接根據自己的推理回答。`,
+        ? i18n(
+            `你是一位謹慎的助教。不要直接回答最後數字。請先把使用者的算術題轉成 JSON，格式只能是 {"expression":"算式"}，expression 使用 JavaScript 可執行的 + - * / 和括號，不要加逗號、中文或解釋。`,
+          )
+        : i18n(`你是一位樂於助人的助教。請不要使用任何工具，直接根據自己的推理回答。`),
     );
     this.session.clearMessages();
   }
@@ -78,7 +82,9 @@ let CalculatorToolDemo = class extends DemoBase {
     plannerSession.setModel(this.session.state.model ?? getModel(`openai-codex`, `gpt-5.4-mini`));
     plannerSession.setTools([]);
     plannerSession.setSystemPrompt(
-      `你是一位謹慎的助教。不要直接回答最後數字。請先把使用者的算術題轉成 JSON，格式只能是 {"expression":"算式"}，expression 使用 JavaScript 可執行的 + - * / 和括號，不要加逗號、中文或解釋。`,
+      i18n(
+        `你是一位謹慎的助教。不要直接回答最後數字。請先把使用者的算術題轉成 JSON，格式只能是 {"expression":"算式"}，expression 使用 JavaScript 可執行的 + - * / 和括號，不要加逗號、中文或解釋。`,
+      ),
     );
     const run = plannerSession.prompt(this.problem.prompt).catch(() => {});
     const expression = await this.waitForExpression(plannerSession);

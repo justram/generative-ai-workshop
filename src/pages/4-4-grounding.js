@@ -32,40 +32,40 @@ let y = class extends p {
       (this.examples = [
         {
           id: `company`,
-          name: `${g} 資訊`,
-          question: `你可以介紹一下 ${g} 嗎？`,
+          name: n(`Company information`),
+          question: n(`Can you introduce BEST?`),
           withoutGrounding: {
-            systemPrompt: n(`你是一位協助回答公司問題的助理。`),
+            systemPrompt: n(`You are an assistant helping answer company questions.`),
           },
           withGrounding: {
-            systemPrompt: `你是一位回答 ${g} 相關問題的助理。
+            systemPrompt: `You are an assistant answering questions about ${g}.
 
-重要：只能根據下方提供的資訊回答。如果參考資料裡沒有答案，請說 "${n(`我的參考資料裡沒有這項資訊。`)}"
+Important: answer only from the reference material below. If the reference does not contain the answer, say "${n(`The reference material does not contain this information.`)}"
 
-公司資訊：
+Company information:
 \`\`\`
 ${h}
 \`\`\``,
-            reference: `${g} 公司資料`,
+            reference: n(`Company reference`),
           },
         },
         {
           id: `product`,
-          name: n(`產品細節`),
-          question: `${v} 的主要功能有哪些？`,
+          name: n(`Product details`),
+          question: n(`What are the main features of the Modular Simulation Framework?`),
           withoutGrounding: {
-            systemPrompt: n(`你是一位協助回答軟體產品問題的助理。`),
+            systemPrompt: n(`You are an assistant helping answer software product questions.`),
           },
           withGrounding: {
-            systemPrompt: `你是 ${v} 軟體的技術助理。
+            systemPrompt: `You are the technical assistant for ${v}.
 
-重要：只能使用下方參考文件中的資訊，不要編造功能或規格。
+Important: only use the information in the reference material below. Do not invent features or specifications.
 
-產品資訊：
+Product information:
 \`\`\`
 ${_}
 \`\`\``,
-            reference: `${v} 文件`,
+            reference: n(`Product reference`),
           },
         },
       ]),

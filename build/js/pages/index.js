@@ -5,7 +5,7 @@ import {
   i,
   i18n,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/index.js
 var attribution = {
@@ -374,6 +374,9 @@ var WorkshopIndex = class WorkshopIndex2 extends i {
   render() {
     const language = getCurrentLanguage() === "en" ? "en" : "zh-TW";
     const copy = attribution[language];
+    document.documentElement.lang = language === "en" ? "en" : "zh-Hant-TW";
+    document.title = language === "en" ? "Generative AI Workshop" : "\u751F\u6210\u5F0F\u4EBA\u5DE5\u667A\u6167\u5DE5\u4F5C\u574A";
+    const maintainerName = language === "en" ? "Jheng-Hong (Matt) Yang" : "Jheng-Hong (Matt) Yang / \u694A\u653F\u7D18";
     return b`
       <div class="min-h-screen p-4 lg:p-8">
         <div class="fixed top-4 right-4 z-10 flex items-center gap-2">
@@ -395,7 +398,7 @@ var WorkshopIndex = class WorkshopIndex2 extends i {
               >contact@mariozechner.at</a
             >).<br />
             ${copy.maintained}
-            <strong>Jheng-Hong (Matt) Yang / 楊政紘</strong> (<a
+            <strong>${maintainerName}</strong> (<a
               href="https://justram.github.io"
               target="_blank"
               class="underline hover:no-underline"

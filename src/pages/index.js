@@ -380,6 +380,10 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
   render() {
     const language = getCurrentLanguage() === "en" ? "en" : "zh-TW";
     const copy = attribution[language];
+    document.documentElement.lang = language === "en" ? "en" : "zh-Hant-TW";
+    document.title = language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊";
+    const maintainerName =
+      language === "en" ? "Jheng-Hong (Matt) Yang" : "Jheng-Hong (Matt) Yang / 楊政紘";
     return html`
       <div class="min-h-screen p-4 lg:p-8">
         <div class="fixed top-4 right-4 z-10 flex items-center gap-2">
@@ -401,7 +405,7 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
               >contact@mariozechner.at</a
             >).<br />
             ${copy.maintained}
-            <strong>Jheng-Hong (Matt) Yang / 楊政紘</strong> (<a
+            <strong>${maintainerName}</strong> (<a
               href="https://justram.github.io"
               target="_blank"
               class="underline hover:no-underline"

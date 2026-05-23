@@ -43,7 +43,9 @@ let h = class extends p {
       (this.currentStep = 0),
       (this.isProcessing = !1),
       (this.completed = new Set()),
-      (this.reportData = `2024 Q3 結果：營收成長 15%，新客戶增加 22%，但因擴張成本增加 18%。進入 3 個新市場。客戶滿意度達到歷史新高 94%。`),
+      (this.reportData = n(
+        `2024 Q3 results: revenue grew 15%, new customers increased 22%, but expansion costs rose 18%. We entered three new markets. Customer satisfaction reached a record high of 94%.`,
+      )),
       (this.session = new m()),
       this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`)),
       (this.agentInterface = new o()),
@@ -53,7 +55,9 @@ let h = class extends p {
       (this.agentInterface.enableThinking = !1),
       (this.agentInterface.style.width = `100%`),
       (this.agentInterface.style.height = `100%`),
-      this.session.setSystemPrompt(`你是一位有幫助的助理。請嚴格遵守指示並保持精簡。`),
+      this.session.setSystemPrompt(
+        n(`You are a helpful assistant. Follow the instructions exactly and be concise.`),
+      ),
       this.session.clearMessages());
   }
   async runStep(e) {

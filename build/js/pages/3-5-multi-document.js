@@ -1,6 +1,6 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   A,
   E,
@@ -10,14 +10,14 @@ import {
   bR,
   m,
   u
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   __decorate,
   b,
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/3-5-multi-document.js
 var m2 = class extends m {
@@ -154,7 +154,7 @@ var m2 = class extends m {
 						<div class="text-sm font-medium">${e.displayName}</div>
 						<div class="text-xs text-muted-foreground mt-1">${e.description}</div>
 						<div class="text-xs text-muted-foreground mt-2">
-							${e.files.length} ${i18n(`\u4EFD\u6587\u4EF6`)}：${e.fileLabels.join(`\u3001`)}
+							${e.files.length} ${i18n(`\u4EFD\u6587\u4EF6`)}: ${e.fileLabels.join(`, `)}
 						</div>
 					</div>
 					${n ? u(i18n(`\u5DF2\u9078\u53D6`), `secondary`) : b``}

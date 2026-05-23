@@ -3,10 +3,10 @@ import {
   n,
   r as r2,
   t as t2
-} from "../chunks/chunk-IIG3EIFQ.js";
+} from "../chunks/chunk-WNOXYEGF.js";
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   A,
   E,
@@ -16,7 +16,7 @@ import {
   bR,
   m,
   u
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -24,7 +24,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/4-4-grounding.js
 var y = class extends m {
@@ -32,40 +32,40 @@ var y = class extends m {
     super(), this.headerTitle = i18n(`\u7528\u53C3\u8003\u8CC7\u6599\u8B93\u56DE\u7B54\u6709\u6839\u64DA`), this.sectionId = `4.4`, this.selectedExample = ``, this.useGrounding = false, this.examples = [
       {
         id: `company`,
-        name: `${t2} \u8CC7\u8A0A`,
-        question: `\u4F60\u53EF\u4EE5\u4ECB\u7D39\u4E00\u4E0B ${t2} \u55CE\uFF1F`,
+        name: i18n(`Company information`),
+        question: i18n(`Can you introduce BEST?`),
         withoutGrounding: {
-          systemPrompt: i18n(`\u4F60\u662F\u4E00\u4F4D\u5354\u52A9\u56DE\u7B54\u516C\u53F8\u554F\u984C\u7684\u52A9\u7406\u3002`)
+          systemPrompt: i18n(`You are an assistant helping answer company questions.`)
         },
         withGrounding: {
-          systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u56DE\u7B54 ${t2} \u76F8\u95DC\u554F\u984C\u7684\u52A9\u7406\u3002
+          systemPrompt: `You are an assistant answering questions about ${t2}.
 
-\u91CD\u8981\uFF1A\u53EA\u80FD\u6839\u64DA\u4E0B\u65B9\u63D0\u4F9B\u7684\u8CC7\u8A0A\u56DE\u7B54\u3002\u5982\u679C\u53C3\u8003\u8CC7\u6599\u88E1\u6C92\u6709\u7B54\u6848\uFF0C\u8ACB\u8AAA "${i18n(`\u6211\u7684\u53C3\u8003\u8CC7\u6599\u88E1\u6C92\u6709\u9019\u9805\u8CC7\u8A0A\u3002`)}"
+Important: answer only from the reference material below. If the reference does not contain the answer, say "${i18n(`The reference material does not contain this information.`)}"
 
-\u516C\u53F8\u8CC7\u8A0A\uFF1A
+Company information:
 \`\`\`
 ${n}
 \`\`\``,
-          reference: `${t2} \u516C\u53F8\u8CC7\u6599`
+          reference: i18n(`Company reference`)
         }
       },
       {
         id: `product`,
-        name: i18n(`\u7522\u54C1\u7D30\u7BC0`),
-        question: `${r2} \u7684\u4E3B\u8981\u529F\u80FD\u6709\u54EA\u4E9B\uFF1F`,
+        name: i18n(`Product details`),
+        question: i18n(`What are the main features of the Modular Simulation Framework?`),
         withoutGrounding: {
-          systemPrompt: i18n(`\u4F60\u662F\u4E00\u4F4D\u5354\u52A9\u56DE\u7B54\u8EDF\u9AD4\u7522\u54C1\u554F\u984C\u7684\u52A9\u7406\u3002`)
+          systemPrompt: i18n(`You are an assistant helping answer software product questions.`)
         },
         withGrounding: {
-          systemPrompt: `\u4F60\u662F ${r2} \u8EDF\u9AD4\u7684\u6280\u8853\u52A9\u7406\u3002
+          systemPrompt: `You are the technical assistant for ${r2}.
 
-\u91CD\u8981\uFF1A\u53EA\u80FD\u4F7F\u7528\u4E0B\u65B9\u53C3\u8003\u6587\u4EF6\u4E2D\u7684\u8CC7\u8A0A\uFF0C\u4E0D\u8981\u7DE8\u9020\u529F\u80FD\u6216\u898F\u683C\u3002
+Important: only use the information in the reference material below. Do not invent features or specifications.
 
-\u7522\u54C1\u8CC7\u8A0A\uFF1A
+Product information:
 \`\`\`
 ${i}
 \`\`\``,
-          reference: `${r2} \u6587\u4EF6`
+          reference: i18n(`Product reference`)
         }
       }
     ], this.session = new o(), this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`)), this.agentInterface = new bR(), this.agentInterface.session = this.session, this.agentInterface.enableAttachments = false, this.agentInterface.enableModelSelector = true, this.agentInterface.enableThinking = false, this.agentInterface.style.width = `100%`, this.agentInterface.style.height = `100%`;

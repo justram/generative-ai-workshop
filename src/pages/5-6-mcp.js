@@ -205,7 +205,7 @@ let MCPDemoInteractive = class extends DemoBase {
     this.startTraceClock();
     this.session.appendMessage({
       role: `user`,
-      content: [{ type: `text`, text: example.prompt }],
+      content: [{ type: `text`, text: i18n(example.prompt) }],
       timestamp: Date.now(),
     });
     await this.updateComplete;
@@ -238,7 +238,7 @@ let MCPDemoInteractive = class extends DemoBase {
     plannerSession.setSystemPrompt(`你是 MCP client 的路由器。請把使用者需求轉成一個 JSON 物件，不要回答問題本身。格式只能是 {"tool":"工具名稱","arguments":{...}}。
 可用工具：
 ${TOOL_LIST.map((tool) => `- ${tool.name}: ${tool.description}`).join(`\n`)}`);
-    const run = plannerSession.prompt(example.prompt).catch(() => {});
+    const run = plannerSession.prompt(i18n(example.prompt)).catch(() => {});
     for (let attempt = 0; attempt < 80; attempt += 1) {
       const parsed = this.extractPlan(plannerSession);
       if (parsed) {
@@ -731,7 +731,7 @@ ${output}
 				<div class="flex items-start justify-between gap-2">
 					<div class="min-w-0">
 						<div class="text-xs font-bold text-foreground">${tool.name}</div>
-						<div class="text-xs text-muted-foreground leading-5 mt-1">${tool.description}</div>
+						<div class="text-xs text-muted-foreground leading-5 mt-1">${i18n(tool.description)}</div>
 					</div>
 					<span class="shrink-0 rounded-full px-2 py-0.5 text-[11px] ${riskClass}">${tool.risk === `write` ? i18n(`寫入`) : i18n(`只讀`)}</span>
 				</div>
@@ -746,8 +746,8 @@ ${output}
 				class="w-full text-left p-3 rounded-md border border-border hover:bg-muted/50 transition-colors ${this.currentExample?.title === example.title ? `bg-muted/40` : ``} ${this.mcpConnected ? `` : `opacity-50 cursor-not-allowed`}"
 				?disabled=${this.isRunning || !this.mcpConnected}
 			>
-				<div class="text-sm font-medium text-foreground">${example.title}</div>
-				<div class="text-xs text-muted-foreground mt-1">${example.description}</div>
+				<div class="text-sm font-medium text-foreground">${i18n(example.title)}</div>
+				<div class="text-xs text-muted-foreground mt-1">${i18n(example.description)}</div>
 			</button>
 		`;
   }

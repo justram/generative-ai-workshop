@@ -1,13 +1,13 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   Pi,
   RP,
   bR,
   m,
   v
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -15,7 +15,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/5-2-calculator-tool.js
 var CalculatorToolDemo = class extends m {
@@ -29,7 +29,9 @@ var CalculatorToolDemo = class extends m {
     this.liveExpression = ``;
     this.localResult = ``;
     this.problem = {
-      prompt: `\u8ACB\u7CBE\u78BA\u8A08\u7B97\uFF1A(9,876,543,219 \xD7 12,345,679) - 88,888,888,888\u3002\u8ACB\u76F4\u63A5\u7D66\u7B54\u6848\uFF0C\u4E26\u7C21\u77ED\u8AAA\u660E\u4F60\u600E\u9EBC\u7B97\u3002`,
+      prompt: i18n(
+        `\u8ACB\u7CBE\u78BA\u8A08\u7B97\uFF1A(9,876,543,219 \xD7 12,345,679) - 88,888,888,888\u3002\u8ACB\u76F4\u63A5\u7D66\u7B54\u6848\uFF0C\u4E26\u7C21\u77ED\u8AAA\u660E\u4F60\u600E\u9EBC\u7B97\u3002`
+      ),
       expression: `(9876543219 * 12345679) - 88888888888`,
       reference: `121,932,543,322,511,813`
     };
@@ -56,7 +58,9 @@ var CalculatorToolDemo = class extends m {
     this.localResult = ``;
     this.session.setTools([]);
     this.session.setSystemPrompt(
-      useTool ? `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u76F4\u63A5\u56DE\u7B54\u6700\u5F8C\u6578\u5B57\u3002\u8ACB\u5148\u628A\u4F7F\u7528\u8005\u7684\u7B97\u8853\u984C\u8F49\u6210 JSON\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"expression":"\u7B97\u5F0F"}\uFF0Cexpression \u4F7F\u7528 JavaScript \u53EF\u57F7\u884C\u7684 + - * / \u548C\u62EC\u865F\uFF0C\u4E0D\u8981\u52A0\u9017\u865F\u3001\u4E2D\u6587\u6216\u89E3\u91CB\u3002` : `\u4F60\u662F\u4E00\u4F4D\u6A02\u65BC\u52A9\u4EBA\u7684\u52A9\u6559\u3002\u8ACB\u4E0D\u8981\u4F7F\u7528\u4EFB\u4F55\u5DE5\u5177\uFF0C\u76F4\u63A5\u6839\u64DA\u81EA\u5DF1\u7684\u63A8\u7406\u56DE\u7B54\u3002`
+      useTool ? i18n(
+        `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u76F4\u63A5\u56DE\u7B54\u6700\u5F8C\u6578\u5B57\u3002\u8ACB\u5148\u628A\u4F7F\u7528\u8005\u7684\u7B97\u8853\u984C\u8F49\u6210 JSON\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"expression":"\u7B97\u5F0F"}\uFF0Cexpression \u4F7F\u7528 JavaScript \u53EF\u57F7\u884C\u7684 + - * / \u548C\u62EC\u865F\uFF0C\u4E0D\u8981\u52A0\u9017\u865F\u3001\u4E2D\u6587\u6216\u89E3\u91CB\u3002`
+      ) : i18n(`\u4F60\u662F\u4E00\u4F4D\u6A02\u65BC\u52A9\u4EBA\u7684\u52A9\u6559\u3002\u8ACB\u4E0D\u8981\u4F7F\u7528\u4EFB\u4F55\u5DE5\u5177\uFF0C\u76F4\u63A5\u6839\u64DA\u81EA\u5DF1\u7684\u63A8\u7406\u56DE\u7B54\u3002`)
     );
     this.session.clearMessages();
   }
@@ -85,7 +89,9 @@ var CalculatorToolDemo = class extends m {
     plannerSession.setModel(this.session.state.model ?? Pi(`openai-codex`, `gpt-5.4-mini`));
     plannerSession.setTools([]);
     plannerSession.setSystemPrompt(
-      `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u76F4\u63A5\u56DE\u7B54\u6700\u5F8C\u6578\u5B57\u3002\u8ACB\u5148\u628A\u4F7F\u7528\u8005\u7684\u7B97\u8853\u984C\u8F49\u6210 JSON\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"expression":"\u7B97\u5F0F"}\uFF0Cexpression \u4F7F\u7528 JavaScript \u53EF\u57F7\u884C\u7684 + - * / \u548C\u62EC\u865F\uFF0C\u4E0D\u8981\u52A0\u9017\u865F\u3001\u4E2D\u6587\u6216\u89E3\u91CB\u3002`
+      i18n(
+        `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u76F4\u63A5\u56DE\u7B54\u6700\u5F8C\u6578\u5B57\u3002\u8ACB\u5148\u628A\u4F7F\u7528\u8005\u7684\u7B97\u8853\u984C\u8F49\u6210 JSON\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"expression":"\u7B97\u5F0F"}\uFF0Cexpression \u4F7F\u7528 JavaScript \u53EF\u57F7\u884C\u7684 + - * / \u548C\u62EC\u865F\uFF0C\u4E0D\u8981\u52A0\u9017\u865F\u3001\u4E2D\u6587\u6216\u89E3\u91CB\u3002`
+      )
     );
     const run = plannerSession.prompt(this.problem.prompt).catch(() => {
     });

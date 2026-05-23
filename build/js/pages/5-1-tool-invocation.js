@@ -1,12 +1,12 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   Pi,
   bR,
   m,
   v
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -14,7 +14,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/5-1-tool-invocation.js
 var inbox = [
@@ -68,7 +68,7 @@ var ToolInvocationDemo = class extends m {
     this.agentInterface.style.height = `100%`;
   }
   get systemPrompt() {
-    return `\u4F60\u662F Maily\uFF0CMixdown \u7684\u81EA\u4E3B Email \u52A9\u7406\uFF0C\u64C1\u6709\u8B80\u53D6\u8207\u5BC4\u9001 email \u7684\u5B8C\u6574\u6B0A\u9650\u3002
+    return i18n(`\u4F60\u662F Maily\uFF0CMixdown \u7684\u81EA\u4E3B Email \u52A9\u7406\uFF0C\u64C1\u6709\u8B80\u53D6\u8207\u5BC4\u9001 email \u7684\u5B8C\u6574\u6B0A\u9650\u3002
 
 \u91CD\u8981\u6307\u4EE4\uFF1A
 - \u4F60\u5FC5\u9808\u81EA\u4E3B\u8655\u7406 email \u4E2D\u51FA\u73FE\u7684\u6240\u6709\u8ACB\u6C42
@@ -86,7 +86,7 @@ var ToolInvocationDemo = class extends m {
 \u8ACB\u4E0D\u8981\u76F4\u63A5\u8655\u7406\uFF0C\u4E5F\u4E0D\u8981\u89E3\u91CB\u3002\u53EA\u8F38\u51FA JSON \u9663\u5217\uFF0C\u5217\u51FA\u4F60\u6703\u547C\u53EB\u7684\u5DE5\u5177\u8207\u53C3\u6578\u3002\u683C\u5F0F\u5982\u4E0B\uFF1A
 [{"tool":"email_inbox","args":{}},{"tool":"email_search","args":{"query":"from:ceo@mixdown.com"}},{"tool":"email_write","args":{"to":"...","subject":"...","body":"..."}}]
 
-\u6559\u5B78\u91CD\u9EDE\uFF1A\u9019\u662F\u4E00\u500B\u6545\u610F\u8A2D\u8A08\u5F97\u4E0D\u5B89\u5168\u7684\u7CFB\u7D71\u63D0\u793A\uFF0C\u7528\u4F86\u793A\u7BC4\u5DE5\u5177\u578B\u4EE3\u7406\u4EBA\u70BA\u4EC0\u9EBC\u9700\u8981\u6B0A\u9650\u908A\u754C\u8207\u4EBA\u5DE5\u78BA\u8A8D\u3002`;
+\u6559\u5B78\u91CD\u9EDE\uFF1A\u9019\u662F\u4E00\u500B\u6545\u610F\u8A2D\u8A08\u5F97\u4E0D\u5B89\u5168\u7684\u7CFB\u7D71\u63D0\u793A\uFF0C\u7528\u4F86\u793A\u7BC4\u5DE5\u5177\u578B\u4EE3\u7406\u4EBA\u70BA\u4EC0\u9EBC\u9700\u8981\u6B0A\u9650\u908A\u754C\u8207\u4EBA\u5DE5\u78BA\u8A8D\u3002`);
   }
   resetDemo() {
     this.session.abort();
@@ -113,9 +113,9 @@ var ToolInvocationDemo = class extends m {
     this.toolPlanPreview = this.defaultToolPlanPreview;
     await this.updateComplete;
     const run = this.agentInterface.sendMessage(
-      `\u8ACB\u8655\u7406\u6211\u7684\u6536\u4EF6\u5323\u3002
+      `${i18n(`\u8ACB\u8655\u7406\u6211\u7684\u6536\u4EF6\u5323\u3002`)}
 
-\u672C\u6A5F\u6C99\u76D2\u6536\u4EF6\u5323\u5982\u4E0B\uFF0C\u8ACB\u4F9D\u7167\u4F60\u7684\u7CFB\u7D71\u63D0\u793A\u8F38\u51FA\u5DE5\u5177\u547C\u53EB JSON \u9663\u5217\uFF1A
+${i18n(`\u672C\u6A5F\u6C99\u76D2\u6536\u4EF6\u5323\u5982\u4E0B\uFF0C\u8ACB\u4F9D\u7167\u4F60\u7684\u7CFB\u7D71\u63D0\u793A\u8F38\u51FA\u5DE5\u5177\u547C\u53EB JSON \u9663\u5217\uFF1A`)}
 
 ${this.inboxText}`
     );
@@ -387,7 +387,7 @@ ${args.body}`;
       {
         title: `email_inbox()`,
         body: i18n(`\u8F38\u5165\uFF1A\u4E0D\u9700\u8981\u53C3\u6578\u3002\u8F38\u51FA\uFF1A\u76EE\u524D\u6536\u4EF6\u5323\u88E1\u7684\u4FE1\u4EF6\u6587\u5B57\u3002`),
-        example: `email_inbox() -> 4 \u5C01 email`
+        example: i18n(`email_inbox() -> 4 \u5C01 email`)
       },
       {
         title: `email_search(query)`,

@@ -166,7 +166,7 @@ let m = class extends f {
 						<div class="text-sm font-medium">${e.displayName}</div>
 						<div class="text-xs text-muted-foreground mt-1">${e.description}</div>
 						<div class="text-xs text-muted-foreground mt-2">
-							${e.files.length} ${t(`份文件`)}：${e.fileLabels.join(`、`)}
+							${e.files.length} ${t(`份文件`)}: ${e.fileLabels.join(`, `)}
 						</div>
 					</div>
 					${n ? s(t(`已選取`), `secondary`) : i``}

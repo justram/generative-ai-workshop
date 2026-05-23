@@ -1,15 +1,11 @@
 import {
-  r as r2,
-  t as t2
-} from "../chunks/chunk-IIG3EIFQ.js";
-import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   Pi,
   bR,
   m
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -17,12 +13,12 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/4-5-nlp-tasks.js
 var f = class extends m {
   constructor() {
-    super(), this.headerTitle = i18n(`\u81EA\u7136\u8A9E\u8A00\u8655\u7406\u4EFB\u52D9`), this.sectionId = `4.5`, this.selectedTask = ``, this.defaultText = `${t2} \u5BA3\u5E03\u6700\u65B0\u4E00\u5B63\u5927\u5E45\u6210\u9577\u3002\u516C\u53F8\u8868\u793A\uFF0C\u65D7\u8266\u7522\u54C1 ${r2} \u7684\u5BA2\u6236\u63A1\u7528\u7387\u589E\u52A0\u4E86 35%\u3002\u57F7\u884C\u9577\u5728\u5B63\u5EA6\u8CA1\u5831\u6703\u8B70\u4E0A\u8868\u793A\uFF1A\u300C\u6211\u5011\u5C0D\u9019\u4E9B\u6210\u679C\u975E\u5E38\u6EFF\u610F\u3002\u300D\u96A8\u8457\u65B0\u5408\u4F5C\u5925\u4F34\u63A8\u52D5\u9032\u4E00\u6B65\u64F4\u5F35\uFF0C\u9019\u80A1\u6B63\u5411\u52D5\u80FD\u9810\u8A08\u6703\u5EF6\u7E8C\u5230\u7B2C\u56DB\u5B63\u3002`, this.nlpTasks = [
+    super(), this.headerTitle = i18n(`\u81EA\u7136\u8A9E\u8A00\u8655\u7406\u4EFB\u52D9`), this.sectionId = `4.5`, this.selectedTask = ``, this.defaultText = ` announced strong growth in the latest quarter. The company said customer adoption of its flagship product, , increased by 35%. In the quarterly earnings call, the CEO said: \u201CWe are very pleased with these results.\u201D With new partners driving further expansion, this positive momentum is expected to continue into Q4.`, this.nlpTasks = [
       {
         id: `translate`,
         name: i18n(`\u7FFB\u8B6F`),
@@ -54,15 +50,15 @@ var f = class extends m {
       {
         id: `ner`,
         name: i18n(`\u547D\u540D\u5BE6\u9AD4\u8FA8\u8B58`),
-        prompt: `\u8ACB\u5F9E\u9019\u6BB5\u6587\u5B57\u62BD\u51FA\u6240\u6709\u5BE6\u9AD4\u4E26\u5206\u985E\uFF1A
-- \u4EBA\u7269\uFF08\u82E5\u6709\u8077\u7A31\u4E5F\u5217\u51FA\uFF09
-- \u516C\u53F8
-- \u7522\u54C1
-- \u5730\u9EDE
-- \u767E\u5206\u6BD4\uFF0F\u6578\u5B57
-- \u65E5\u671F\uFF0F\u6642\u9593
+        prompt: i18n(`Extract all entities from this text and classify them:
+- People (include titles if present)
+- Companies
+- Products
+- Locations
+- Percentages/numbers
+- Dates/times
 
-\u6587\u5B57\uFF1A`,
+Text:`),
         sampleInput: this.defaultText
       },
       {
@@ -76,14 +72,14 @@ var f = class extends m {
       {
         id: `classify`,
         name: i18n(`\u6587\u5B57\u5206\u985E`),
-        prompt: `\u8ACB\u628A\u9019\u5247\u5BA2\u6236\u56DE\u994B\u5206\u985E\u5230\u4EE5\u4E0B\u5176\u4E2D\u4E00\u985E\uFF1A
-- \u932F\u8AA4\u56DE\u5831
-- \u529F\u80FD\u9700\u6C42
-- \u62B1\u6028
-- \u7A31\u8B9A
-- \u554F\u984C
+        prompt: i18n(`Classify this customer feedback into one category:
+- Bug report
+- Feature request
+- Complaint
+- Praise
+- Question
 
-Feedback:`,
+Feedback:`),
         sampleInput: i18n(
           `\u7576\u6211\u5617\u8A66\u5132\u5B58\u8D85\u904E 100MB \u7684\u6A94\u6848\u6642\uFF0C\u532F\u51FA\u529F\u80FD\u7121\u6CD5\u904B\u4F5C\u3002\u5B83\u6703\u5361\u4F4F\uFF0C\u6700\u5F8C\u903E\u6642\u3002\u9019\u963B\u7919\u4E86\u6211\u5011\u7684\u90E8\u7F72\u3002`
         )
@@ -115,15 +111,17 @@ Feedback:`,
         sampleInput: this.defaultText
       }
     ], this.session = new o(), this.session.setModel(Pi(`openai-codex`, `gpt-5.4-mini`)), this.session.setSystemPrompt(
-      `\u4F60\u662F\u4E00\u4F4D\u5C08\u9580\u8655\u7406\u81EA\u7136\u8A9E\u8A00\u4EFB\u52D9\u7684\u52A9\u7406\u3002\u8ACB\u7CBE\u78BA\u5B8C\u6210\u6BCF\u500B\u4EFB\u52D9\uFF0C\u4E26\u4FDD\u6301\u6B63\u78BA\u6027\u8207\u9069\u7576\u683C\u5F0F\u3002`
+      i18n(
+        `You are an assistant specialized in natural-language tasks. Complete each task precisely, with correct formatting.`
+      )
     ), this.agentInterface = new bR(), this.agentInterface.session = this.session, this.agentInterface.enableAttachments = false, this.agentInterface.enableModelSelector = true, this.agentInterface.enableThinking = false, this.agentInterface.style.width = `100%`, this.agentInterface.style.height = `100%`;
   }
   async runTask(e) {
     this.selectedTask = e.id;
-    let t3 = e.sampleInput.trim();
+    let t2 = e.sampleInput.trim();
     this.session.clearMessages(), await this.agentInterface.sendMessage(`${e.prompt}
 
-${t3}`);
+${t2}`);
   }
   renderContentPanel() {
     return b`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
@@ -137,15 +135,15 @@ ${t3}`);
 
 				<div class="space-y-2">
 					${this.nlpTasks.map(
-      (t3) => b`
+      (t2) => b`
 							<div class="flex items-center justify-between p-2 rounded-md border border-border hover:bg-muted/50 transition-colors">
 								<div class="flex-1 min-w-0 mr-2">
-									<div class="font-medium text-sm text-foreground">${t3.name}</div>
+									<div class="font-medium text-sm text-foreground">${t2.name}</div>
 									<div class="text-xs text-muted-foreground truncate">
-										${t3.prompt.substring(0, 50)}${t3.prompt.length > 50 ? `...` : ``}
+										${t2.prompt.substring(0, 50)}${t2.prompt.length > 50 ? `...` : ``}
 									</div>
 								</div>
-								${Button({ variant: this.selectedTask === t3.id ? `secondary` : `outline`, size: `sm`, onClick: () => this.runTask(t3), children: i18n(`\u57F7\u884C`) })}
+								${Button({ variant: this.selectedTask === t2.id ? `secondary` : `outline`, size: `sm`, onClick: () => this.runTask(t2), children: i18n(`\u57F7\u884C`) })}
 							</div>
 						`
     )}

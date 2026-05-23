@@ -1,12 +1,12 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   Pi,
   bR,
   m,
   v
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -14,7 +14,7 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/5-3-datetime-tool.js
 var DateTimeToolDemo = class extends m {
@@ -71,7 +71,11 @@ var DateTimeToolDemo = class extends m {
     this.finalAnswer = ``;
     this.session.setTools([]);
     this.session.setSystemPrompt(
-      useTool ? `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u56DE\u7B54\u554F\u984C\u672C\u8EAB\u3002\u8ACB\u5224\u65B7\u8981\u67E5\u54EA\u500B\u6642\u5340\uFF0C\u4E26\u53EA\u8F38\u51FA JSON \u7269\u4EF6\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"timezone":"IANA \u6642\u5340\u6216 UTC"}\u3002\u4F8B\u5982 {"timezone":"Asia/Taipei"} \u6216 {"timezone":"UTC"}\u3002` : `\u4F60\u662F\u4E00\u4F4D\u6A02\u65BC\u52A9\u4EBA\u7684\u52A9\u6559\u3002\u4F60\u6C92\u6709\u76EE\u524D\u65E5\u671F\u8207\u6642\u9593\u7684\u5373\u6642\u8CC7\u8A0A\u3002\u9047\u5230\u4ECA\u5929\u3001\u73FE\u5728\u3001\u6708\u5E95\u3001\u661F\u671F\u3001\u6642\u5340\u6216\u76F8\u5C0D\u65E5\u671F\u554F\u984C\u6642\uFF0C\u8ACB\u8AA0\u5BE6\u8AAA\u4F60\u9700\u8981\u76EE\u524D\u6642\u9593\u624D\u80FD\u7CBE\u78BA\u56DE\u7B54\uFF0C\u4E0D\u8981\u731C\u65E5\u671F\u3002`
+      useTool ? i18n(
+        `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u56DE\u7B54\u554F\u984C\u672C\u8EAB\u3002\u8ACB\u5224\u65B7\u8981\u67E5\u54EA\u500B\u6642\u5340\uFF0C\u4E26\u53EA\u8F38\u51FA JSON \u7269\u4EF6\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"timezone":"IANA \u6642\u5340\u6216 UTC"}\u3002\u4F8B\u5982 {"timezone":"Asia/Taipei"} \u6216 {"timezone":"UTC"}\u3002`
+      ) : i18n(
+        `\u4F60\u662F\u4E00\u4F4D\u6A02\u65BC\u52A9\u4EBA\u7684\u52A9\u6559\u3002\u4F60\u6C92\u6709\u76EE\u524D\u65E5\u671F\u8207\u6642\u9593\u7684\u5373\u6642\u8CC7\u8A0A\u3002\u9047\u5230\u4ECA\u5929\u3001\u73FE\u5728\u3001\u6708\u5E95\u3001\u661F\u671F\u3001\u6642\u5340\u6216\u76F8\u5C0D\u65E5\u671F\u554F\u984C\u6642\uFF0C\u8ACB\u8AA0\u5BE6\u8AAA\u4F60\u9700\u8981\u76EE\u524D\u6642\u9593\u624D\u80FD\u7CBE\u78BA\u56DE\u7B54\uFF0C\u4E0D\u8981\u731C\u65E5\u671F\u3002`
+      )
     );
     this.session.clearMessages();
   }
@@ -101,7 +105,9 @@ var DateTimeToolDemo = class extends m {
     plannerSession.setModel(this.session.state.model ?? Pi(`openai-codex`, `gpt-5.4-mini`));
     plannerSession.setTools([]);
     plannerSession.setSystemPrompt(
-      `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u56DE\u7B54\u554F\u984C\u672C\u8EAB\u3002\u8ACB\u5224\u65B7\u8981\u67E5\u54EA\u500B\u6642\u5340\uFF0C\u4E26\u53EA\u8F38\u51FA JSON \u7269\u4EF6\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"timezone":"IANA \u6642\u5340\u6216 UTC"}\u3002\u4F8B\u5982 {"timezone":"Asia/Taipei"} \u6216 {"timezone":"UTC"}\u3002`
+      i18n(
+        `\u4F60\u662F\u4E00\u4F4D\u8B39\u614E\u7684\u52A9\u6559\u3002\u4E0D\u8981\u56DE\u7B54\u554F\u984C\u672C\u8EAB\u3002\u8ACB\u5224\u65B7\u8981\u67E5\u54EA\u500B\u6642\u5340\uFF0C\u4E26\u53EA\u8F38\u51FA JSON \u7269\u4EF6\uFF0C\u683C\u5F0F\u53EA\u80FD\u662F {"timezone":"IANA \u6642\u5340\u6216 UTC"}\u3002\u4F8B\u5982 {"timezone":"Asia/Taipei"} \u6216 {"timezone":"UTC"}\u3002`
+      )
     );
     const run = plannerSession.prompt(question.prompt).catch(() => {
     });
@@ -466,7 +472,7 @@ var DateTimeToolDemo = class extends m {
 						</div>
 						<div class="rounded-md border border-border bg-muted/40 p-2">
 							<div class="font-bold text-foreground">${i18n(`\u8F38\u51FA`)}</div>
-							<code class="block mt-1 break-all">${`{"formatted":"2026/05/16 \u661F\u671F\u516D 13:05:00","utcTimestamp":"..."}`}</code>
+							<code class="block mt-1 break-all">${i18n(`{"formatted":"2026/05/16 \u661F\u671F\u516D 13:05:00","utcTimestamp":"..."}`)}</code>
 						</div>
 						<p>${i18n(`\u5DE5\u5177\u53EA\u8CA0\u8CAC\u56DE\u50B3\u6642\u9593\uFF1B\u300C\u8DDD\u96E2\u6708\u5E95\u9084\u6709\u5E7E\u5929\u300D\u9019\u7A2E\u5224\u65B7\uFF0C\u4ECD\u7136\u8981\u770B\u6A21\u578B\u6216\u61C9\u7528\u7A0B\u5F0F\u600E\u9EBC\u4F7F\u7528\u5DE5\u5177\u7D50\u679C\u3002`)}</p>
 					</div>

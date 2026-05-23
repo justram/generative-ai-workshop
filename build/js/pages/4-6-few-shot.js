@@ -1,11 +1,11 @@
 import {
   o
-} from "../chunks/chunk-6TTNE7IQ.js";
+} from "../chunks/chunk-BUQY3BQN.js";
 import {
   Pi,
   bR,
   m
-} from "../chunks/chunk-QLBDILTC.js";
+} from "../chunks/chunk-FCZIHEE4.js";
 import {
   Button,
   __decorate,
@@ -13,12 +13,12 @@ import {
   i18n,
   r,
   t2 as t
-} from "../chunks/chunk-2NPHVPQR.js";
+} from "../chunks/chunk-4L3FZKEY.js";
 
 // src/pages/4-6-few-shot.js
 var u = class extends m {
   constructor() {
-    super(), this.headerTitle = i18n(`\u5C11\u6A23\u672C\u63D0\u793A\uFF1A\u63D0\u4F9B\u7BC4\u4F8B`), this.sectionId = `4.6`, this.selectedExample = ``, this.shotCount = 0, this.examples = [
+    super(), this.headerTitle = i18n(`\u5C11\u6A23\u672C\u63D0\u793A:\u63D0\u4F9B\u7BC4\u4F8B`), this.sectionId = `4.6`, this.selectedExample = ``, this.shotCount = 0, this.examples = [
       {
         id: `sentiment`,
         name: `\u7522\u54C1\u8A55\u8AD6\u60C5\u7DD2`,
@@ -26,33 +26,33 @@ var u = class extends m {
         testData: `\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C`,
         zeroShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u60C5\u7DD2\u5206\u6790\u52A9\u7406\u3002`,
-          prompt: `\u8ACB\u5224\u65B7\u9019\u53E5\u8A71\u7684\u60C5\u7DD2\uFF1A\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C`
+          prompt: `\u8ACB\u5224\u65B7\u9019\u53E5\u8A71\u7684\u60C5\u7DD2:\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C`
         },
         oneShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u60C5\u7DD2\u5206\u6790\u52A9\u7406\u3002`,
-          prompt: `\u8ACB\u6839\u64DA\u9019\u500B\u7BC4\u4F8B\u5206\u6790\u60C5\u7DD2\uFF1A
+          prompt: `\u8ACB\u6839\u64DA\u9019\u500B\u7BC4\u4F8B\u5206\u6790\u60C5\u7DD2:
 
-\u8A55\u8AD6\uFF1A "\u98DF\u7269\u5F88\u597D\uFF0C\u4F46\u670D\u52D9\u5F88\u7CDF"
-\u60C5\u7DD2\uFF1A \u6DF7\u5408\uFF08\u6B63\u9762\uFF1A\u98DF\u7269\uFF1B\u8CA0\u9762\uFF1A\u670D\u52D9\uFF09
+\u8A55\u8AD6: "\u98DF\u7269\u5F88\u597D\uFF0C\u4F46\u670D\u52D9\u5F88\u7CDF"
+\u60C5\u7DD2: \u6DF7\u5408\uFF08\u6B63\u9762:\u98DF\u7269\uFF1B\u8CA0\u9762:\u670D\u52D9\uFF09
 
-\u8A55\u8AD6\uFF1A "\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C"
-\u60C5\u7DD2\uFF1A`
+\u8A55\u8AD6: "\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C"
+\u60C5\u7DD2:`
         },
         threeShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u60C5\u7DD2\u5206\u6790\u52A9\u7406\u3002`,
-          prompt: `\u8ACB\u6839\u64DA\u9019\u4E9B\u7BC4\u4F8B\u5206\u6790\u60C5\u7DD2\uFF1A
+          prompt: `\u8ACB\u6839\u64DA\u9019\u4E9B\u7BC4\u4F8B\u5206\u6790\u60C5\u7DD2:
 
-\u8A55\u8AD6\uFF1A "\u98DF\u7269\u5F88\u597D\uFF0C\u4F46\u670D\u52D9\u5F88\u7CDF"
-\u60C5\u7DD2\uFF1A \u6DF7\u5408\uFF08\u6B63\u9762\uFF1A\u98DF\u7269\uFF1B\u8CA0\u9762\uFF1A\u670D\u52D9\uFF09
+\u8A55\u8AD6: "\u98DF\u7269\u5F88\u597D\uFF0C\u4F46\u670D\u52D9\u5F88\u7CDF"
+\u60C5\u7DD2: \u6DF7\u5408\uFF08\u6B63\u9762:\u98DF\u7269\uFF1B\u8CA0\u9762:\u670D\u52D9\uFF09
 
-\u8A55\u8AD6\uFF1A "\u5F9E\u958B\u59CB\u5230\u7D50\u675F\u4E00\u5207\u90FD\u5F88\u5B8C\u7F8E"
-\u60C5\u7DD2\uFF1A \u6B63\u9762\uFF08\u5404\u65B9\u9762\u90FD\u6B63\u9762\uFF09
+\u8A55\u8AD6: "\u5F9E\u958B\u59CB\u5230\u7D50\u675F\u4E00\u5207\u90FD\u5F88\u5B8C\u7F8E"
+\u60C5\u7DD2: \u6B63\u9762\uFF08\u5404\u65B9\u9762\u90FD\u6B63\u9762\uFF09
 
-\u8A55\u8AD6\uFF1A "\u7B49\u5F88\u4E45\uFF0C\u98DF\u7269\u4E5F\u662F\u51B7\u7684"
-\u60C5\u7DD2\uFF1A \u8CA0\u9762\uFF08\u7B49\u5F85\u6642\u9593\u3001\u98DF\u7269\u54C1\u8CEA\uFF09
+\u8A55\u8AD6: "\u7B49\u5F88\u4E45\uFF0C\u98DF\u7269\u4E5F\u662F\u51B7\u7684"
+\u60C5\u7DD2: \u8CA0\u9762\uFF08\u7B49\u5F85\u6642\u9593\u3001\u98DF\u7269\u54C1\u8CEA\uFF09
 
-\u8A55\u8AD6\uFF1A "\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C"
-\u60C5\u7DD2\uFF1A`
+\u8A55\u8AD6: "\u65C5\u9928\u5F88\u4E7E\u6DE8\uFF0C\u4F46\u54E1\u5DE5\u5F88\u6C92\u79AE\u8C8C"
+\u60C5\u7DD2:`
         }
       },
       {
@@ -102,29 +102,29 @@ Note:`
         },
         oneShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u5354\u52A9\u5206\u985E\u8CBB\u7528\u7684\u52A9\u7406\u3002`,
-          prompt: `\u8ACB\u6839\u64DA\u9019\u500B\u7BC4\u4F8B\u5206\u985E\u8CBB\u7528\uFF1A
+          prompt: `\u8ACB\u6839\u64DA\u9019\u500B\u7BC4\u4F8B\u5206\u985E\u8CBB\u7528:
 
 Expense: "Taxi to airport"
-\u985E\u5225\uFF1A Transportation
+\u985E\u5225: Transportation
 
 Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
-\u985E\u5225\uFF1A`
+\u985E\u5225:`
         },
         threeShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u5354\u52A9\u5206\u985E\u8CBB\u7528\u7684\u52A9\u7406\u3002`,
           prompt: `Categorize expenses using these examples:
 
 Expense: "Taxi to airport"
-\u985E\u5225\uFF1A Transportation
+\u985E\u5225: Transportation
 
 Expense: "Dinner with team after project completion"
-\u985E\u5225\uFF1A Team Building
+\u985E\u5225: Team Building
 
 Expense: "Coffee with potential customer"
-\u985E\u5225\uFF1A Business Development
+\u985E\u5225: Business Development
 
 Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
-\u985E\u5225\uFF1A`
+\u985E\u5225:`
         }
       },
       {
@@ -134,16 +134,16 @@ Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
         testData: `Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`,
         zeroShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u7522\u54C1\u898F\u683C\u62BD\u53D6\u52A9\u7406\u3002`,
-          prompt: `\u8ACB\u62BD\u53D6\u898F\u683C\uFF1A Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`
+          prompt: `\u8ACB\u62BD\u53D6\u898F\u683C: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass`
         },
         oneShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u7522\u54C1\u898F\u683C\u62BD\u53D6\u52A9\u7406\u3002`,
           prompt: `\u8ACB\u5F9E\u4E0B\u5217\u6587\u5B57\u62BD\u53D6\u6280\u8853\u898F\u683C\uFF0C\u4E26\u7528 JSON \u683C\u5F0F\u8F38\u51FA\u3002
 
 <EXAMPLE>
-\u8F38\u5165\uFF1A Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
+\u8F38\u5165: Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
 
-\u8F38\u51FA\uFF1A
+\u8F38\u51FA:
 {
   "product": "Google Nest Wifi",
   "speed": "1200Mpbs",
@@ -152,17 +152,17 @@ Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
 }
 </EXAMPLE>
 
-\u8F38\u5165\uFF1A Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
+\u8F38\u5165: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-\u8F38\u51FA\uFF1A`
+\u8F38\u51FA:`
         },
         threeShot: {
           systemPrompt: `\u4F60\u662F\u4E00\u4F4D\u7522\u54C1\u898F\u683C\u62BD\u53D6\u52A9\u7406\u3002`,
           prompt: `\u8ACB\u5F9E\u4E0B\u5217\u6587\u5B57\u62BD\u53D6\u6280\u8853\u898F\u683C\uFF0C\u4E26\u7528 JSON \u683C\u5F0F\u8F38\u51FA\u3002
 
 <EXAMPLE>
-\u8F38\u5165\uFF1A Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
-\u8F38\u51FA\uFF1A
+\u8F38\u5165: Google Nest Wifi, network speed up to 1200Mpbs, 2.4GHz and 5GHz frequencies, WP3 protocol
+\u8F38\u51FA:
 {
   "product": "Google Nest Wifi",
   "speed": "1200Mpbs",
@@ -172,8 +172,8 @@ Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
 </EXAMPLE>
 
 <EXAMPLE>
-\u8F38\u5165\uFF1A iPhone 14 Pro, A16 Bionic chip, 6GB RAM, 256GB storage, Deep Purple
-\u8F38\u51FA\uFF1A
+\u8F38\u5165: iPhone 14 Pro, A16 Bionic chip, 6GB RAM, 256GB storage, Deep Purple
+\u8F38\u51FA:
 {
   "product": "iPhone 14 Pro",
   "chip": "A16 Bionic",
@@ -184,8 +184,8 @@ Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
 </EXAMPLE>
 
 <EXAMPLE>
-\u8F38\u5165\uFF1A Samsung Galaxy S23, Snapdragon 8 Gen 2, 8GB memory, 512GB capacity, Green
-\u8F38\u51FA\uFF1A
+\u8F38\u5165: Samsung Galaxy S23, Snapdragon 8 Gen 2, 8GB memory, 512GB capacity, Green
+\u8F38\u51FA:
 {
   "product": "Samsung Galaxy S23",
   "processor": "Snapdragon 8 Gen 2",
@@ -195,9 +195,9 @@ Expense: "\u5728\u7FA9\u5927\u5229\u9910\u5EF3\u8207\u5BA2\u6236\u5348\u9910"
 }
 </EXAMPLE>
 
-\u8F38\u5165\uFF1A Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
+\u8F38\u5165: Google Pixel 7, 5G network, 8GB RAM, Tensor G2 processor, 128GB storage, Lemongrass
 
-\u8F38\u51FA\uFF1A`
+\u8F38\u51FA:`
         }
       }
     ], i18n(`Run`) === `Run` && (this.headerTitle = `Few-Shot Prompting: Teach with Examples`, this.examples = [
@@ -344,7 +344,7 @@ Output:`
 							<div class="p-3 rounded-md border border-border">
 								<div class="font-medium text-sm text-foreground mb-1">${t2.name}</div>
 								<div class="text-xs text-muted-foreground mb-2">
-									${t2.description} • ${i18n(`\u6E2C\u8A66`)}："${t2.testData.substring(0, 50) + (t2.testData.length > 50 ? `...` : ``)}"
+									${t2.description} • ${i18n(`\u6E2C\u8A66`)}:"${t2.testData.substring(0, 50) + (t2.testData.length > 50 ? `...` : ``)}"
 								</div>
 								<div class="flex gap-2">
 									${Button({ variant: this.selectedExample === t2.id && this.shotCount === 0 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t2, 0), children: `${i18n(`Run`) === `Run` ? `Zero-shot` : `\u96F6\u6A23\u672C`}` })}
