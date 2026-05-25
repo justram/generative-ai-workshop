@@ -10,12 +10,16 @@ import "../mini-lit/index.js";
 
 const attribution = {
   en: {
-    created: "Created by",
-    maintained: "Traditional Chinese translation and maintenance by",
+    originalPrefix: "Original workshop content ©",
+    originalSuffix: ". Please contact Mario for permission to reuse the original material.",
+    licensePrefix: "Traditional Chinese translation, localization, and local app changes © 2026",
+    licenseSuffix: ", Stencilzeit; released under Apache-2.0.",
   },
   "zh-TW": {
-    created: "原作者：",
-    maintained: "翻譯與維護：",
+    originalPrefix: "原始工作坊內容 ©",
+    originalSuffix: "；若要重用原始內容，請向 Mario 取得授權。",
+    licensePrefix: "繁體中文翻譯、在地化內容與本地 app 修改 © 2026",
+    licenseSuffix: "，Stencilzeit；以 Apache-2.0 授權釋出。",
   },
 };
 
@@ -382,8 +386,6 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
     const copy = attribution[language];
     document.documentElement.lang = language === "en" ? "en" : "zh-Hant-TW";
     document.title = language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊";
-    const maintainerName =
-      language === "en" ? "Jheng-Hong (Matt) Yang" : "Jheng-Hong (Matt) Yang / 楊政紘";
     return html`
       <div class="min-h-screen p-4 lg:p-8">
         <div class="fixed top-4 right-4 z-10 flex items-center gap-2">
@@ -394,33 +396,49 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
           <h1 class="text-3xl lg:text-4xl text-foreground font-bold mb-4">
             ${language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊"}
           </h1>
-          <p class="text-sm text-muted-foreground mb-8 leading-relaxed">
-            ${copy.created} <strong>Mario Zechner</strong> (<a
-              href="https://mariozechner.at"
-              target="_blank"
-              class="underline hover:no-underline"
-              >mariozechner.at</a
-            >,
-            <a href="mailto:contact@mariozechner.at" class="underline hover:no-underline"
-              >contact@mariozechner.at</a
-            >).<br />
-            ${copy.maintained}
-            <strong>${maintainerName}</strong> (<a
-              href="https://justram.github.io"
-              target="_blank"
-              class="underline hover:no-underline"
-              >justram.github.io</a
-            >,
-            <a href="mailto:jhyang@stencilzeit.com" class="underline hover:no-underline"
-              >jhyang@stencilzeit.com</a
-            >), Stencilzeit.
-          </p>
           <div class="space-y-6">
             ${sections.map((section) =>
               section.children
                 ? this.renderGroup(section, language)
                 : this.renderLeaf(section, language),
             )}
+            <footer
+              class="p-4 border border-border rounded-md bg-card text-xs text-muted-foreground leading-relaxed"
+            >
+              <div class="px-3 py-2">
+                <p>
+                  ${copy.originalPrefix}
+                  <strong>Mario Zechner</strong> (<a
+                    href="https://mariozechner.at"
+                    target="_blank"
+                    class="underline hover:no-underline"
+                    >mariozechner.at</a
+                  >,
+                  <a href="mailto:contact@mariozechner.at" class="underline hover:no-underline"
+                    >contact@mariozechner.at</a
+                  >)${copy.originalSuffix}
+                </p>
+                <p class="mt-1">
+                  ${copy.licensePrefix}
+                  <strong>Jheng-Hong (Matt) Yang / 楊政紘</strong> (<a
+                    href="https://justram.github.io"
+                    target="_blank"
+                    class="underline hover:no-underline"
+                    >justram.github.io</a
+                  >,
+                  <a href="mailto:jhyang@stencilzeit.com" class="underline hover:no-underline"
+                    >jhyang@stencilzeit.com</a
+                  >)${copy.licenseSuffix}
+                  <a
+                    href="https://www.apache.org/licenses/LICENSE-2.0"
+                    target="_blank"
+                    class="underline hover:no-underline"
+                  >
+                    Apache-2.0
+                  </a>
+                </p>
+              </div>
+            </footer>
           </div>
         </div>
       </div>

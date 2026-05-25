@@ -4,7 +4,7 @@
   "private": true,
   "description": "Local Generative AI Workshop clone with ChatGPT subscription login via pi.",
   "keywords": [],
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "Mario Zechner; Traditional Chinese translation and maintenance by Jheng-Hong (Matt) Yang / 楊政紘, Stencilzeit",
   "type": "module",
   "main": "electron/main.mjs",
