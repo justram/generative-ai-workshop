@@ -19,10 +19,10 @@ function findDefaultExecutable() {
 
   if (process.platform === "win32") {
     const entries = fs.existsSync(dist) ? fs.readdirSync(dist) : [];
-    const portable = entries.find((entry) => /portable\.exe$/i.test(entry));
-    if (portable) return path.join(dist, portable);
     const unpacked = path.join(dist, "win-unpacked", "Generative AI Workshop.exe");
     if (fs.existsSync(unpacked)) return unpacked;
+    const portable = entries.find((entry) => /portable\.exe$/i.test(entry));
+    if (portable) return path.join(dist, portable);
   }
 
   if (process.platform === "darwin") {

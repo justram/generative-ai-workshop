@@ -15,6 +15,7 @@ const APP_PORTS = [Number(process.env.GENAI_ELECTRON_PORT || 4174), 4175, 4173].
 let mainWindow = null;
 let serverInstance = null;
 let isQuitting = false;
+let smokeProbeStarted = false;
 const authWindows = new Set();
 
 const singleInstanceLock = app.requestSingleInstanceLock();
@@ -216,6 +217,8 @@ async function probeNlpTaskInteraction() {
 
 async function runSmokeProbe() {
   if (!process.env.GENAI_ELECTRON_SMOKE_RESULT || !mainWindow || !serverInstance) return;
+  if (smokeProbeStarted) return;
+  smokeProbeStarted = true;
   try {
     const authResponse = await fetch(new URL("/api/auth/status", serverInstance.url), {
       cache: "no-store",
@@ -257,6 +260,13 @@ async function runSmokeProbe() {
     });
     setTimeout(() => app.exit(1), 150);
   }
+}
+
+function scheduleSmokeProbe() {
+  if (!process.env.GENAI_ELECTRON_SMOKE_RESULT) return;
+  setTimeout(() => {
+    runSmokeProbe();
+  }, 50);
 }
 
 function buildMenu() {
@@ -451,7 +461,11 @@ async function createMainWindow() {
 
   mainWindow.once("ready-to-show", () => {
     mainWindow?.show();
-    runSmokeProbe();
+    scheduleSmokeProbe();
+  });
+
+  mainWindow.webContents.once("did-finish-load", () => {
+    scheduleSmokeProbe();
   });
 
   mainWindow.on("close", () => {
