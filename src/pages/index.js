@@ -13,12 +13,14 @@ const attribution = {
     originalPrefix: "Original workshop content ©",
     originalSuffix: ". Please contact Mario for permission to reuse the original material.",
     licensePrefix: "Traditional Chinese translation, localization, and local app changes © 2026",
+    maintainerName: "Jheng-Hong (Matt) Yang",
     licenseSuffix: ", Stencilzeit; released under Apache-2.0.",
   },
   "zh-TW": {
     originalPrefix: "原始工作坊內容 ©",
     originalSuffix: "；若要重用原始內容，請向 Mario 取得授權。",
     licensePrefix: "繁體中文翻譯、在地化內容與本地 app 修改 © 2026",
+    maintainerName: "Jheng-Hong (Matt) Yang / 楊政紘",
     licenseSuffix: "，Stencilzeit；以 Apache-2.0 授權釋出。",
   },
 };
@@ -420,7 +422,7 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
                 </p>
                 <p class="mt-1">
                   ${copy.licensePrefix}
-                  <strong>Jheng-Hong (Matt) Yang / 楊政紘</strong> (<a
+                  <strong>${copy.maintainerName}</strong> (<a
                     href="https://justram.github.io"
                     target="_blank"
                     class="underline hover:no-underline"

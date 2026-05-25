@@ -16,6 +16,7 @@ import { AgentSession } from "../workshop-runtime/AgentSession.js";
 import "../workshop-runtime/PreviewCodeToggle.js";
 import { ArtifactsPanel } from "../workshop-runtime/Artifacts.js";
 import { streamSimpleProxy } from "../workshop-runtime/ProxyClient.js";
+import { getSectionFiveContent } from "./section-5-content.js";
 
 function extractJsonObject(text) {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -189,6 +190,10 @@ let ArtifactsToolDemo = class extends DemoBase {
       this.showArtifacts = true;
     };
     this.session.setTools([this.artifactsPanel.tool]);
+  }
+
+  get sectionContent() {
+    return getSectionFiveContent(`5.5`);
   }
 
   renderCompactArtifactParams(args, pending) {

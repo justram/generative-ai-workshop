@@ -66,6 +66,7 @@ async function main() {
   const tempDir = await fsp.mkdtemp(path.join(os.tmpdir(), "genai-workshop-smoke-"));
   const resultPath = path.join(tempDir, "smoke-result.json");
   const userDataDir = path.join(tempDir, "user-data");
+  const artifactDir = outputDir || path.join(tempDir, "artifacts");
 
   const child = spawn(executable, [], {
     cwd: root,
@@ -73,13 +74,18 @@ async function main() {
     env: {
       ...process.env,
       GENAI_ELECTRON_PORT: process.env.GENAI_ELECTRON_PORT || "49174",
+      GENAI_ELECTRON_SMOKE_OUTPUT_DIR: artifactDir,
       GENAI_ELECTRON_SMOKE_RESULT: resultPath,
       GENAI_ELECTRON_USER_DATA_DIR: userDataDir,
     },
   });
 
   let stderr = "";
-  child.stdout.on("data", (chunk) => process.stdout.write(chunk));
+  let stdout = "";
+  child.stdout.on("data", (chunk) => {
+    stdout += chunk.toString();
+    process.stdout.write(chunk);
+  });
   child.stderr.on("data", (chunk) => {
     stderr += chunk.toString();
     process.stderr.write(chunk);
@@ -88,16 +94,47 @@ async function main() {
   const result = await waitForResult(resultPath, child);
   if (child.exitCode === null) child.kill();
 
+  if (outputDir) {
+    await fsp.mkdir(outputDir, { recursive: true });
+    await fsp.writeFile(
+      path.join(outputDir, `packaged-smoke-${process.platform}.stdout.log`),
+      stdout,
+    );
+    await fsp.writeFile(
+      path.join(outputDir, `packaged-smoke-${process.platform}.stderr.log`),
+      stderr,
+    );
+  }
+
   if (!result) {
     throw new Error(`Packaged app did not report smoke status within ${timeoutMs}ms.\n${stderr}`);
-  }
-  if (!result.ok) {
-    throw new Error(`Packaged app smoke failed:\n${JSON.stringify(result, null, 2)}\n${stderr}`);
   }
 
   if (outputDir) {
     await fsp.mkdir(outputDir, { recursive: true });
     await fsp.copyFile(resultPath, path.join(outputDir, `packaged-smoke-${process.platform}.json`));
+  }
+
+  const failures = Array.isArray(result.failures) ? result.failures : [];
+  if (!result.ok || failures.length > 0) {
+    const summary = failures
+      .slice(0, 12)
+      .map((failure) => {
+        const page = failure.page || failure.probe || "unknown";
+        const language = failure.language ? ` ${failure.language}` : "";
+        const reason =
+          failure.loadError ||
+          failure.interactionError ||
+          failure.unexpectedVisibleErrors?.join("; ") ||
+          failure.consoleErrors?.join("; ") ||
+          failure.visibleErrors?.join("; ") ||
+          "unknown failure";
+        return `- ${page}${language}: ${reason}`;
+      })
+      .join("\n");
+    throw new Error(
+      `Packaged app smoke failed with ${failures.length} failure(s):\n${summary}\n${stderr}`,
+    );
   }
 
   console.log(JSON.stringify({ executable, result }, null, 2));

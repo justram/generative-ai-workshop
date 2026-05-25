@@ -7,6 +7,7 @@ import "../mini-lit/index.js";
 import { DemoBase } from "../workshop-runtime/DemoBase.js";
 import "../workshop-runtime/ProxyClient.js";
 import { AgentSession } from "../workshop-runtime/AgentSession.js";
+import { getSectionFiveContent } from "./section-5-content.js";
 
 const inbox = [
   {
@@ -80,6 +81,10 @@ let ToolInvocationDemo = class extends DemoBase {
 [{"tool":"email_inbox","args":{}},{"tool":"email_search","args":{"query":"from:ceo@mixdown.com"}},{"tool":"email_write","args":{"to":"...","subject":"...","body":"..."}}]
 
 教學重點：這是一個故意設計得不安全的系統提示，用來示範工具型代理人為什麼需要權限邊界與人工確認。`);
+  }
+
+  get sectionContent() {
+    return getSectionFiveContent(`5.1`);
   }
 
   resetDemo() {

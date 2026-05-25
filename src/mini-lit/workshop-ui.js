@@ -92,8 +92,29 @@ export function setLanguage(language) {
 export function i18n(key, fallback) {
   const language = getCurrentLanguage();
   const dictionary = dictionaries[language] || dictionaries.en;
-  if (fallback !== undefined) return dictionary[key]?.[fallback] ?? fallback;
-  return dictionary[key] ?? key;
+  const value =
+    fallback !== undefined ? (dictionary[key]?.[fallback] ?? fallback) : (dictionary[key] ?? key);
+  if (!/\{[A-Za-z_][\w-]*\}/.test(value)) return value;
+  const names = [...value.matchAll(/\{([A-Za-z_][\w-]*)\}/g)].map((match) => match[1]);
+  const format = (...args) => {
+    let position = 0;
+    return value.replace(/\{([A-Za-z_][\w-]*)\}/g, (match, name) => {
+      if (args.length === 1 && args[0] && typeof args[0] === "object") {
+        return args[0][name] ?? match;
+      }
+      if (args.length === 1) return args[0] ?? match;
+      const index = Number(name);
+      if (Number.isInteger(index)) return args[index] ?? match;
+      const namedIndex = names.indexOf(name);
+      const positionalIndex = namedIndex >= 0 ? namedIndex : position;
+      position += 1;
+      return args[positionalIndex] ?? match;
+    });
+  };
+  format.toString = () => value;
+  format.valueOf = () => value;
+  format[Symbol.toPrimitive] = () => value;
+  return format;
 }
 
 export const defaultEnglish = dictionaries.en;

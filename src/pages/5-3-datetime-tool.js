@@ -7,6 +7,7 @@ import "../mini-lit/index.js";
 import { DemoBase } from "../workshop-runtime/DemoBase.js";
 import "../workshop-runtime/ProxyClient.js";
 import { AgentSession } from "../workshop-runtime/AgentSession.js";
+import { getSectionFiveContent } from "./section-5-content.js";
 
 let DateTimeToolDemo = class extends DemoBase {
   constructor() {
@@ -54,6 +55,10 @@ let DateTimeToolDemo = class extends DemoBase {
     this.agentInterface.showDebugToggle = false;
     this.agentInterface.style.width = `100%`;
     this.agentInterface.style.height = `100%`;
+  }
+
+  get sectionContent() {
+    return getSectionFiveContent(`5.3`);
   }
 
   configureSession(useTool) {

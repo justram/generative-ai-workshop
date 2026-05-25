@@ -1,10 +1,13 @@
 import path from "node:path";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { app, BrowserWindow, Menu, shell } from "electron";
 import { startServer } from "../server.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const require = createRequire(import.meta.url);
+const { listWorkshopPages } = require("../scripts/workshop-pages.cjs");
 const APP_PORTS = [Number(process.env.GENAI_ELECTRON_PORT || 4174), 4175, 4173].filter(
   (port, index, ports) => Number.isFinite(port) && ports.indexOf(port) === index,
 );
@@ -58,6 +61,159 @@ async function writeSmokeResult(result) {
   await writeFile(resultPath, JSON.stringify(result, null, 2), "utf8");
 }
 
+function smokeArtifactDir() {
+  const configured = process.env.GENAI_ELECTRON_SMOKE_OUTPUT_DIR;
+  if (configured) return path.resolve(configured);
+  const resultPath = process.env.GENAI_ELECTRON_SMOKE_RESULT;
+  if (resultPath) return path.join(path.dirname(resultPath), "artifacts");
+  return path.join(app.getPath("temp"), "genai-workshop-smoke");
+}
+
+function safeSmokeName(value) {
+  return String(value).replace(/[^a-z0-9._-]+/gi, "_");
+}
+
+function shortText(value, max = 260) {
+  const text = String(value || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+function isExpectedAuthMessage(text) {
+  return /ChatGPT|not connected|尚未連線|請先.*登入|login/i.test(String(text || ""));
+}
+
+async function saveSmokeScreenshot(label) {
+  if (!mainWindow || mainWindow.isDestroyed()) return null;
+  const dir = path.join(smokeArtifactDir(), "screenshots");
+  await mkdir(dir, { recursive: true });
+  const file = path.join(dir, `${safeSmokeName(label)}.png`);
+  const image = await mainWindow.webContents.capturePage();
+  await writeFile(file, image.toPNG());
+  return file;
+}
+
+async function setSmokeLanguage(language, theme = "light") {
+  if (!mainWindow || mainWindow.isDestroyed() || !serverInstance) return;
+  await mainWindow.loadURL(serverInstance.url);
+  await mainWindow.webContents.executeJavaScript(
+    `localStorage.setItem("language", ${JSON.stringify(language)}); localStorage.setItem("theme", ${JSON.stringify(theme)});`,
+  );
+}
+
+async function readSmokePageState(page, language, theme) {
+  return mainWindow.webContents.executeJavaScript(`
+    (() => {
+      const body = document.body?.innerText || "";
+      const visibleErrors = [...body.matchAll(/(?:錯誤：|Error:)[^\\n]+|[^\\n]*is not a function[^\\n]*/gi)]
+        .map((match) => match[0].trim())
+        .filter(Boolean)
+        .slice(0, 12);
+      const markdown = Array.from(document.querySelectorAll("markdown-block"))
+        .map((el) => el.innerText || "")
+        .join("\\n");
+      return {
+        page: ${JSON.stringify(page)},
+        language: ${JSON.stringify(language)},
+        theme: ${JSON.stringify(theme)},
+        url: location.href,
+        title: document.title || "",
+        lang: document.documentElement.lang || "",
+        heading: document.querySelector("h1")?.textContent?.trim() || "",
+        bodyLength: body.trim().length,
+        bodyStart: body.replace(/\\s+/g, " ").trim().slice(0, 260),
+        markdownStart: markdown.replace(/\\s+/g, " ").trim().slice(0, 260),
+        visibleErrors,
+        blankish: body.trim().length < 80,
+      };
+    })()
+  `);
+}
+
+async function loadSmokePage(page, language, theme = "light") {
+  const consoleErrors = [];
+  const failedLoads = [];
+  const onConsoleMessage = (event) => {
+    if (event.level === "error") {
+      consoleErrors.push(
+        shortText(`${event.message} ${event.sourceId || ""}:${event.lineNumber || ""}`, 360),
+      );
+    }
+  };
+  const onFailLoad = (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+    if (isMainFrame) failedLoads.push({ errorCode, errorDescription, validatedURL });
+  };
+  mainWindow.webContents.on("console-message", onConsoleMessage);
+  mainWindow.webContents.on("did-fail-load", onFailLoad);
+  try {
+    await setSmokeLanguage(language, theme);
+    const pathname = page === "index.html" ? "/" : `/${page}`;
+    const url = new URL(pathname, serverInstance.url);
+    url.searchParams.set("smoke", `${Date.now()}-${language}-${theme}`);
+    await mainWindow.loadURL(url.toString());
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const state = await readSmokePageState(page, language, theme);
+    return {
+      ...state,
+      consoleErrors,
+      failedLoads,
+      ok:
+        !state.blankish &&
+        consoleErrors.length === 0 &&
+        failedLoads.length === 0 &&
+        state.visibleErrors.filter((error) => !isExpectedAuthMessage(error)).length === 0,
+    };
+  } catch (error) {
+    return {
+      page,
+      language,
+      theme,
+      ok: false,
+      loadError: error?.stack || error?.message || String(error),
+      consoleErrors,
+      failedLoads,
+    };
+  } finally {
+    mainWindow.webContents.off("console-message", onConsoleMessage);
+    mainWindow.webContents.off("did-fail-load", onFailLoad);
+  }
+}
+
+async function probeNlpTaskInteraction() {
+  const page = "4-5-nlp-tasks.html";
+  const result = await loadSmokePage(page, "zh-TW", "dark");
+  result.probe = "4-5-first-task-click";
+  if (!result.ok) return result;
+  try {
+    await mainWindow.webContents.executeJavaScript(`
+      Array.from(document.querySelectorAll("button"))
+        .find((button) => button.textContent.includes("執行"))
+        ?.click();
+    `);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    const after = await readSmokePageState(page, "zh-TW", "dark");
+    const unexpectedVisibleErrors = after.visibleErrors.filter(
+      (error) => !isExpectedAuthMessage(error),
+    );
+    const ok = unexpectedVisibleErrors.length === 0;
+    return {
+      ...result,
+      afterClick: after,
+      unexpectedVisibleErrors,
+      ok,
+      screenshot: ok ? null : await saveSmokeScreenshot("4-5-nlp-tasks-zh-TW-after-click"),
+    };
+  } catch (error) {
+    return {
+      ...result,
+      ok: false,
+      interactionError: error?.stack || error?.message || String(error),
+      screenshot: await saveSmokeScreenshot("4-5-nlp-tasks-zh-TW-interaction-error"),
+    };
+  }
+}
+
 async function runSmokeProbe() {
   if (!process.env.GENAI_ELECTRON_SMOKE_RESULT || !mainWindow || !serverInstance) return;
   try {
@@ -65,16 +221,19 @@ async function runSmokeProbe() {
       cache: "no-store",
     });
     const authStatus = await authResponse.json();
-    const pageState = await mainWindow.webContents.executeJavaScript(
-      `({
-        title: document.title,
-        lang: document.documentElement.lang,
-        heading: document.querySelector("h1")?.textContent?.trim() || "",
-        bodyLength: document.body?.innerText?.length || 0
-      })`,
-    );
+    const pages = listWorkshopPages(app.getAppPath());
+    const pageResults = [];
+    for (const page of pages) {
+      for (const language of ["zh-TW", "en"]) {
+        const result = await loadSmokePage(page, language, "light");
+        if (!result.ok) result.screenshot = await saveSmokeScreenshot(`${page}-${language}`);
+        pageResults.push(result);
+      }
+    }
+    const probes = [await probeNlpTaskInteraction()];
+    const failures = [...pageResults, ...probes].filter((result) => !result.ok);
     await writeSmokeResult({
-      ok: authResponse.ok && pageState.bodyLength > 100,
+      ok: authResponse.ok && failures.length === 0,
       platform: process.platform,
       arch: process.arch,
       appVersion: app.getVersion(),
@@ -82,7 +241,11 @@ async function runSmokeProbe() {
       userData: app.getPath("userData"),
       resourcesPath: process.resourcesPath,
       authStatus,
-      pageState,
+      pagesChecked: pageResults.length,
+      probeCount: probes.length,
+      failures,
+      pageResults,
+      probes,
     });
     setTimeout(() => app.quit(), 150);
   } catch (error) {

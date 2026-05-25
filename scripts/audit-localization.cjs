@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const fs = require("node:fs");
 const path = require("node:path");
 const { app, BrowserWindow, session } = require("electron");
+const { listWorkshopPages } = require("./workshop-pages.cjs");
 
 const ROOT = path.resolve(__dirname, "..");
 const BASE_URL = process.env.BASE_URL || "http://127.0.0.1:4174";
@@ -23,13 +23,22 @@ const EN_ALLOWED_CJK_PAGES = new Set([
 const SOURCE_LABEL_RE =
   /\b(Source|source document|source data|original document|reference answer|dataset|OCR|extracted|attachment|uploaded file|example document)\b|來源|原始|資料集|參考答案|抽出|上傳|附件|文件內容/i;
 
+const SECTION5_ZH_EXPECTED = new Map([
+  ["5-overview.html", "AI 代理人：讓大型語言模型使用工具"],
+  ["5-1-tool-invocation.html", "5.1. 工具呼叫"],
+  ["5-2-calculator-tool.html", "5.2. 計算機工具"],
+  ["5-3-datetime-tool.html", "5.3. 日期／時間工具"],
+  ["5-4-websearch-tool.html", "5.4. 網路搜尋工具"],
+  ["5-5-artifacts-tool.html", "5.5. 產物工具"],
+  ["5-6-mcp.html", "5.6. 模型上下文協定"],
+  ["5-7-key-takeaways.html", "5.7. 重點整理"],
+]);
+const SECTION5_ZH_LEAK_RE =
+  /\b(Learning goals|Tool Invocation|Calculator Tool|Date\/Time Tool|Web Search Tool|Artifacts Tool|Model Context Protocol|Key Takeaways|Search tools add|A model can|The model does|What to watch)\b/;
+
 function listPages() {
   if (PAGE_ARG) return PAGE_ARG.slice("--pages=".length).split(",").filter(Boolean);
-  return fs
-    .readdirSync(ROOT)
-    .filter((file) => file.endsWith(".html"))
-    .filter((file) => file !== "0-full-content.html")
-    .sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+  return listWorkshopPages(ROOT);
 }
 
 function listLangs() {
@@ -226,6 +235,14 @@ function auditSnapshot(page, lang, snapshot) {
   if (lang === "zh-TW") {
     if (snapshot.langAttr && snapshot.langAttr !== "zh-Hant-TW") {
       findings.push(lineFor(page, lang, "html-lang", "error", snapshot.langAttr));
+    }
+    const expectedSectionFiveText = SECTION5_ZH_EXPECTED.get(page);
+    if (expectedSectionFiveText && !allText.includes(expectedSectionFiveText)) {
+      findings.push(lineFor(page, lang, "section5-zh-missing", "error", expectedSectionFiveText));
+    }
+    if (expectedSectionFiveText) {
+      const leaked = allText.match(SECTION5_ZH_LEAK_RE);
+      if (leaked) findings.push(lineFor(page, lang, "section5-en-leak", "error", leaked[0]));
     }
     const learnerVoiceLeaks = [
       /學生比較懂/g,

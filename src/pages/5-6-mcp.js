@@ -7,6 +7,7 @@ import "../mini-lit/index.js";
 import { DemoBase } from "../workshop-runtime/DemoBase.js";
 import "../workshop-runtime/ProxyClient.js";
 import { AgentSession } from "../workshop-runtime/AgentSession.js";
+import { getSectionFiveContent } from "./section-5-content.js";
 
 const TOOL_LIST = [
   {
@@ -137,6 +138,10 @@ let MCPDemoInteractive = class extends DemoBase {
     this.agentInterface.style.width = `100%`;
     this.agentInterface.style.height = `100%`;
     this.loadToolList();
+  }
+
+  get sectionContent() {
+    return getSectionFiveContent(`5.6`);
   }
 
   async loadToolList() {

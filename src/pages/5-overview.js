@@ -8,12 +8,16 @@ import "../workshop-runtime/AuthToken.js";
 import "../mini-lit/index.js";
 import "../mini-lit/index.js";
 import { DemoBase as i } from "../workshop-runtime/DemoBase.js";
+import { getSectionFiveContent as s } from "./section-5-content.js";
 let a = class extends i {
   constructor(...e) {
     (super(...e),
       (this.headerTitle = t(`AI 代理人：讓大型語言模型使用工具`)),
       (this.sectionId = `5`),
       (this.sectionMode = `subtree`));
+  }
+  get sectionContent() {
+    return s(`5`);
   }
   renderContentPanel() {
     return r`

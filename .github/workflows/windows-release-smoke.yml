@@ -35,11 +35,24 @@ jobs:
         shell: bash
         run: npm ci
 
+      - name: Clean release outputs
+        shell: bash
+        run: rm -rf dist-electron test-results
+
       - name: Check release smoke scripts
         shell: bash
         run: |
+          node --check scripts/workshop-pages.cjs
           node --check scripts/smoke-packaged.cjs
           node --check electron/main.mjs
+
+      - name: Run source checks
+        shell: bash
+        run: npm run check
+
+      - name: Build UI bundles
+        shell: bash
+        run: npm run build:ui
 
       - name: Build Windows app
         shell: bash
