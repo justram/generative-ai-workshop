@@ -461,11 +461,6 @@ async function createMainWindow() {
 
   mainWindow.once("ready-to-show", () => {
     mainWindow?.show();
-    scheduleSmokeProbe();
-  });
-
-  mainWindow.webContents.once("did-finish-load", () => {
-    scheduleSmokeProbe();
   });
 
   mainWindow.on("close", () => {
@@ -477,6 +472,7 @@ async function createMainWindow() {
   });
 
   await mainWindow.loadURL(serverInstance.url);
+  scheduleSmokeProbe();
 }
 
 app.setName("Generative AI Workshop");
