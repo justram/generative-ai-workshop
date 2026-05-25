@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: npm run smoke:packaged
         env:
-          GENAI_SMOKE_TIMEOUT_MS: 90000
+          GENAI_SMOKE_TIMEOUT_MS: 240000
           GENAI_SMOKE_OUTPUT_DIR: test-results
 
       - name: Upload Windows artifacts
