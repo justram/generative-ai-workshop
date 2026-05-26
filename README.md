@@ -50,7 +50,7 @@ npm run verify:upload
 
 - `npm run audit:localization` catches broken pages, wrong-language UI, bad placeholders, and console errors in the rendered Electron pages.
 - `npm run smoke:packaged` must run on the target platform after packaging. On Windows it launches the real portable `.exe`, waits for the local backend and first page to render, writes a smoke result, then exits.
-- `npm run verify:upload` checks that `dist-electron/google-drive-upload/` contains only the two upload zips and the README.
+- `npm run verify:upload` checks that `dist-electron/google-drive-upload/` contains only the two upload zips, `README.md`, and `LICENSE`.
 
 The GitHub Actions workflow `.github/workflows/windows-release-smoke.yml` runs the Windows build and packaged `.exe` smoke test on a real Windows runner.
 
