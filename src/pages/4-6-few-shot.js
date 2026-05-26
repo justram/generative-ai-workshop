@@ -17,6 +17,7 @@ let u = class extends c {
       (this.sectionId = `4.6`),
       (this.selectedExample = ``),
       (this.shotCount = 0),
+      (this.isRunning = !1),
       (this.examples = [
         {
           id: `sentiment`,
@@ -60,34 +61,34 @@ let u = class extends c {
           description: `寫出風格一致的感謝卡`,
           testData: `Bob 叔叔送的廚房刀具`,
           zeroShot: {
-            systemPrompt: `You are a helpful writing assistant.`,
-            prompt: `Write a thank you note for a wedding gift of kitchen knives from Uncle Bob`,
+            systemPrompt: `你是一位溫暖、具體、自然的感謝卡寫作助理。`,
+            prompt: `請為 Bob 叔叔送的結婚禮物「廚房刀具」寫一張感謝卡。`,
           },
           oneShot: {
-            systemPrompt: `You are a helpful writing assistant.`,
-            prompt: `Write thank you notes following this example:
+            systemPrompt: `你是一位溫暖、具體、自然的感謝卡寫作助理。`,
+            prompt: `請參考這個範例，寫出同樣溫暖、具體的感謝卡：
 
-Gift: Blanket from Aunt Mary
-Note: Dear Aunt Mary, Thank you so much for the beautiful blanket! We've already put it on our couch and it adds such warmth to our living room. It was lovely seeing you at the wedding. Love, Sarah & Tom
+禮物：Mary 阿姨送的毛毯
+感謝卡：親愛的 Mary 阿姨，謝謝你送我們這條漂亮的毛毯！我們已經把它放在客廳沙發上，整個房間都變得更溫暖。婚禮那天能見到你，我們真的很開心。愛你的 Sarah 和 Tom
 
-Gift: Bob 叔叔送的廚房刀具
-Note:`,
+禮物：Bob 叔叔送的廚房刀具
+感謝卡：`,
           },
           threeShot: {
-            systemPrompt: `You are a helpful writing assistant.`,
-            prompt: `Write thank you notes following these examples:
+            systemPrompt: `你是一位溫暖、具體、自然的感謝卡寫作助理。`,
+            prompt: `請依照下列範例的語氣與具體程度，寫出一張感謝卡：
 
-Gift: Blanket from Aunt Mary
-Note: Dear Aunt Mary, Thank you so much for the beautiful blanket! We've already put it on our couch and it adds such warmth to our living room. It was lovely seeing you at the wedding. Love, Sarah & Tom
+禮物：Mary 阿姨送的毛毯
+感謝卡：親愛的 Mary 阿姨，謝謝你送我們這條漂亮的毛毯！我們已經把它放在客廳沙發上，整個房間都變得更溫暖。婚禮那天能見到你，我們真的很開心。愛你的 Sarah 和 Tom
 
-Gift: Wine glasses from the Johnsons
-Note: Dear Mr. & Mrs. Johnson, Thank you for the elegant wine glasses! We can't wait to use them for our first dinner party. Your presence at our wedding meant the world to us. Warmly, Sarah & Tom
+禮物：Johnson 夫婦送的紅酒杯
+感謝卡：親愛的 Johnson 先生與太太，謝謝你們送我們這組優雅的紅酒杯！我們已經迫不及待想在第一次邀朋友來家裡吃飯時使用它。你們來參加婚禮，對我們意義重大。溫暖地祝福你們，Sarah 和 Tom
 
-Gift: Photo album from cousin Lisa
-Note: Dear Lisa, Thank you for the thoughtful photo album! We're excited to fill it with memories from our new life together. Having you celebrate with us was so special. Love, Sarah & Tom
+禮物：表妹 Lisa 送的相簿
+感謝卡：親愛的 Lisa，謝謝你送我們這本貼心的相簿！我們很期待把新生活的回憶一頁一頁放進去。能和你一起慶祝這一天，真的很特別。愛你的 Sarah 和 Tom
 
-Gift: Bob 叔叔送的廚房刀具
-Note:`,
+禮物：Bob 叔叔送的廚房刀具
+感謝卡：`,
           },
         },
         {
@@ -97,33 +98,33 @@ Note:`,
           testData: `在義大利餐廳與客戶午餐`,
           zeroShot: {
             systemPrompt: `你是一位協助分類費用的助理。`,
-            prompt: `Categorize this expense: 在義大利餐廳與客戶午餐`,
+            prompt: `請分類這筆費用：在義大利餐廳與客戶午餐`,
           },
           oneShot: {
             systemPrompt: `你是一位協助分類費用的助理。`,
             prompt: `請根據這個範例分類費用:
 
-Expense: "Taxi to airport"
-類別: Transportation
+費用："搭計程車去機場"
+類別：交通
 
-Expense: "在義大利餐廳與客戶午餐"
-類別:`,
+費用："在義大利餐廳與客戶午餐"
+類別：`,
           },
           threeShot: {
             systemPrompt: `你是一位協助分類費用的助理。`,
-            prompt: `Categorize expenses using these examples:
+            prompt: `請根據這些範例分類費用：
 
-Expense: "Taxi to airport"
-類別: Transportation
+費用："搭計程車去機場"
+類別：交通
 
-Expense: "Dinner with team after project completion"
-類別: Team Building
+費用："專案結束後和團隊聚餐"
+類別：團隊活動
 
-Expense: "Coffee with potential customer"
-類別: Business Development
+費用："和潛在客戶喝咖啡"
+類別：業務開發
 
-Expense: "在義大利餐廳與客戶午餐"
-類別:`,
+費用："在義大利餐廳與客戶午餐"
+類別：`,
           },
         },
         {
@@ -276,8 +277,7 @@ Expense: "在義大利餐廳與客戶午餐"
             },
           },
         ])),
-      (this.session = new l()),
-      this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`)),
+      (this.session = this.createSession()),
       (this.agentInterface = new o()),
       (this.agentInterface.session = this.session),
       (this.agentInterface.enableAttachments = !1),
@@ -286,12 +286,34 @@ Expense: "在義大利餐廳與客戶午餐"
       (this.agentInterface.style.width = `100%`),
       (this.agentInterface.style.height = `100%`));
   }
+  createSession(model = this.session?.state?.model ?? s(`openai-codex`, `gpt-5.4-mini`)) {
+    const e = new l();
+    e.setModel(model);
+    return e;
+  }
+  attachFreshSession(e) {
+    const t = this.session?.state?.model ?? s(`openai-codex`, `gpt-5.4-mini`);
+    this.session?.abort();
+    this.session = this.createSession(t);
+    this.session.setSystemPrompt(e);
+    this.agentInterface.session = this.session;
+    this.agentInterface.setupSessionSubscription?.();
+    this.agentInterface?._streamingContainer?.setMessage?.(null, !0);
+    this.agentInterface?.requestUpdate?.();
+  }
   async runExample(e, t) {
-    ((this.selectedExample = e.id), (this.shotCount = t));
+    if (this.isRunning) this.session.abort();
+    ((this.selectedExample = e.id), (this.shotCount = t), (this.isRunning = !0));
     let n = t === 0 ? e.zeroShot : t === 1 ? e.oneShot : e.threeShot;
-    (this.session.setSystemPrompt(n.systemPrompt),
-      this.session.clearMessages(),
-      await this.agentInterface.sendMessage(n.prompt));
+    (this.attachFreshSession(n.systemPrompt),
+      this.requestUpdate(),
+      await this.updateComplete,
+      await new Promise((e) => requestAnimationFrame(e)));
+    try {
+      await this.agentInterface.sendMessage(n.prompt);
+    } finally {
+      this.isRunning = !1;
+    }
   }
   renderContentPanel() {
     return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
@@ -310,9 +332,9 @@ Expense: "在義大利餐廳與客戶午餐"
 									${t.description} • ${n(`測試`)}:"${t.testData.substring(0, 50) + (t.testData.length > 50 ? `...` : ``)}"
 								</div>
 								<div class="flex gap-2">
-									${e({ variant: this.selectedExample === t.id && this.shotCount === 0 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 0), children: `${n(`Run`) === `Run` ? `Zero-shot` : `零樣本`}` })}
-									${e({ variant: this.selectedExample === t.id && this.shotCount === 1 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 1), children: `${n(`Run`) === `Run` ? `One example` : `單一範例`}` })}
-									${e({ variant: this.selectedExample === t.id && this.shotCount === 3 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 3), children: `${n(`Run`) === `Run` ? `Three examples` : `三個範例`}` })}
+									${e({ variant: this.selectedExample === t.id && this.shotCount === 0 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 0), children: `${n(`Run`) === `Run` ? `Zero-shot` : `零樣本`}`, disabled: this.isRunning })}
+									${e({ variant: this.selectedExample === t.id && this.shotCount === 1 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 1), children: `${n(`Run`) === `Run` ? `One example` : `單一範例`}`, disabled: this.isRunning })}
+									${e({ variant: this.selectedExample === t.id && this.shotCount === 3 ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, 3), children: `${n(`Run`) === `Run` ? `Three examples` : `三個範例`}`, disabled: this.isRunning })}
 								</div>
 							</div>
 						`,
@@ -329,6 +351,7 @@ Expense: "在義大利餐廳與客戶午餐"
 };
 (t([r()], u.prototype, `selectedExample`, void 0),
   t([r()], u.prototype, `shotCount`, void 0),
+  t([r()], u.prototype, `isRunning`, void 0),
   (u = t([i(`few-shot-demo`)], u)),
   (document.body.innerHTML = `<few-shot-demo></few-shot-demo>`));
 export { u as FewShotDemo };

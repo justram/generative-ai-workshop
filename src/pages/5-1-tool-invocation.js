@@ -380,10 +380,14 @@ let ToolInvocationDemo = class extends DemoBase {
 
   renderContractCard(tool) {
     return x`
-			<div class="rounded-md border border-border bg-muted/30 p-2">
+			<div class="min-w-0 rounded-md border border-border bg-muted/30 p-2">
 				<div class="text-xs font-bold text-foreground">${tool.title}</div>
 				<div class="mt-1 text-xs text-muted-foreground">${tool.body}</div>
-				<code class="block mt-2 text-[11px] break-all rounded bg-background p-2">${tool.example}</code>
+				<code
+					class="block mt-2 max-w-full rounded bg-background p-2 text-[11px] leading-5"
+					style="white-space: normal; overflow-wrap: anywhere; word-break: break-word;"
+					>${tool.example}</code
+				>
 			</div>
 		`;
   }

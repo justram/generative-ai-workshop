@@ -1,15 +1,19 @@
 import http from "node:http";
 import fs from "node:fs/promises";
 import fsSync from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { getModel, getModels, streamSimple } from "@earendil-works/pi-ai";
 import { getOAuthApiKey, loginOpenAICodex } from "@earendil-works/pi-ai/oauth";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const require = createRequire(import.meta.url);
 const DEFAULT_PORT = 4174;
 const DEFAULT_MODEL_ID = "gpt-5.4-mini";
 const CODEX_PROVIDER = "openai-codex";
+const PACKAGE_DRIVE_URL =
+  "https://drive.google.com/drive/folders/1emRlwPseX7F0VFKkzMJvAFDTPH7VRKBF?usp=drive_link";
 const PRICED_GPT_MODEL_IDS = ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5.3-codex"];
 const GPT_MODEL_IDS = new Set(
   getModels(CODEX_PROVIDER)
@@ -46,6 +50,55 @@ function sendJson(res, status, body) {
     "access-control-allow-origin": "*",
   });
   res.end(JSON.stringify(body));
+}
+
+let qrCodeModules = null;
+
+function getQrCodeModules() {
+  if (!qrCodeModules) {
+    const QRCode = require("qrcode-terminal/vendor/QRCode");
+    const QRErrorCorrectLevel = require("qrcode-terminal/vendor/QRCode/QRErrorCorrectLevel");
+    qrCodeModules = { QRCode, QRErrorCorrectLevel };
+  }
+  return qrCodeModules;
+}
+
+function renderQrSvg(content, { margin = 3 } = {}) {
+  const { QRCode, QRErrorCorrectLevel } = getQrCodeModules();
+  const qrcode = new QRCode(-1, QRErrorCorrectLevel.L);
+  qrcode.addData(content);
+  qrcode.make();
+
+  const moduleCount = qrcode.getModuleCount();
+  const size = moduleCount + margin * 2;
+  const parts = [
+    `<?xml version="1.0" encoding="UTF-8"?>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges">`,
+    `<rect width="100%" height="100%" fill="#fff" />`,
+  ];
+
+  for (let row = 0; row < moduleCount; row += 1) {
+    for (let col = 0; col < moduleCount; col += 1) {
+      if (qrcode.modules[row][col]) {
+        parts.push(
+          `<rect x="${col + margin}" y="${row + margin}" width="1" height="1" fill="#111" />`,
+        );
+      }
+    }
+  }
+
+  parts.push(`</svg>`);
+  return parts.join("");
+}
+
+function sendPackageQr(res, method = "GET") {
+  const svg = renderQrSvg(PACKAGE_DRIVE_URL);
+  res.writeHead(200, {
+    "content-type": MIME_TYPES[".svg"],
+    "cache-control": "public, max-age=3600",
+  });
+  if (method === "HEAD") res.end();
+  else res.end(svg);
 }
 
 function writeSse(res, event) {
@@ -602,6 +655,10 @@ async function route(req, res) {
     }
     if (req.method === "POST" && url.pathname === "/api/mcp-demo") {
       await handleMcpDemo(req, res);
+      return;
+    }
+    if ((req.method === "GET" || req.method === "HEAD") && url.pathname === "/api/package/qr") {
+      sendPackageQr(res, req.method);
       return;
     }
     if (req.method === "GET" || req.method === "HEAD") {

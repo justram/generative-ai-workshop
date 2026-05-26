@@ -67,6 +67,19 @@ code {
   -webkit-user-select: text;
 }
 
+.markdown-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.markdown-content pre code {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
 .native-model-grid {
   display: grid;
   gap: 1rem;

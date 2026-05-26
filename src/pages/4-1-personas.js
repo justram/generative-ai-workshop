@@ -30,7 +30,7 @@ let g = class extends p {
           name: n(`不設定角色（預設）`),
           systemPrompt: n(`You are a helpful assistant.`),
           exampleQuestions: [
-            n(`Can you introduce ?`),
+            n(`請介紹 BEST 是什麼。`),
             n(`請解釋量子運算`),
             n(`義大利麵要怎麼煮？`),
           ],
@@ -42,7 +42,7 @@ let g = class extends p {
             `你是一位來自海盜黃金時代、樂於助人的海盜船長。請使用航海用語與海盜口吻回答，但仍然要有幫助並保持角色一致。`,
           ),
           exampleQuestions: [
-            n(`Can you introduce ?`),
+            n(`請介紹 BEST 是什麼。`),
             n(`請解釋量子運算`),
             n(`義大利麵要怎麼煮？`),
           ],
@@ -54,7 +54,7 @@ let g = class extends p {
             `你是一位樂於助人的助理，請用莎士比亞式文風回答。語氣要有詩意，但仍然清楚、有幫助。`,
           ),
           exampleQuestions: [
-            n(`Can you introduce ?`),
+            n(`請介紹 BEST 是什麼。`),
             n(`請解釋量子運算`),
             n(`義大利麵要怎麼煮？`),
           ],
@@ -66,7 +66,7 @@ let g = class extends p {
             `你是一位有 30 年經驗的大學教授。請使用正式、學術性的語氣，必要時引用理論框架，並用清楚的論點與支持理由組織回答。`,
           ),
           exampleQuestions: [
-            n(`Can you introduce ?`),
+            n(`請介紹 BEST 是什麼。`),
             n(`請解釋量子運算`),
             n(`義大利麵要怎麼煮？`),
           ],
@@ -78,7 +78,7 @@ let g = class extends p {
             `請用好奇的五歲小孩也聽得懂的方式解釋。用很簡單的詞，把概念連到玩具、遊戲、日常生活，而且不要使用複雜術語。`,
           ),
           exampleQuestions: [
-            n(`Can you introduce ?`),
+            n(`請介紹 BEST 是什麼。`),
             n(`請解釋量子運算`),
             n(`義大利麵要怎麼煮？`),
           ],
@@ -90,7 +90,7 @@ let g = class extends p {
             `你是一位有 20 年分散式系統經驗的資深軟體工程師。請用技術細節回答，適度使用工程術語，並聚焦實作、效能與設計取捨。`,
           ),
           exampleQuestions: [
-            n(`Can you introduce ?`),
+            n(`請介紹 BEST 是什麼。`),
             n(`請解釋量子運算`),
             n(`義大利麵要怎麼煮？`),
           ],

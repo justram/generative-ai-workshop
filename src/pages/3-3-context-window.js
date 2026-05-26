@@ -1,4 +1,11 @@
-import { __decorate as e, i18n as t, r as n, t$1 as r, x as i } from "../mini-lit/index.js";
+import {
+  __decorate as e,
+  getCurrentLanguage as g,
+  i18n as t,
+  r as n,
+  t$1 as r,
+  x as i,
+} from "../mini-lit/index.js";
 import "../workshop-runtime/CodeBlock.js";
 import { AgentInterface as a } from "../workshop-runtime/AgentRuntime.js";
 import {
@@ -74,6 +81,45 @@ let m = class extends f {
       if (e.type !== `state-update`) return;
       this.recomputeWindow(e.state.messages);
     });
+  }
+
+  get sectionContent() {
+    if (g() === `en`) {
+      return `## 3.3. Context Window: What the Model Can Read This Turn
+
+**Learning goals**
+
+- See that each model response can only read a bounded amount of context.
+- Notice that system prompts, chat history, uploaded files, tool results, and model output all compete for the same space.
+- Understand why long conversations and long documents need summaries, retrieval, or explicit restatement of key facts.
+
+Think of the context window as the workspace the model can read for this request. It is not just your latest message. It also includes hidden system instructions, earlier messages, extracted document text, tool results, and the answer the model is about to produce.
+
+When the context gets full, the product has to make choices: drop older messages, summarize them, or keep only selected pieces. That is why a chatbot may forget something you said earlier even though the conversation is still visible on screen.
+
+**What to watch in the demo**
+
+- The counter grows as more messages enter the simulated context.
+- When the limit is exceeded, older messages move out of the active context.
+- Asking "what is my name?" is reliable only while the message containing the name is still inside the context.`;
+    }
+    return `## 3.3. 上下文視窗：模型這一輪看得到多少
+
+**本頁學習目標**
+
+- 看見模型每次回答時，只能讀取有限長度的上下文。
+- 注意系統提示、聊天紀錄、上傳文件、工具結果和模型輸出，都會競爭同一個空間。
+- 理解為什麼長對話和長文件需要摘要、重新提供關鍵事實，或改用檢索流程。
+
+上下文視窗可以想成模型這一輪能讀進去的工作區。它不是只有你剛打的訊息，也包含隱藏的系統提示、前面的對話、文件抽取文字、工具結果，以及模型接下來要輸出的內容。
+
+當上下文快滿時，產品必須做取捨：丟掉較早訊息、摘要舊內容，或只保留部分片段。這就是為什麼聊天畫面上明明還看得到前面的話，模型卻可能忘記你曾經說過的名字。
+
+**demo 要看什麼**
+
+- 左側計數器會隨著更多訊息進入模擬上下文而增加。
+- 超過上限時，較早訊息會移出目前上下文。
+- 問「我叫什麼名字？」只有在包含名字的訊息仍然在上下文中時才可靠。`;
   }
 
   estimateMessageTokens(e) {

@@ -1,12 +1,12 @@
 License scope
 =============
 
-Original workshop content is copyright Mario Zechner. Reuse of Mario's original
-material requires permission from Mario Zechner.
+The Generative AI Workshop package, including Mario Zechner's original
+workshop content and the Traditional Chinese translation, localization, local
+app modifications, packaging scripts, and other changes by Jheng-Hong (Matt)
+Yang / Stencilzeit, is licensed under the Apache License, Version 2.0 below.
 
-The Traditional Chinese translation, localization, local app modifications,
-packaging scripts, and other original changes by Jheng-Hong (Matt) Yang /
-Stencilzeit are licensed under the Apache License, Version 2.0 below.
+Mario Zechner authorized release of the complete package under Apache-2.0.
 
                                  Apache License
                            Version 2.0, January 2004

@@ -8,20 +8,23 @@ import {
 } from "../mini-lit/index.js";
 import "../mini-lit/index.js";
 
+const PACKAGE_DRIVE_URL =
+  "https://drive.google.com/drive/folders/1emRlwPseX7F0VFKkzMJvAFDTPH7VRKBF?usp=drive_link";
+
 const attribution = {
   en: {
     originalPrefix: "Original workshop content ©",
-    originalSuffix: ". Please contact Mario for permission to reuse the original material.",
+    originalSuffix: ". Authorized for release in this package under Apache-2.0.",
     licensePrefix: "Traditional Chinese translation, localization, and local app changes © 2026",
     maintainerName: "Jheng-Hong (Matt) Yang",
-    licenseSuffix: ", Stencilzeit; released under Apache-2.0.",
+    licenseSuffix: ", Stencilzeit. The complete package is released under Apache-2.0.",
   },
   "zh-TW": {
     originalPrefix: "原始工作坊內容 ©",
-    originalSuffix: "；若要重用原始內容，請向 Mario 取得授權。",
+    originalSuffix: "；Mario 已授權本套件以 Apache-2.0 釋出。",
     licensePrefix: "繁體中文翻譯、在地化內容與本地 app 修改 © 2026",
     maintainerName: "Jheng-Hong (Matt) Yang / 楊政紘",
-    licenseSuffix: "，Stencilzeit；以 Apache-2.0 授權釋出。",
+    licenseSuffix: "，Stencilzeit。本完整套件以 Apache-2.0 授權釋出。",
   },
 };
 
@@ -343,8 +346,23 @@ function text(value, language) {
 }
 
 let WorkshopIndex = class WorkshopIndex extends LitElement {
+  constructor() {
+    super();
+    this.showPackageQr = false;
+  }
+
   createRenderRoot() {
     return this;
+  }
+
+  openPackageQr() {
+    this.showPackageQr = true;
+    this.requestUpdate();
+  }
+
+  closePackageQr() {
+    this.showPackageQr = false;
+    this.requestUpdate();
   }
 
   renderLeaf(section, language) {
@@ -395,9 +413,19 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
           <theme-toggle includeSystem></theme-toggle>
         </div>
         <div class="max-w-6xl mx-auto">
-          <h1 class="text-3xl lg:text-4xl text-foreground font-bold mb-4">
-            ${language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊"}
-          </h1>
+          <div class="mb-4 flex flex-col gap-3 pr-24 sm:flex-row sm:items-end sm:justify-between">
+            <h1 class="text-3xl lg:text-4xl text-foreground font-bold">
+              ${language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊"}
+            </h1>
+            <button
+              type="button"
+              class="inline-flex w-fit items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-xs transition-colors hover:bg-muted"
+              @click=${() => this.openPackageQr()}
+            >
+              <span aria-hidden="true">▦</span>
+              <span>${language === "en" ? "Package QR" : "下載 QR Code"}</span>
+            </button>
+          </div>
           <div class="space-y-6">
             ${sections.map((section) =>
               section.children
@@ -444,6 +472,63 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
           </div>
         </div>
       </div>
+      ${this.showPackageQr
+        ? html`
+            <div
+              class="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4"
+              role="dialog"
+              aria-modal="true"
+              aria-label=${language === "en" ? "Package download QR code" : "套件下載 QR Code"}
+              @click=${(event) => {
+                if (event.target === event.currentTarget) this.closePackageQr();
+              }}
+            >
+              <div
+                class="w-full max-w-sm rounded-xl border border-border bg-card p-5 text-card-foreground shadow-xl"
+              >
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <div class="text-lg font-bold">
+                      ${language === "en" ? "Download Package" : "下載套件"}
+                    </div>
+                    <p class="mt-1 text-sm text-muted-foreground">
+                      ${language === "en"
+                        ? "Scan to open the shared Google Drive folder."
+                        : "掃描後開啟共享 Google Drive 資料夾。"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    class="rounded-md px-2 py-1 text-xl leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
+                    aria-label=${language === "en" ? "Close" : "關閉"}
+                    @click=${() => this.closePackageQr()}
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="mt-4 rounded-lg border border-border bg-white p-4">
+                  <img
+                    src="/api/package/qr"
+                    alt=${language === "en"
+                      ? "QR code for the package Google Drive folder"
+                      : "套件 Google Drive 資料夾 QR Code"}
+                    class="block h-auto w-full"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <a
+                  class="mt-4 block break-all rounded-md border border-border bg-muted/40 px-3 py-2 text-sm font-semibold text-foreground underline hover:bg-muted"
+                  href=${PACKAGE_DRIVE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ${PACKAGE_DRIVE_URL}
+                </a>
+              </div>
+            </div>
+          `
+        : ``}
     `;
   }
 };

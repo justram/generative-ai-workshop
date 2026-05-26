@@ -2,5 +2,6 @@
 build/js/
 node_modules/
 dist-electron/
+test-results/
 .tmp-auth-*/
 .DS_Store

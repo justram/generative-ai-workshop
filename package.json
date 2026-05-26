@@ -4,7 +4,7 @@
   "private": true,
   "description": "Local Generative AI Workshop clone with ChatGPT subscription login via pi.",
   "keywords": [],
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "Apache-2.0",
   "author": "Mario Zechner; Traditional Chinese translation and maintenance by Jheng-Hong (Matt) Yang / 楊政紘, Stencilzeit",
   "type": "module",
   "main": "electron/main.mjs",
@@ -17,6 +17,7 @@
     "predist:win": "npm run build:ui && node scripts/generate-app-icons.mjs",
     "build:ui": "node scripts/build-mini-lit-ui.mjs",
     "audit:source-boundaries": "node scripts/audit-source-boundaries.cjs",
+    "audit:full": "node scripts/full-app-audit.cjs",
     "lint": "oxlint . --type-aware --tsconfig tsconfig.json -A no-floating-promises -A no-implied-eval -A await-thenable",
     "lint:ci": "oxlint . --type-aware --tsconfig tsconfig.json -A no-floating-promises -A no-implied-eval -A await-thenable --deny-warnings",
     "start": "node server.mjs",
@@ -35,7 +36,8 @@
   "dependencies": {
     "@earendil-works/pi-ai": "^0.74.0",
     "@mariozechner/mini-lit": "^0.2.1",
-    "lit": "^3.3.3"
+    "lit": "^3.3.3",
+    "qrcode-terminal": "^0.12.0"
   },
   "devDependencies": {
     "electron": "^42.0.1",

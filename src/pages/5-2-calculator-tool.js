@@ -31,8 +31,7 @@ let CalculatorToolDemo = class extends DemoBase {
       label: i18n(`計算機`),
       description: i18n(`計算數學算式`),
     };
-    this.session = new AgentSession({ authTokenProvider: getAuthToken });
-    this.session.setModel(getModel(`openai-codex`, `gpt-5.4-mini`));
+    this.session = this.createSession();
     this.configureSession(false);
     this.agentInterface = new AgentInterface();
     this.agentInterface.session = this.session;
@@ -46,6 +45,22 @@ let CalculatorToolDemo = class extends DemoBase {
 
   get sectionContent() {
     return getSectionFiveContent(`5.2`);
+  }
+
+  createSession(model = this.session?.state?.model ?? getModel(`openai-codex`, `gpt-5.4-mini`)) {
+    const session = new AgentSession({ authTokenProvider: getAuthToken });
+    session.setModel(model);
+    return session;
+  }
+
+  attachFreshSession(useTool) {
+    const model = this.session?.state?.model ?? getModel(`openai-codex`, `gpt-5.4-mini`);
+    this.session?.abort();
+    this.session = this.createSession(model);
+    this.configureSession(useTool);
+    this.agentInterface.session = this.session;
+    this.agentInterface.setupSessionSubscription?.();
+    this.clearModelStreamUi();
   }
 
   configureSession(useTool) {
@@ -64,11 +79,13 @@ let CalculatorToolDemo = class extends DemoBase {
   }
 
   async runLive(useTool) {
-    if (this.isRunning) return;
+    if (this.isRunning) this.session.abort();
     this.isRunning = true;
     this.mode = useTool ? `tool` : `no-tool`;
-    this.configureSession(useTool);
+    this.attachFreshSession(useTool);
+    this.requestUpdate();
     await this.updateComplete;
+    await new Promise((resolve) => requestAnimationFrame(resolve));
     if (useTool) this.pipelineStage = `model`;
     if (!useTool) {
       const run = this.agentInterface.sendMessage(this.problem.prompt).catch(() => {});
@@ -295,7 +312,7 @@ let CalculatorToolDemo = class extends DemoBase {
     this.clearModelStreamUi();
     this.isRunning = false;
     this.mode = `intro`;
-    this.configureSession(false);
+    this.attachFreshSession(false);
   }
 
   renderPipelineStep(id, label, detail) {
@@ -396,7 +413,7 @@ let CalculatorToolDemo = class extends DemoBase {
     }
     return x`
 			<div class="rounded-md border border-border bg-muted/30 p-3 text-xs leading-6 text-muted-foreground">
-				${i18n(`先按左側其中一個按鈕。這次會真的送出給模型，讓學生看到即時輸出，而不是預先寫好的劇本。`)}
+				${i18n(`先按左側其中一個按鈕。這次會真的送出給模型，讓你看到即時輸出，而不是預先寫好的劇本。`)}
 			</div>
 		`;
   }
@@ -435,7 +452,6 @@ let CalculatorToolDemo = class extends DemoBase {
               size: `sm`,
               onClick: () => this.runLive(false),
               children: i18n(`A. 真的讓模型自己算`),
-              disabled: this.isRunning,
               className: `w-full justify-start`,
             })}
 						${Button({
@@ -443,7 +459,6 @@ let CalculatorToolDemo = class extends DemoBase {
               size: `sm`,
               onClick: () => this.runLive(true),
               children: i18n(`B. 真的啟用 calculate() 工具`),
-              disabled: this.isRunning,
               className: `w-full justify-start`,
             })}
 						${Button({
@@ -457,7 +472,7 @@ let CalculatorToolDemo = class extends DemoBase {
 				</div>
 
 				<div class="rounded-lg border border-border bg-card p-3">
-					<div class="text-sm font-bold mb-2">${i18n(`學生要看什麼`)}</div>
+					<div class="text-sm font-bold mb-2">${i18n(`你要看什麼`)}</div>
 					<ul class="text-xs text-muted-foreground leading-6 list-disc pl-4">
 						<li>${i18n(`A 路徑是否算錯，或是否用含糊文字避開精確答案。`)}</li>
 						<li>${i18n(`B 路徑是否出現 calculate() 工具呼叫。`)}</li>

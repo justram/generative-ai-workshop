@@ -510,7 +510,7 @@ let DateTimeToolDemo = class extends DemoBase {
 				</div>
 
 				<div class="rounded-lg border border-border bg-card p-3">
-					<div class="text-sm font-bold mb-2">${i18n(`學生要看什麼`)}</div>
+					<div class="text-sm font-bold mb-2">${i18n(`你要看什麼`)}</div>
 					<ul class="text-xs text-muted-foreground leading-6 list-disc pl-4">
 						<li>${i18n(`沒有工具時，模型是否誠實說不能知道現在。`)}</li>
 						<li>${i18n(`啟用工具時，模型填入的 timezone 是否合理。`)}</li>

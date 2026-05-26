@@ -35,8 +35,6 @@ Use this page as a map for what to try next.
 - **Microsoft Copilot**: [copilot.microsoft.com](https://copilot.microsoft.com)
   - Most relevant when your workplace runs Microsoft 365.
   - Evaluate it inside Word, Excel, PowerPoint, Outlook, and Teams workflows.
-- **Perplexity**: [perplexity.ai](https://perplexity.ai)
-  - Search-oriented product. Good for comparing citation behavior and source quality.
 
 ### Desktop and mobile apps
 
@@ -44,15 +42,19 @@ Use this page as a map for what to try next.
   - Good baseline for everyday personal workflows.
 - **Claude Desktop**: [claude.ai/download](https://claude.ai/download)
   - Useful if you want to explore MCP-enabled desktop workflows.
-- **Perplexity mobile/desktop**: [perplexity.ai](https://perplexity.ai)
-  - Useful for quick source-backed research, but still verify sources.
 - **Microsoft Copilot app**: [microsoft.com/microsoft-copilot](https://www.microsoft.com/en-us/microsoft-copilot)
   - Most useful when paired with your organization account and files.
+- **Codex app**: [openai.com/index/introducing-the-codex-app](https://openai.com/index/introducing-the-codex-app/)
+  - An all-in-one desktop app for supervising long-running agents, reviewing changes, and using skills.
+  - It pulls together many ideas from this workshop: context, tools, permissions, artifacts, verification, and human steering.
 
 ### Developer tools and APIs
 
 - **Codex**: [github.com/openai/openai-codex](https://github.com/openai/openai-codex)
   - CLI coding agent. Good for learning how agent workflows expose plans, patches, and tests.
+- **Pi**: [pi.dev](https://pi.dev)
+  - Minimal terminal coding harness. This workshop app uses Pi underneath for local ChatGPT login and GPT-family model access.
+  - Pi's philosophy is to keep the core small and composable: adapt the harness to your workflow with skills, extensions, prompts, and packages, rather than forcing your workflow into a heavy IDE.
 - **Claude Code**: [docs.anthropic.com/claude-code](https://docs.anthropic.com/en/docs/claude-code)
   - CLI coding assistant with strong repository workflows.
 - **Cursor**: [cursor.sh](https://cursor.sh)
@@ -139,8 +141,6 @@ Use this page as a map for what to try next.
 - **Microsoft Copilot**：[copilot.microsoft.com](https://copilot.microsoft.com)
   - 如果公司使用 Microsoft 365，請直接拿 Word、Excel、PowerPoint、Outlook、Teams 的真實流程測。
   - 不要只問它會不會聊天，要看它能不能進入你原本的工作流。
-- **Perplexity**：[perplexity.ai](https://perplexity.ai)
-  - 偏搜尋與引用來源。適合練習比較「看起來有來源」和「來源真的支持結論」的差別。
 
 ### 桌面與手機 App
 
@@ -148,15 +148,19 @@ Use this page as a map for what to try next.
   - 當作日常工作流的基準線。先知道一般使用者實際會拿到什麼體驗。
 - **Claude Desktop**：[claude.ai/download](https://claude.ai/download)
   - 想理解 MCP 或桌面端工具整合時，可以拿來觀察。
-- **Perplexity mobile/desktop**：[perplexity.ai](https://perplexity.ai)
-  - 適合快速查資料，但仍然要點開來源確認。
 - **Microsoft Copilot app**：[microsoft.com/microsoft-copilot](https://www.microsoft.com/en-us/microsoft-copilot)
   - 最有價值的情境通常是搭配組織帳號與內部文件，而不是單獨聊天。
+- **Codex app**：[openai.com/index/introducing-the-codex-app](https://openai.com/index/introducing-the-codex-app/)
+  - 一個用來監督長時間代理人、檢查修改、管理 skills 的桌面 app。
+  - 它把這個迷你工作坊談過的許多概念放在同一個產品裡：上下文、工具、權限、產物、驗證，以及人如何持續介入與指揮。
 
 ### 開發工具與 API
 
 - **Codex**：[github.com/openai/openai-codex](https://github.com/openai/openai-codex)
   - CLI coding agent。可以觀察 AI 代理人如何提出計畫、修改檔案、跑測試。
+- **Pi**：[pi.dev](https://pi.dev)
+  - 極簡的 terminal coding harness。這個工作坊 app 底層就是用 Pi 來處理本機 ChatGPT 登入與 GPT 家族模型存取。
+  - Pi 的哲學是核心保持小、可組合：用 skills、extensions、prompt templates、packages 讓 harness 配合你的工作流，而不是把你的工作流塞進一個很重的 IDE。
 - **Claude Code**：[docs.anthropic.com/claude-code](https://docs.anthropic.com/en/docs/claude-code)
   - 另一個成熟的 CLI coding assistant，適合比較 repo 工作流。
 - **Cursor**：[cursor.sh](https://cursor.sh)

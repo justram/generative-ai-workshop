@@ -25,6 +25,7 @@ let PromptInjectionDemo = class extends DemoBase {
     this.selectedExample = ``;
     this.customUserPrompt = ``;
     this.lastVerdict = null;
+    this.isRunning = false;
     this.examples = [
       {
         id: `classic`,
@@ -149,7 +150,7 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
           status: `partial`,
           title: i18n(`部分成功：模型真的失守了一小段`),
           body: i18n(
-            `它沒有完成越權任務，但已經照使用者要求輸出測試標記。學生要看到的是：防線不是全有全無，攻擊者有時只需要控制一小段輸出。`,
+            `它沒有完成越權任務，但已經照使用者要求輸出測試標記。這裡要觀察的是：防線不是全有全無，攻擊者有時只需要控制一小段輸出。`,
           ),
         };
       }
@@ -221,11 +222,27 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
   }
 
   async runExample(example, prompt) {
-    this.lastVerdict = null;
+    if (this.isRunning) this.session.abort();
+    this.isRunning = true;
+    this.lastVerdict = {
+      status: `running`,
+      title: i18n(`正在測試這個攻擊案例`),
+      body: i18n(
+        `模型回應會留在右側主對話窗；完成後，這裡會判讀它是擋住、部分失守，還是離開原本任務。`,
+      ),
+    };
     this.session.clearMessages();
     this.session.setSystemPrompt(example.systemPrompt);
-    await this.agentInterface.sendMessage(prompt);
-    this.lastVerdict = this.evaluateExample(example, this.getAssistantText());
+    try {
+      await this.agentInterface.sendMessage(prompt);
+      this.lastVerdict = this.evaluateExample(example, this.getAssistantText()) || {
+        status: `partial`,
+        title: i18n(`需要人工複查`),
+        body: i18n(`模型沒有產生足夠內容讓本頁自動判讀。請看右側回應是否有執行使用者藏入的指令。`),
+      };
+    } finally {
+      this.isRunning = false;
+    }
   }
 
   async selectExample(example) {
@@ -246,7 +263,9 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
         ? `border-destructive/60 bg-destructive/10 text-destructive`
         : this.lastVerdict?.status === `partial`
           ? `border-yellow-500/60 bg-yellow-500/10 text-yellow-200`
-          : `border-green-500/60 bg-green-500/10 text-green-200`;
+          : this.lastVerdict?.status === `running`
+            ? `border-amber-500/60 bg-amber-500/10 text-foreground`
+            : `border-green-500/60 bg-green-500/10 text-green-200`;
 
     return html`
       <div class="p-3 h-full overflow-y-auto flex flex-col gap-3">
@@ -286,8 +305,9 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
               onClick: async () => {
                 await this.runExample(selected, this.customUserPrompt);
               },
-              children: i18n(`送出`),
+              children: this.isRunning ? i18n(`測試中...`) : i18n(`送出`),
               className: `mt-2`,
+              disabled: this.isRunning,
             })}
           `)}
         `)}
@@ -322,6 +342,7 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
 __decorate([r()], PromptInjectionDemo.prototype, `selectedExample`, void 0);
 __decorate([r()], PromptInjectionDemo.prototype, `customUserPrompt`, void 0);
 __decorate([r()], PromptInjectionDemo.prototype, `lastVerdict`, void 0);
+__decorate([r()], PromptInjectionDemo.prototype, `isRunning`, void 0);
 PromptInjectionDemo = __decorate([customElement(`prompt-injection-demo`)], PromptInjectionDemo);
 document.body.innerHTML = `<prompt-injection-demo></prompt-injection-demo>`;
 export { PromptInjectionDemo };

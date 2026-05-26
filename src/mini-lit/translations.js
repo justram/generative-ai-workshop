@@ -843,6 +843,38 @@ Object.assign(ZH_TW_TO_EN, {
   測試模型是否更新既有產物: "Test whether the model updates an existing artifact",
   "請用 artifacts 工具建立一個 Markdown 檔案，檔名叫 workshop-notes.md。內容只要三點：工具讓模型補上外部能力、工具結果仍然是不可信上下文、高風險動作需要人工確認。建立後先停下來，接著我會要求你修改同一份檔案。":
     "Use the artifacts tool to create a Markdown file named workshop-notes.md. Include only three points: tools add external capabilities to the model, tool results are still untrusted context, and high-risk actions need human confirmation. Stop after creating it; I will ask you to modify the same file next.",
+  "讓模型真的呼叫 artifacts 工具來建立或修改文件、程式碼、網頁。重點不是「模型會寫」，而是看清楚聊天、工具呼叫與產物面板如何接在一起。":
+    "Let the model really call the artifacts tool to create or modify documents, code, and webpages. The point is not that “the model can write”; it is how chat, tool calls, and the artifact panel connect.",
+  "artifacts() 工具合約": "artifacts() tool contract",
+  "輸入：": "Input:",
+  "command 與 filename，加上 content 或要替換的文字。":
+    "command and filename, plus content or replacement text.",
+  "輸出：": "Output:",
+  "建立、更新、刪除或讀取一份產物後的結果。":
+    "the result of creating, updating, deleting, or reading one artifact.",
+  "邊界：": "Boundary:",
+  "工具只會照模型提供的參數改檔案；內容品質、HTML 能不能正常預覽，仍然需要人檢查。":
+    "the tool only changes files using the parameters the model provides; people still need to inspect content quality and whether the HTML works.",
+  "要求模型更新同一份檔案，而不是建立新檔。":
+    "Ask the model to update the same file instead of creating a new one.",
+  檢查重點: "What to inspect",
+  "先看聊天裡的工具卡：模型想建立、更新，還是重寫？":
+    "First inspect the tool card in chat: does the model want to create, update, or rewrite?",
+  "再看產物面板：內容是否真的改變？":
+    "Then inspect the artifact panel: did the content actually change?",
+  "最後檢查結果：能預覽、讀得懂，而且沒有覆寫錯檔案。":
+    "Finally check the result: previewable, readable, and no wrong file was overwritten.",
+  "請介紹 BEST 是什麼。": "Please introduce BEST.",
+  "請抽出這段文字中的命名實體，並分類：\n- 人物（包含職稱）\n- 公司／組織\n- 產品或服務\n- 地點\n- 百分比或數字\n- 日期或時間\n\n文字：":
+    "Extract all named entities from this text and classify them:\n- People (including titles)\n- Companies or organizations\n- Products or services\n- Locations\n- Percentages or numbers\n- Dates or times\n\nText:",
+  "請把這段客戶回饋分類成一個類別：\n- 錯誤回報\n- 功能請求\n- 客訴\n- 稱讚\n- 問題\n\n回饋：":
+    "Classify this customer feedback into one category:\n- Bug report\n- Feature request\n- Complaint\n- Praise\n- Question\n\nFeedback:",
+  "你上傳的文件；請在聊天框輸入需要跨文件比對的問題。":
+    "Your uploaded documents; type a question in chat that requires comparing across files.",
+  "已把多份文件分別標記檔名後放進模型上下文。你可以檢查模型是否真的跨文件引用，而不是只抓其中一份。":
+    "The documents have been labeled by filename and placed into the model context. You can check whether the model really cites across files instead of using only one.",
+  "它沒有完成越權任務，但已經照使用者要求輸出測試標記。這裡要觀察的是：防線不是全有全無，攻擊者有時只需要控制一小段輸出。":
+    "It did not complete the unauthorized task, but it did print the requested test marker. The thing to observe: defenses are not all-or-nothing, and attackers sometimes only need to control a small piece of output.",
   文件上傳: "Document Upload",
   "這一頁使用 CC-OCR-V2 的真實文件影像，並讓你切換兩種產品做法：先 OCR/版面解析成中間表示，或直接把原圖交給視覺模型。請比較成本、可除錯性與回答可靠度。":
     "This page uses real document images from CC-OCR-V2 and lets you compare two product approaches: OCR/layout preprocessing into an intermediate representation, or sending the raw image directly to a vision model. Compare cost, debuggability, and answer reliability.",
@@ -853,8 +885,8 @@ Object.assign(ZH_TW_TO_EN, {
   原生視覺: "Native vision",
   "直接把原圖交給模型。上手快，但較難 debug。":
     "Send the raw image directly to the model. Fast to start, harder to debug.",
-  "目前聊天框會收到影像附件與抽取出的中間表示。學生可以展開流程查看 OCR/表格內容。":
-    "The chat box receives the image attachment plus the extracted intermediate representation. Expand the flow to inspect the OCR/table content.",
+  "目前聊天框會收到影像附件與抽取出的中間表示。你可以展開流程查看 OCR/表格內容。":
+    "The chat box receives the image attachment plus the extracted intermediate representation. You can expand the flow to inspect the OCR/table content.",
   "目前聊天框只會收到原始影像附件。流程會保留「沒有中間表示」這件事，避免把讀圖結果偽裝成 OCR。":
     "The chat box receives only the raw image attachment. The flow preserves the fact that there is no intermediate representation, so image reading is not disguised as OCR.",
   資料集文件: "Dataset files",
@@ -1226,7 +1258,7 @@ Reason step by step:
   比較兩種實際輸出: "Compare two real outputs",
   "A. 真的讓模型自己算": "A. Really let the model calculate by itself",
   "B. 真的啟用 calculate() 工具": "B. Really enable the calculate() tool",
-  學生要看什麼: "What to watch",
+  你要看什麼: "What to watch",
   "A 路徑是否算錯，或是否用含糊文字避開精確答案。":
     "Whether path A calculates incorrectly or dodges the exact answer with vague wording.",
   "B 路徑是否出現 calculate() 工具呼叫。": "Whether path B shows a calculate() tool call.",
@@ -1240,8 +1272,8 @@ Reason step by step:
   輸出: "Output",
   "所以要檢查兩件事：模型填進去的 expression 對不對，計算機回來的答案有沒有對上題目。":
     "So check two things: whether the expression filled by the model is correct, and whether the calculator's answer matches the problem.",
-  "先按左側其中一個按鈕。這次會真的送出給模型，讓學生看到即時輸出，而不是預先寫好的劇本。":
-    "Press one of the buttons on the left. This time it really sends to the model, so learners see live output rather than a prewritten script.",
+  "先按左側其中一個按鈕。這次會真的送出給模型，讓你看到即時輸出，而不是預先寫好的劇本。":
+    "Press one of the buttons on the left. This time it really sends to the model, so you can see live output rather than a prewritten script.",
   '你是一位謹慎的助教。不要直接回答最後數字。請先把使用者的算術題轉成 JSON，格式只能是 {"expression":"算式"}，expression 使用 JavaScript 可執行的 + - * / 和括號，不要加逗號、中文或解釋。':
     'You are a careful teaching assistant. Do not answer the final number directly. First convert the user\'s arithmetic problem into JSON. The only allowed format is {"expression":"formula"}. The expression must use JavaScript-executable + - * / and parentheses, with no commas, Chinese, or explanation.',
   "你是一位樂於助人的助教。請不要使用任何工具，直接根據自己的推理回答。":

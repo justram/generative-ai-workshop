@@ -29,11 +29,16 @@ let y = class extends p {
       (this.sectionId = `4.4`),
       (this.selectedExample = ``),
       (this.useGrounding = !1),
+      (this.isRunning = !1),
       (this.examples = [
         {
           id: `company`,
-          name: n(`Company information`),
-          question: n(`Can you introduce BEST?`),
+          name:
+            n(`Company information`) === `Company information` ? `Company information` : `公司資訊`,
+          question:
+            n(`Can you introduce BEST?`) === `Can you introduce BEST?`
+              ? `Can you introduce BEST?`
+              : `請介紹 BEST 這家公司。`,
           withoutGrounding: {
             systemPrompt: n(`You are an assistant helping answer company questions.`),
           },
@@ -51,8 +56,12 @@ ${h}
         },
         {
           id: `product`,
-          name: n(`Product details`),
-          question: n(`What are the main features of the Modular Simulation Framework?`),
+          name: n(`Product details`) === `Product details` ? `Product details` : `產品細節`,
+          question:
+            n(`What are the main features of the Modular Simulation Framework?`) ===
+            `What are the main features of the Modular Simulation Framework?`
+              ? `What are the main features of the Modular Simulation Framework?`
+              : `Modular Simulation Framework 的主要功能有哪些？`,
           withoutGrounding: {
             systemPrompt: n(`You are an assistant helping answer software product questions.`),
           },
@@ -69,8 +78,7 @@ ${_}
           },
         },
       ]),
-      (this.session = new m()),
-      this.session.setModel(s(`openai-codex`, `gpt-5.4-mini`)),
+      (this.session = this.createSession()),
       (this.agentInterface = new o()),
       (this.agentInterface.session = this.session),
       (this.agentInterface.enableAttachments = !1),
@@ -79,12 +87,34 @@ ${_}
       (this.agentInterface.style.width = `100%`),
       (this.agentInterface.style.height = `100%`));
   }
+  createSession(model = this.session?.state?.model ?? s(`openai-codex`, `gpt-5.4-mini`)) {
+    const e = new m();
+    e.setModel(model);
+    return e;
+  }
+  attachFreshSession(e) {
+    const t = this.session?.state?.model ?? s(`openai-codex`, `gpt-5.4-mini`);
+    this.session?.abort();
+    this.session = this.createSession(t);
+    this.session.setSystemPrompt(e);
+    this.agentInterface.session = this.session;
+    this.agentInterface.setupSessionSubscription?.();
+    this.agentInterface?._streamingContainer?.setMessage?.(null, !0);
+    this.agentInterface?.requestUpdate?.();
+  }
   async runExample(e, t) {
-    ((this.selectedExample = e.id), (this.useGrounding = t));
+    if (this.isRunning) this.session.abort();
+    ((this.selectedExample = e.id), (this.useGrounding = t), (this.isRunning = !0));
     let n = t ? e.withGrounding.systemPrompt : e.withoutGrounding.systemPrompt;
-    (this.session.setSystemPrompt(n),
-      this.session.clearMessages(),
-      await this.agentInterface.sendMessage(e.question));
+    (this.attachFreshSession(n),
+      this.requestUpdate(),
+      await this.updateComplete,
+      await new Promise((e) => requestAnimationFrame(e)));
+    try {
+      await this.agentInterface.sendMessage(e.question);
+    } finally {
+      this.isRunning = !1;
+    }
   }
   renderContentPanel() {
     return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
@@ -106,8 +136,8 @@ ${_}
 						${u(a`
 							<div class="text-xs text-muted-foreground mb-2">"${t.question}"</div>
 							<div class="flex flex-col gap-2">
-								${e({ variant: this.selectedExample === t.id && !this.useGrounding ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, !1), children: n(`不使用參考資料執行`) })}
-								${e({ variant: this.selectedExample === t.id && this.useGrounding ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, !0), children: n(`使用參考資料執行`) })}
+								${e({ variant: this.selectedExample === t.id && !this.useGrounding ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, !1), children: n(`不使用參考資料執行`), disabled: this.isRunning })}
+								${e({ variant: this.selectedExample === t.id && this.useGrounding ? `secondary` : `outline`, size: `sm`, onClick: () => this.runExample(t, !0), children: n(`使用參考資料執行`), disabled: this.isRunning })}
 							</div>
 						`)}
 					`),
@@ -115,7 +145,7 @@ ${_}
 				${
           t && this.useGrounding
             ? l(a`
-							${d(f(n(`Reference Material`)))}
+							${d(f(n(`Reference Material`) === `Reference Material` ? `Reference Material` : `參考資料`))}
 							${u(a`<div class="text-xs bg-muted rounded p-2 max-h-48 overflow-auto">
 									${t.id === `company` ? h : _}
 								</div>`)}
@@ -133,6 +163,7 @@ ${_}
 };
 (t([r()], y.prototype, `selectedExample`, void 0),
   t([r()], y.prototype, `useGrounding`, void 0),
+  t([r()], y.prototype, `isRunning`, void 0),
   (y = t([i(`grounding-demo`)], y)),
   (document.body.innerHTML = `<grounding-demo></grounding-demo>`));
 export { y as GroundingDemo };

@@ -411,7 +411,7 @@ let b = class extends f {
 				<div class="mt-2 rounded-md border border-border bg-muted/30 p-2 text-[11px] leading-5 text-muted-foreground">
 					${
             e
-              ? t(`目前聊天框會收到影像附件與抽取出的中間表示。學生可以展開流程查看 OCR/表格內容。`)
+              ? t(`目前聊天框會收到影像附件與抽取出的中間表示。你可以展開流程查看 OCR/表格內容。`)
               : t(
                   `目前聊天框只會收到原始影像附件。流程會保留「沒有中間表示」這件事，避免把讀圖結果偽裝成 OCR。`,
                 )

@@ -16,7 +16,7 @@ let f = class extends c {
       (this.headerTitle = n(`自然語言處理任務`)),
       (this.sectionId = `4.5`),
       (this.selectedTask = ``),
-      (this.defaultText = ` announced strong growth in the latest quarter. The company said customer adoption of its flagship product, , increased by 35%. In the quarterly earnings call, the CEO said: “We are very pleased with these results.” With new partners driving further expansion, this positive momentum is expected to continue into Q4.`),
+      (this.defaultText = `BEST announced strong growth in the latest quarter. The company said customer adoption of its flagship biorefinery platform increased by 35%. In the quarterly earnings call, CEO Walter Haslinger said: “We are very pleased with these results.” With new partners in Graz, Vienna, and Tulln driving further expansion, this positive momentum is expected to continue into Q4.`),
       (this.nlpTasks = [
         {
           id: `translate`,
@@ -49,15 +49,15 @@ let f = class extends c {
         {
           id: `ner`,
           name: n(`命名實體辨識`),
-          prompt: n(`Extract all entities from this text and classify them:
-- People (include titles if present)
-- Companies
-- Products
-- Locations
-- Percentages/numbers
-- Dates/times
+          prompt: n(`請抽出這段文字中的命名實體，並分類：
+- 人物（包含職稱）
+- 公司／組織
+- 產品或服務
+- 地點
+- 百分比或數字
+- 日期或時間
 
-Text:`),
+文字：`),
           sampleInput: this.defaultText,
         },
         {
@@ -71,14 +71,14 @@ Text:`),
         {
           id: `classify`,
           name: n(`文字分類`),
-          prompt: n(`Classify this customer feedback into one category:
-- Bug report
-- Feature request
-- Complaint
-- Praise
-- Question
+          prompt: n(`請把這段客戶回饋分類成一個類別：
+- 錯誤回報
+- 功能請求
+- 客訴
+- 稱讚
+- 問題
 
-Feedback:`),
+回饋：`),
           sampleInput: n(
             `當我嘗試儲存超過 100MB 的檔案時，匯出功能無法運作。它會卡住，最後逾時。這阻礙了我們的部署。`,
           ),

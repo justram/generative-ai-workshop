@@ -996,21 +996,21 @@ ${userPrompt}`;
     return x`
 			<div class="h-full flex flex-col p-3 gap-3 overflow-hidden">
 				<p class="text-sm text-muted-foreground flex-shrink-0">
-					${i18n(`Let the model really call the artifacts tool to create and modify documents, code, or webpages. The point is not that “the model can write”; it is how chat, tool calls, and the artifact panel connect.`)}
+					${i18n(`讓模型真的呼叫 artifacts 工具來建立或修改文件、程式碼、網頁。重點不是「模型會寫」，而是看清楚聊天、工具呼叫與產物面板如何接在一起。`)}
 				</p>
 				<div class="rounded-lg border border-border bg-card/40 p-3 text-sm flex-shrink-0">
-					<div class="font-semibold text-foreground mb-2">${i18n(`artifacts() tool contract`)}</div>
+					<div class="font-semibold text-foreground mb-2">${i18n(`artifacts() 工具合約`)}</div>
 					<div class="space-y-1 text-muted-foreground">
-						<div><span class="text-foreground">${i18n(`Input:`)}</span> ${i18n(`command and filename, plus content or replacement text.`)}</div>
-						<div><span class="text-foreground">${i18n(`Output:`)}</span> ${i18n(`the result of creating, updating, deleting, or reading one artifact.`)}</div>
-						<div><span class="text-foreground">${i18n(`Boundary:`)}</span> ${i18n(`the tool only changes files using the parameters the model provides; people still need to inspect content quality and whether the HTML works.`)}</div>
+						<div><span class="text-foreground">${i18n(`輸入：`)}</span> ${i18n(`command 與 filename，加上 content 或要替換的文字。`)}</div>
+						<div><span class="text-foreground">${i18n(`輸出：`)}</span> ${i18n(`建立、更新、刪除或讀取一份產物後的結果。`)}</div>
+						<div><span class="text-foreground">${i18n(`邊界：`)}</span> ${i18n(`工具只會照模型提供的參數改檔案；內容品質、HTML 能不能正常預覽，仍然需要人檢查。`)}</div>
 					</div>
 				</div>
 				${
           this.hasArtifacts
             ? x`<button ?disabled=${isBusy} @click=${() => this.refineCurrentArtifact()} class="w-full text-left p-3 rounded-md border border-primary/40 bg-primary/10 hover:bg-primary/15 disabled:opacity-50 transition-colors flex-shrink-0">
 							<div class="text-sm font-medium text-foreground">${i18n(`Modify current artifact`)}</div>
-							<div class="text-xs text-muted-foreground mt-1">${i18n(`Ask the model to update the same file instead of creating a new one.`)}</div>
+							<div class="text-xs text-muted-foreground mt-1">${i18n(`要求模型更新同一份檔案，而不是建立新檔。`)}</div>
 						</button>`
             : ``
         }
@@ -1032,11 +1032,11 @@ ${userPrompt}`;
 				</div>
 				<div class="flex-1 overflow-hidden">
 					<div class="h-full overflow-y-auto rounded-md border border-border bg-muted/20 p-3 text-xs text-muted-foreground">
-						<div class="font-medium text-foreground mb-2">${i18n(`What to inspect`)}</div>
+						<div class="font-medium text-foreground mb-2">${i18n(`檢查重點`)}</div>
 						<ol class="list-decimal pl-4 space-y-1">
-							<li>${i18n(`First inspect the tool card in chat: does the model want to create, update, or rewrite?`)}</li>
-							<li>${i18n(`Then inspect the artifact panel: did the content actually change?`)}</li>
-							<li>${i18n(`Finally check the result: previewable, readable, and no wrong file was overwritten.`)}</li>
+							<li>${i18n(`先看聊天裡的工具卡：模型想建立、更新，還是重寫？`)}</li>
+							<li>${i18n(`再看產物面板：內容是否真的改變？`)}</li>
+							<li>${i18n(`最後檢查結果：能預覽、讀得懂，而且沒有覆寫錯檔案。`)}</li>
 						</ol>
 					</div>
 				</div>

@@ -41,6 +41,7 @@ let WebsearchToolDemo = class extends DemoBase {
     this.liveQuery = ``;
     this.searchResults = [];
     this.searchMeta = null;
+    this.rejectedSearchQuery = ``;
     this.currentQuestion = null;
     this.processStartedAt = 0;
     this.processFinishedAt = 0;
@@ -91,6 +92,7 @@ let WebsearchToolDemo = class extends DemoBase {
     this.liveQuery = ``;
     this.searchResults = [];
     this.searchMeta = null;
+    this.rejectedSearchQuery = ``;
     this.session.setTools([]);
     this.session.setSystemPrompt(
       useSearch
@@ -166,7 +168,22 @@ let WebsearchToolDemo = class extends DemoBase {
     const query = await this.waitForSearchQuery(question.defaultQuery, plannerSession);
     plannerSession.abort();
     await Promise.race([run, new Promise((resolve) => setTimeout(resolve, 500))]);
-    return query;
+    return this.normalizeSearchQuery(query, question.defaultQuery);
+  }
+
+  normalizeSearchQuery(query, fallback) {
+    const trimmed = String(query || ``)
+      .replace(/\s+/g, ` `)
+      .trim();
+    const hasSearchableText = /[A-Za-z\u3400-\u9fff]{2,}/u.test(trimmed);
+    const hasTargetSignal = /Jheng|Hong|Matt|Yang|justram|Stencilzeit|DBLP|Hugging|政紘/u.test(
+      trimmed,
+    );
+    if (!trimmed || trimmed.length < 6 || !hasSearchableText || !hasTargetSignal) {
+      this.rejectedSearchQuery = trimmed;
+      return fallback;
+    }
+    return trimmed.slice(0, 180);
   }
 
   extractSearchQueryFromMessages(session = this.session) {
@@ -295,6 +312,10 @@ ${sources}
     if (!Array.isArray(payload.results) || payload.results.length === 0) {
       payload.results = fallbackResults;
       payload.fallback = true;
+    }
+    if (this.rejectedSearchQuery) {
+      payload.fallbackQuery = true;
+      payload.rejectedQuery = this.rejectedSearchQuery;
     }
     this.searchResults = payload.results;
     this.searchMeta = payload;

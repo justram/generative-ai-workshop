@@ -92,7 +92,7 @@ let m = class extends f {
     this.currentChallenge = {
       name: `custom-upload`,
       displayName: t(`自訂多文件上傳`),
-      description: t(`學生自行上傳的文件；請在聊天框輸入需要跨文件比對的問題。`),
+      description: t(`你上傳的文件；請在聊天框輸入需要跨文件比對的問題。`),
       question:
         this.agentInterface?._messageEditor?.value || t(`請輸入一個需要同時讀多份文件的問題。`),
       choices: {},
@@ -404,7 +404,7 @@ let m = class extends f {
   renderContextOutcome() {
     return i`
 			<div>
-				<div>${t(`已把多份文件分別標記檔名後放進模型上下文。這讓學生可以檢查模型是否真的跨文件引用，而不是只抓其中一份。`)}</div>
+				<div>${t(`已把多份文件分別標記檔名後放進模型上下文。你可以檢查模型是否真的跨文件引用，而不是只抓其中一份。`)}</div>
 				${this.renderStepOutcome(
           t(`查看實際送給模型的 payload`),
           i`<pre class="max-h-72 overflow-y-auto whitespace-pre-wrap rounded-md bg-muted/40 p-3 font-mono text-[11px] leading-5 text-muted-foreground">${this.renderModelPayloadPreview()}</pre>`,
