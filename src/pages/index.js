@@ -365,6 +365,12 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
     this.requestUpdate();
   }
 
+  openPackageDrive(event) {
+    event?.preventDefault?.();
+    const opened = window.open(PACKAGE_DRIVE_URL, "_blank", "noopener,noreferrer");
+    if (!opened) window.location.href = PACKAGE_DRIVE_URL;
+  }
+
   renderLeaf(section, language) {
     return html`
       <div class="p-4 border border-border rounded-md bg-card text-card-foreground shadow-xs">
@@ -475,7 +481,8 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
       ${this.showPackageQr
         ? html`
             <div
-              class="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4"
+              class="fixed z-50"
+              style="right: 1rem; top: 4rem; width: min(21rem, calc(100vw - 2rem));"
               role="dialog"
               aria-modal="true"
               aria-label=${language === "en" ? "Package download QR code" : "套件下載 QR Code"}
@@ -484,14 +491,15 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
               }}
             >
               <div
-                class="w-full max-w-sm rounded-xl border border-border bg-card p-5 text-card-foreground shadow-xl"
+                class="rounded-xl border border-border bg-card p-3 text-card-foreground shadow-xl"
+                style="max-width: 21rem;"
               >
-                <div class="flex items-start justify-between gap-4">
-                  <div>
-                    <div class="text-lg font-bold">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <div class="text-sm font-bold leading-5">
                       ${language === "en" ? "Download Package" : "下載套件"}
                     </div>
-                    <p class="mt-1 text-sm text-muted-foreground">
+                    <p class="mt-1 text-xs leading-5 text-muted-foreground">
                       ${language === "en"
                         ? "Scan to open the shared Google Drive folder."
                         : "掃描後開啟共享 Google Drive 資料夾。"}
@@ -499,32 +507,40 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
                   </div>
                   <button
                     type="button"
-                    class="rounded-md px-2 py-1 text-xl leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
+                    class="shrink-0 rounded-md px-2 py-1 text-xl leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
                     aria-label=${language === "en" ? "Close" : "關閉"}
                     @click=${() => this.closePackageQr()}
                   >
                     ×
                   </button>
                 </div>
-                <div class="mt-4 rounded-lg border border-border bg-white p-4">
+                <div class="mt-3 rounded-lg border border-border bg-white p-2">
                   <img
                     src="/api/package/qr"
                     alt=${language === "en"
                       ? "QR code for the package Google Drive folder"
                       : "套件 Google Drive 資料夾 QR Code"}
-                    class="block h-auto w-full"
+                    class="mx-auto block h-auto"
+                    style="width: 168px; max-width: 100%;"
                     loading="lazy"
                     decoding="async"
                   />
                 </div>
                 <a
-                  class="mt-4 block break-all rounded-md border border-border bg-muted/40 px-3 py-2 text-sm font-semibold text-foreground underline hover:bg-muted"
+                  class="mt-3 flex items-center justify-center rounded-md border border-border bg-muted/40 px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted"
                   href=${PACKAGE_DRIVE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
+                  @click=${(event) => this.openPackageDrive(event)}
+                >
+                  ${language === "en" ? "Open Google Drive Folder" : "開啟 Google Drive 資料夾"}
+                </a>
+                <div
+                  class="mt-2 break-all px-1 leading-4 text-muted-foreground"
+                  style="max-height: 2rem; overflow: hidden; font-size: 10px;"
                 >
                   ${PACKAGE_DRIVE_URL}
-                </a>
+                </div>
               </div>
             </div>
           `

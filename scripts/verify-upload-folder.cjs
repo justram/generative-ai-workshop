@@ -8,6 +8,7 @@ const uploadDir = path.join(root, "dist-electron", "google-drive-upload");
 const expected = new Set([
   "Generative AI Workshop-1.0.0-macos-with-readme.zip",
   "Generative AI Workshop-1.0.0-windows.zip",
+  "LICENSE",
   "README.md",
 ]);
 
