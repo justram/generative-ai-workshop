@@ -10,6 +10,7 @@ import "../mini-lit/index.js";
 
 const PACKAGE_DRIVE_URL =
   "https://drive.google.com/drive/folders/1emRlwPseX7F0VFKkzMJvAFDTPH7VRKBF?usp=drive_link";
+const NEWSLETTER_URL = "https://stencilzeit.kit.com/177c376f5f";
 
 const attribution = {
   en: {
@@ -348,7 +349,7 @@ function text(value, language) {
 let WorkshopIndex = class WorkshopIndex extends LitElement {
   constructor() {
     super();
-    this.showPackageQr = false;
+    this.activeQrTarget = null;
   }
 
   createRenderRoot() {
@@ -356,12 +357,17 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
   }
 
   openPackageQr() {
-    this.showPackageQr = true;
+    this.activeQrTarget = "package";
     this.requestUpdate();
   }
 
-  closePackageQr() {
-    this.showPackageQr = false;
+  openNewsletterQr() {
+    this.activeQrTarget = "newsletter";
+    this.requestUpdate();
+  }
+
+  closeQr() {
+    this.activeQrTarget = null;
     this.requestUpdate();
   }
 
@@ -369,6 +375,49 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
     event?.preventDefault?.();
     const opened = window.open(PACKAGE_DRIVE_URL, "_blank", "noopener,noreferrer");
     if (!opened) window.location.href = PACKAGE_DRIVE_URL;
+  }
+
+  openNewsletter(event) {
+    event?.preventDefault?.();
+    const opened = window.open(NEWSLETTER_URL, "_blank", "noopener,noreferrer");
+    if (!opened) window.location.href = NEWSLETTER_URL;
+  }
+
+  qrDialogCopy(language) {
+    if (this.activeQrTarget === "newsletter") {
+      return {
+        label: language === "en" ? "Newsletter QR code" : "電子報 QR Code",
+        title: language === "en" ? "Newsletter" : "訂閱電子報",
+        description:
+          language === "en"
+            ? "Scan to open the Stencilzeit newsletter signup page."
+            : "掃描後開啟 Stencilzeit 電子報訂閱頁。",
+        image: "/api/newsletter/qr",
+        alt:
+          language === "en"
+            ? "QR code for the Stencilzeit newsletter signup page"
+            : "Stencilzeit 電子報訂閱頁 QR Code",
+        href: NEWSLETTER_URL,
+        action: language === "en" ? "Open Newsletter" : "開啟電子報",
+        onClick: (event) => this.openNewsletter(event),
+      };
+    }
+    return {
+      label: language === "en" ? "Package download QR code" : "套件下載 QR Code",
+      title: language === "en" ? "Download Package" : "下載套件",
+      description:
+        language === "en"
+          ? "Scan to open the shared Google Drive folder."
+          : "掃描後開啟共享 Google Drive 資料夾。",
+      image: "/api/package/qr",
+      alt:
+        language === "en"
+          ? "QR code for the package Google Drive folder"
+          : "套件 Google Drive 資料夾 QR Code",
+      href: PACKAGE_DRIVE_URL,
+      action: language === "en" ? "Open Google Drive Folder" : "開啟 Google Drive 資料夾",
+      onClick: (event) => this.openPackageDrive(event),
+    };
   }
 
   renderLeaf(section, language) {
@@ -410,6 +459,7 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
   render() {
     const language = getCurrentLanguage() === "en" ? "en" : "zh-TW";
     const copy = attribution[language];
+    const qrCopy = this.qrDialogCopy(language);
     document.documentElement.lang = language === "en" ? "en" : "zh-Hant-TW";
     document.title = language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊";
     return html`
@@ -423,14 +473,24 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
             <h1 class="text-3xl lg:text-4xl text-foreground font-bold">
               ${language === "en" ? "Generative AI Workshop" : "生成式人工智慧工作坊"}
             </h1>
-            <button
-              type="button"
-              class="inline-flex w-fit items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-xs transition-colors hover:bg-muted"
-              @click=${() => this.openPackageQr()}
-            >
-              <span aria-hidden="true">▦</span>
-              <span>${language === "en" ? "Package QR" : "下載 QR Code"}</span>
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                class="inline-flex w-fit items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-xs transition-colors hover:bg-muted"
+                @click=${() => this.openPackageQr()}
+              >
+                <span aria-hidden="true">▦</span>
+                <span>${language === "en" ? "Package QR" : "下載 QR Code"}</span>
+              </button>
+              <button
+                type="button"
+                class="inline-flex w-fit items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm font-semibold text-foreground shadow-xs transition-colors hover:bg-muted"
+                @click=${() => this.openNewsletterQr()}
+              >
+                <span aria-hidden="true">▦</span>
+                <span>${language === "en" ? "Newsletter QR" : "電子報 QR Code"}</span>
+              </button>
+            </div>
           </div>
           <div class="space-y-6">
             ${sections.map((section) =>
@@ -478,16 +538,16 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
           </div>
         </div>
       </div>
-      ${this.showPackageQr
+      ${this.activeQrTarget
         ? html`
             <div
               class="fixed z-50"
               style="right: 1rem; top: 4rem; width: min(21rem, calc(100vw - 2rem));"
               role="dialog"
               aria-modal="true"
-              aria-label=${language === "en" ? "Package download QR code" : "套件下載 QR Code"}
+              aria-label=${qrCopy.label}
               @click=${(event) => {
-                if (event.target === event.currentTarget) this.closePackageQr();
+                if (event.target === event.currentTarget) this.closeQr();
               }}
             >
               <div
@@ -496,30 +556,24 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
               >
                 <div class="flex items-start justify-between gap-3">
                   <div class="min-w-0">
-                    <div class="text-sm font-bold leading-5">
-                      ${language === "en" ? "Download Package" : "下載套件"}
-                    </div>
+                    <div class="text-sm font-bold leading-5">${qrCopy.title}</div>
                     <p class="mt-1 text-xs leading-5 text-muted-foreground">
-                      ${language === "en"
-                        ? "Scan to open the shared Google Drive folder."
-                        : "掃描後開啟共享 Google Drive 資料夾。"}
+                      ${qrCopy.description}
                     </p>
                   </div>
                   <button
                     type="button"
                     class="shrink-0 rounded-md px-2 py-1 text-xl leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
                     aria-label=${language === "en" ? "Close" : "關閉"}
-                    @click=${() => this.closePackageQr()}
+                    @click=${() => this.closeQr()}
                   >
                     ×
                   </button>
                 </div>
                 <div class="mt-3 rounded-lg border border-border bg-white p-2">
                   <img
-                    src="/api/package/qr"
-                    alt=${language === "en"
-                      ? "QR code for the package Google Drive folder"
-                      : "套件 Google Drive 資料夾 QR Code"}
+                    src=${qrCopy.image}
+                    alt=${qrCopy.alt}
                     class="mx-auto block h-auto"
                     style="width: 168px; max-width: 100%;"
                     loading="lazy"
@@ -528,18 +582,18 @@ let WorkshopIndex = class WorkshopIndex extends LitElement {
                 </div>
                 <a
                   class="mt-3 flex items-center justify-center rounded-md border border-border bg-muted/40 px-3 py-2 text-xs font-semibold text-foreground hover:bg-muted"
-                  href=${PACKAGE_DRIVE_URL}
+                  href=${qrCopy.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  @click=${(event) => this.openPackageDrive(event)}
+                  @click=${qrCopy.onClick}
                 >
-                  ${language === "en" ? "Open Google Drive Folder" : "開啟 Google Drive 資料夾"}
+                  ${qrCopy.action}
                 </a>
                 <div
                   class="mt-2 break-all px-1 leading-4 text-muted-foreground"
                   style="max-height: 2rem; overflow: hidden; font-size: 10px;"
                 >
-                  ${PACKAGE_DRIVE_URL}
+                  ${qrCopy.href}
                 </div>
               </div>
             </div>

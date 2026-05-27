@@ -14,6 +14,7 @@ const DEFAULT_MODEL_ID = "gpt-5.4-mini";
 const CODEX_PROVIDER = "openai-codex";
 const PACKAGE_DRIVE_URL =
   "https://drive.google.com/drive/folders/1emRlwPseX7F0VFKkzMJvAFDTPH7VRKBF?usp=drive_link";
+const NEWSLETTER_URL = "https://stencilzeit.kit.com/177c376f5f";
 const PRICED_GPT_MODEL_IDS = ["gpt-5.5", "gpt-5.4", "gpt-5.4-mini", "gpt-5.3-codex"];
 const GPT_MODEL_IDS = new Set(
   getModels(CODEX_PROVIDER)
@@ -93,6 +94,16 @@ function renderQrSvg(content, { margin = 3 } = {}) {
 
 function sendPackageQr(res, method = "GET") {
   const svg = renderQrSvg(PACKAGE_DRIVE_URL);
+  res.writeHead(200, {
+    "content-type": MIME_TYPES[".svg"],
+    "cache-control": "public, max-age=3600",
+  });
+  if (method === "HEAD") res.end();
+  else res.end(svg);
+}
+
+function sendNewsletterQr(res, method = "GET") {
+  const svg = renderQrSvg(NEWSLETTER_URL);
   res.writeHead(200, {
     "content-type": MIME_TYPES[".svg"],
     "cache-control": "public, max-age=3600",
@@ -659,6 +670,10 @@ async function route(req, res) {
     }
     if ((req.method === "GET" || req.method === "HEAD") && url.pathname === "/api/package/qr") {
       sendPackageQr(res, req.method);
+      return;
+    }
+    if ((req.method === "GET" || req.method === "HEAD") && url.pathname === "/api/newsletter/qr") {
+      sendNewsletterQr(res, req.method);
       return;
     }
     if (req.method === "GET" || req.method === "HEAD") {
