@@ -88,7 +88,7 @@ let DateTimeToolDemo = class extends DemoBase {
     await this.updateComplete;
     if (useTool) this.pipelineStage = `model`;
     if (!useTool) {
-      const run = this.agentInterface.sendMessage(question.prompt).catch(() => {});
+      const run = this.runAgentPrompt(question.prompt).catch(() => {});
       await run;
       this.isRunning = false;
       return;
@@ -473,7 +473,7 @@ let DateTimeToolDemo = class extends DemoBase {
 					}
 				</style>
 				<div class="border-b border-border p-3">${this.renderStatus()}</div>
-				<div class="flex-1 min-h-0 p-4 pb-4">${this.agentInterface}</div>
+				<div class="flex-1 min-h-0 p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>
 			</div>
 		`;
   }

@@ -53,7 +53,7 @@ let v = class extends g {
       (this.unsubscribe = this.session.subscribe(() => {})));
   }
   renderContentPanel() {
-    return s`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return s`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
   renderLeftDemoPanel() {
     let t = [
@@ -85,7 +85,7 @@ let v = class extends g {
       o = async (e) => {
         (this.session.setModel(e),
           this.session.clearMessages(),
-          await this.agentInterface.sendMessage(this.question));
+          await this.runAgentPrompt(this.question));
       };
     return s`
 			<div class="p-3 h-full overflow-y-auto flex flex-col gap-3">

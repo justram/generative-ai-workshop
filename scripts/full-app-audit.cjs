@@ -273,6 +273,18 @@ async function main() {
 
   const failed = preflight.filter((item) => !item.ok);
   if (!browserAudit.ok) failed.push(browserAudit);
+  if (mergedReport.findings.length) {
+    failed.push({
+      command: "full-app-browser-audit findings",
+      ok: false,
+      status: 1,
+      stdout: "",
+      stderr: `${mergedReport.findings.length} audit finding(s) recorded in ${path.join(
+        outputDir,
+        "audit-report.md",
+      )}`,
+    });
+  }
   const report = path.join(outputDir, "audit-report.md");
   const reportExists = fs.existsSync(report);
   console.log(`Full app audit output: ${outputDir}`);

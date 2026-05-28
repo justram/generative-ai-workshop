@@ -81,7 +81,7 @@ let m = class extends f {
   }
 
   renderContentPanel() {
-    return r`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return r`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
 
   getCostRecords() {

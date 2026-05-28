@@ -336,7 +336,7 @@ let b = class extends f {
             ? i`<div class="border-b border-border bg-card/70 px-4 py-3">${this.renderPipelineCard()}</div>`
             : i``
         }
-				<div class="flex-1 min-h-0 p-4 pb-4">${this.agentInterface}</div>
+				<div class="flex-1 min-h-0 p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>
 			</div>
 		`;
   }

@@ -10,6 +10,89 @@ import "../mini-lit/index.js";
 import { DemoBase as LegacyDemoBase } from "./DemoBase-7724hyNv.js";
 
 export class DemoBase extends LegacyDemoBase {
+  firstUpdated(changedProperties) {
+    super.firstUpdated?.(changedProperties);
+    this.mountAgentInterfaceHosts();
+  }
+
+  updated(changedProperties) {
+    super.updated?.(changedProperties);
+    this.mountAgentInterfaceHosts();
+  }
+
+  mountAgentInterfaceHosts() {
+    if (!this.agentInterface) return;
+    this.syncAgentInterfaceSession();
+    for (const host of this.querySelectorAll("agent-interface-host")) {
+      host.agentInterface = this.agentInterface;
+      host.session = this.session;
+    }
+  }
+
+  syncAgentInterfaceSession() {
+    if (!this.session) throw Error("No session set on demo page");
+    if (this.agentInterface.session !== this.session) {
+      this.agentInterface.session = this.session;
+      this.agentInterface.setupSessionSubscription?.();
+      this.agentInterface.requestUpdate?.();
+    }
+    if (this._agentSessionSubscriptionFor === this.session) return;
+    this._unsubscribeAgentSession?.();
+    this._agentSessionSubscriptionFor = this.session;
+    this._unsubscribeAgentSession = this.session.subscribe((event) => {
+      if (event.type !== "state-update") return;
+      this.refreshAgentInterfaceFromSession(event.state);
+    });
+  }
+
+  refreshAgentInterfaceFromSession(state = this.session?.state) {
+    if (!this.agentInterface || !state) return;
+    this.agentInterface.requestUpdate?.();
+
+    const streamingContainer = this.agentInterface.querySelector?.("streaming-message-container");
+    if (streamingContainer) {
+      streamingContainer.tools = state.tools;
+      streamingContainer.isStreaming = state.isStreaming;
+      streamingContainer.pendingToolCalls = state.pendingToolCalls;
+      const toolResultsById = new Map();
+      for (const message of state.messages) {
+        if (message.role === "toolResult") toolResultsById.set(message.toolCallId, message);
+      }
+      streamingContainer.toolResultsById = toolResultsById;
+      streamingContainer.setMessage?.(state.streamMessage, !state.isStreaming);
+      streamingContainer.requestUpdate?.();
+    }
+
+    for (const messageList of this.agentInterface.querySelectorAll?.("message-list") ?? []) {
+      messageList.messages = state.messages;
+      messageList.tools = state.tools;
+      messageList.pendingToolCalls = state.pendingToolCalls;
+      messageList.isStreaming = state.isStreaming;
+      messageList.requestUpdate?.();
+    }
+  }
+
+  disconnectedCallback() {
+    this._unsubscribeAgentSession?.();
+    this._unsubscribeAgentSession = undefined;
+    this._agentSessionSubscriptionFor = undefined;
+    super.disconnectedCallback?.();
+  }
+
+  async runAgentPrompt(prompt, attachments) {
+    if (!this.session) throw Error("No session set on demo page");
+    if (this.session.state.isStreaming) return;
+    if (this.agentInterface?._messageEditor) {
+      this.agentInterface._messageEditor.value = "";
+      this.agentInterface._messageEditor.attachments = [];
+    }
+    if (this.agentInterface) this.agentInterface._autoScroll = true;
+    const run = this.session.prompt(prompt, attachments);
+    this.refreshAgentInterfaceFromSession();
+    await run;
+    this.refreshAgentInterfaceFromSession();
+  }
+
   render() {
     if (typeof document !== "undefined") document.title = this.headerTitle;
 

@@ -978,7 +978,7 @@ ${userPrompt}`;
     }
     return x`
 			<div class="relative w-full h-full overflow-hidden flex">
-				<div class="h-full pb-2" style="width: ${chatWidth};">${this.agentInterface}</div>
+				<div class="h-full pb-2" style="width: ${chatWidth};"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>
 				<div class="h-full" style="width: ${artifactWidth};">${this.artifactsPanel}</div>
 				${
           this.hasArtifacts && !this.showArtifacts

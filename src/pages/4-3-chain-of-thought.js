@@ -109,10 +109,10 @@ let h = class extends p {
     let n = t ? e.withCoT : e.withoutCoT;
     (this.session.setSystemPrompt(n.systemPrompt),
       this.session.clearMessages(),
-      await this.agentInterface.sendMessage(n.prompt));
+      await this.runAgentPrompt(n.prompt));
   }
   renderContentPanel() {
-    return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return a`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
   renderLeftDemoPanel() {
     return a`

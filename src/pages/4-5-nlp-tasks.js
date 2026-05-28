@@ -128,10 +128,10 @@ let f = class extends c {
   async runTask(e) {
     this.selectedTask = e.id;
     let t = e.sampleInput.trim();
-    (this.session.clearMessages(), await this.agentInterface.sendMessage(`${e.prompt}\n\n${t}`));
+    (this.session.clearMessages(), await this.runAgentPrompt(`${e.prompt}\n\n${t}`));
   }
   renderContentPanel() {
-    return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return a`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
   renderLeftDemoPanel() {
     return a`

@@ -113,10 +113,10 @@ ${this.feedbackExamples[2].text}
     ((this.selectedFormat = e.id),
       this.session.setSystemPrompt(e.systemPrompt),
       this.session.clearMessages(),
-      await this.agentInterface.sendMessage(e.prompt));
+      await this.runAgentPrompt(e.prompt));
   }
   renderContentPanel() {
-    return o`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return o`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
   renderLeftDemoPanel() {
     return o`

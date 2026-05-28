@@ -60,6 +60,39 @@ function isProbablyWrongLanguageHeading(language, heading) {
   return latinLetters >= 8 && latinLetters > cjkLetters;
 }
 
+const zhTwForbiddenLearnerPhrases = [
+  "Run without CoT",
+  "Run with CoT",
+  "No CoT",
+  "With CoT",
+  "Start Over",
+  "Selected",
+  "See how examples improve",
+  "Reference Material",
+  "Company information",
+  "Product details",
+  "Pick a model and press play",
+  "Search tools add",
+  "Learning goals",
+  "Tool Invocation",
+  "Calculator Tool",
+  "Date/Time Tool",
+  "Artifacts Tool",
+  "Model Context Protocol",
+];
+
+const enForbiddenLearnerPhrases = [
+  "本頁學習目標",
+  "重點整理",
+  "系統提示",
+  "重新開始",
+  "執行這個方法",
+  "使用參考資料執行",
+  "啟用搜尋",
+  "即時流程",
+  "模型已產生",
+];
+
 function pageUrl(page, language, theme, marker = "audit") {
   const pathname = page === "index.html" ? "/" : `/${page}`;
   const url = new URL(pathname, baseUrl);
@@ -77,6 +110,42 @@ async function screenshot(win, label) {
   const image = await win.webContents.capturePage();
   await fs.writeFile(file, image.toPNG());
   return path.relative(outputDir, file);
+}
+
+async function clickButtonContaining(win, text) {
+  const target = await win.webContents.executeJavaScript(`
+    (() => {
+      const button = Array.from(document.querySelectorAll("button"))
+        .find((button) => button.textContent.includes(${JSON.stringify(text)}));
+      if (!button) return null;
+      button.scrollIntoView({ block: "center", inline: "center" });
+      const rect = button.getBoundingClientRect();
+      return {
+        x: Math.round(rect.left + rect.width / 2),
+        y: Math.round(rect.top + rect.height / 2),
+        text: button.textContent.trim(),
+        disabled: button.disabled,
+      };
+    })()
+  `);
+  if (!target || target.disabled) return target;
+  win.webContents.sendInputEvent({ type: "mouseMove", x: target.x, y: target.y });
+  win.webContents.sendInputEvent({
+    type: "mouseDown",
+    button: "left",
+    clickCount: 1,
+    x: target.x,
+    y: target.y,
+  });
+  win.webContents.sendInputEvent({
+    type: "mouseUp",
+    button: "left",
+    clickCount: 1,
+    x: target.x,
+    y: target.y,
+  });
+  await new Promise((resolve) => setTimeout(resolve, 120));
+  return target;
 }
 
 async function setLanguageAndTheme(win, language, theme) {
@@ -144,6 +213,12 @@ async function readPageSnapshot(win, page, language, theme) {
         .map((match) => match[0])
         .filter((token) => !/ChatGPT|OpenAI|GPT|JSON|API|MCP|LLM|AI|PDF|OCR|HTML|CSS|JavaScript|TypeScript/.test(token))
         .slice(0, 20);
+      const forbiddenPhrases = ${JSON.stringify(
+        language === "zh-TW" ? zhTwForbiddenLearnerPhrases : enForbiddenLearnerPhrases,
+      )};
+      const wrongLanguagePhrases = forbiddenPhrases
+        .filter((phrase) => body.includes(phrase))
+        .slice(0, 12);
       return {
         page: ${JSON.stringify(page)},
         language: ${JSON.stringify(language)},
@@ -156,6 +231,7 @@ async function readPageSnapshot(win, page, language, theme) {
         bodyStart: body.replace(/\\s+/g, " ").trim().slice(0, 280),
         blankish: body.trim().length < 80,
         visibleErrors,
+        wrongLanguagePhrases,
         mixedTokens,
         overflowing: overflowing.slice(0, 12),
         clipped: clipped.slice(0, 12),
@@ -196,6 +272,12 @@ async function loadAndSnapshot(win, page, language, theme) {
       findings.push({ type: "layout-clipped-content", detail: snapshot.clipped });
     if (isProbablyWrongLanguageHeading(language, snapshot.heading)) {
       findings.push({ type: "wrong-language-heading", detail: snapshot.heading });
+    }
+    if (snapshot.wrongLanguagePhrases.length) {
+      findings.push({
+        type: "wrong-language-learner-phrase",
+        detail: snapshot.wrongLanguagePhrases,
+      });
     }
     if (snapshot.mixedTokens.length) {
       findings.push({ type: "mixed-language-token", detail: snapshot.mixedTokens });
@@ -347,6 +429,69 @@ async function runProbes(win) {
       return result;
     }),
   );
+
+  const presetRegressionSpecs = [
+    ["persona-preset-persist", "4-1-personas.html", "請介紹 BEST 是什麼。"],
+    ["structured-io-preset-persist", "4-2-structured-io.html", "執行這個方法"],
+    ["reasoning-preset-persist", "4-3-chain-of-thought.html", "直接回答"],
+    ["prompt-chain-preset-persist", "4-7-prompt-chaining.html", "步驟 1"],
+    ["self-correction-preset-persist", "4-8-self-correction.html", "步驟 1"],
+    ["datetime-preset-persist", "5-3-datetime-tool.html", "不用工具"],
+  ];
+
+  for (const [id, page, buttonText] of presetRegressionSpecs) {
+    probes.push(
+      await probe(win, id, page, "zh-TW", "light", async () => {
+        const clicked = await clickButtonContaining(win, buttonText);
+        if (!clicked) {
+          return { findings: [{ type: "interaction-control-missing", detail: buttonText }] };
+        }
+        if (clicked.disabled) {
+          return { findings: [{ type: "interaction-control-disabled", detail: buttonText }] };
+        }
+        await new Promise((resolve) => setTimeout(resolve, 9000));
+        const result = await win.webContents.executeJavaScript(`
+          (async () => {
+            const findings = [];
+            const userMessages = Array.from(document.querySelectorAll("user-message"))
+              .map((node) => node.innerText.trim())
+              .filter(Boolean);
+            const assistantMessages = Array.from(document.querySelectorAll("assistant-message"))
+              .map((node) => node.innerText.trim())
+              .filter(Boolean)
+              .filter((text) => !/^錯誤：/.test(text));
+            const streamingText = Array.from(document.querySelectorAll(".streaming-message, .stream-message, [data-streaming]"))
+              .map((node) => node.innerText.trim())
+              .filter(Boolean);
+            const bodyAfter = document.body.innerText;
+            const authBlocked = /not connected|尚未連線|請先.*登入|No auth token|ChatGPT not connected/i.test(bodyAfter);
+            if (!authBlocked && userMessages.length < 1) {
+              findings.push({ type: "interaction-user-message-disappeared", detail: "preset click left no persisted user message" });
+            }
+            if (!authBlocked && assistantMessages.length < 1) {
+              findings.push({ type: "interaction-assistant-message-disappeared", detail: "preset click left no persisted assistant message" });
+            }
+            if (/is not a function|TypeError:|ReferenceError:/.test(bodyAfter)) {
+              findings.push({ type: "visible-runtime-error", detail: bodyAfter.match(/[^\\n]*(?:is not a function|TypeError:|ReferenceError:)[^\\n]*/)?.[0] });
+            }
+            return {
+              findings,
+              blocked: authBlocked,
+              evidence: {
+                clicked: ${JSON.stringify(clicked)},
+                userCount: userMessages.length,
+                assistantCount: assistantMessages.length,
+                streamingTextCount: streamingText.length,
+                userStart: userMessages[0]?.slice(0, 160) || "",
+                assistantStart: assistantMessages[0]?.slice(0, 220) || "",
+              },
+            };
+          })()
+        `);
+        return result;
+      }),
+    );
+  }
 
   const liveProbeSpecs = [
     ["grounding-visible", "4-4-grounding.html", "zh-TW", "light", "使用參考資料執行"],

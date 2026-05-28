@@ -112,7 +112,7 @@ let ToolInvocationDemo = class extends DemoBase {
     this.pipelineStage = `model`;
     this.toolPlanPreview = this.defaultToolPlanPreview;
     await this.updateComplete;
-    const run = this.agentInterface.sendMessage(
+    const run = this.runAgentPrompt(
       `${i18n(`請處理我的收件匣。`)}\n\n${i18n(`本機沙盒收件匣如下，請依照你的系統提示輸出工具呼叫 JSON 陣列：`)}\n\n${this.inboxText}`,
     );
     const plan = this.normalizeToolPlan(await this.waitForToolPlan());
@@ -405,7 +405,7 @@ let ToolInvocationDemo = class extends DemoBase {
 						</div>
 					</div>
 				</div>
-				<div class="flex-1 min-h-0 p-4 pb-4">${this.agentInterface}</div>
+				<div class="flex-1 min-h-0 p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>
 			</div>
 		`;
   }

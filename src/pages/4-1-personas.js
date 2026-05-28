@@ -115,10 +115,10 @@ let g = class extends p {
       this.session.clearMessages());
   }
   async loadQuestion(e, t) {
-    (this.selectPersona(e), (this.selectedQuestion = t), await this.agentInterface.sendMessage(t));
+    (this.selectPersona(e), (this.selectedQuestion = t), await this.runAgentPrompt(t));
   }
   renderContentPanel() {
-    return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return a`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
   renderLeftDemoPanel() {
     return a`

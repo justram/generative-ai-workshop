@@ -157,7 +157,7 @@ When the context gets full, the product has to make choices: drop older messages
   }
 
   renderContentPanel() {
-    return i`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return i`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
 
   renderLeftDemoPanel() {

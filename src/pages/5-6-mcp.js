@@ -762,7 +762,7 @@ ${output}
 			<div class="h-full bg-background flex flex-col">
 				<div class="border-b border-border p-3">${this.renderStatus()}</div>
 				${this.renderPipeline()}
-				<div class="flex-1 min-h-0 p-4 pb-4">${this.agentInterface}</div>
+				<div class="flex-1 min-h-0 p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>
 			</div>
 		`;
   }

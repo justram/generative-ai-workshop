@@ -34,7 +34,8 @@
     "format": "oxfmt --write \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
     "format:check": "oxfmt --check \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "check": "npm run audit:source-boundaries && npm run audit:html-shells && npm run audit:routes && npm run lint:ci && npm run format:check && npm run typecheck"
+    "check": "npm run audit:source-boundaries && npm run audit:html-shells && npm run audit:routes && npm run test:agent-session && npm run lint:ci && npm run format:check && npm run typecheck",
+    "test:agent-session": "node scripts/test-agent-session-regression.mjs"
   },
   "dependencies": {
     "@earendil-works/pi-ai": "^0.74.0",

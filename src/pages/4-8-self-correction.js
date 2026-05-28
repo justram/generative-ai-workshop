@@ -66,7 +66,7 @@ let h = class extends p {
       e >= this.steps.length ||
       (e > 0 && !this.completed.has(this.steps[e - 1].id)) ||
       ((this.isProcessing = !0),
-      await this.agentInterface.sendMessage(this.steps[e].prompt),
+      await this.runAgentPrompt(this.steps[e].prompt),
       this.completed.add(this.steps[e].id),
       (this.currentStep = e + 1),
       (this.isProcessing = !1));
@@ -75,7 +75,7 @@ let h = class extends p {
     ((this.currentStep = 0), this.completed.clear(), this.session.clearMessages());
   }
   renderContentPanel() {
-    return a`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return a`<div class="w-full h-full p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>`;
   }
   renderLeftDemoPanel() {
     return a`

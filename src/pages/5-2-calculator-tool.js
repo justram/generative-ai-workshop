@@ -88,7 +88,7 @@ let CalculatorToolDemo = class extends DemoBase {
     await new Promise((resolve) => requestAnimationFrame(resolve));
     if (useTool) this.pipelineStage = `model`;
     if (!useTool) {
-      const run = this.agentInterface.sendMessage(this.problem.prompt).catch(() => {});
+      const run = this.runAgentPrompt(this.problem.prompt).catch(() => {});
       await run;
       this.isRunning = false;
       return;
@@ -427,7 +427,7 @@ let CalculatorToolDemo = class extends DemoBase {
 					}
 				</style>
 				<div class="border-b border-border p-3">${this.renderStatus()}</div>
-				<div class="flex-1 min-h-0 p-4 pb-4">${this.agentInterface}</div>
+				<div class="flex-1 min-h-0 p-4 pb-4"><agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host></div>
 			</div>
 		`;
   }

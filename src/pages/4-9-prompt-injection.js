@@ -234,7 +234,7 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
     this.session.clearMessages();
     this.session.setSystemPrompt(example.systemPrompt);
     try {
-      await this.agentInterface.sendMessage(prompt);
+      await this.runAgentPrompt(prompt);
       this.lastVerdict = this.evaluateExample(example, this.getAssistantText()) || {
         status: `partial`,
         title: i18n(`需要人工複查`),
@@ -252,7 +252,9 @@ BEST 的研究方向包含綠色氣體、綠色液體燃料與循環生物精煉
   }
 
   renderContentPanel() {
-    return html`<div class="w-full h-full p-4 pb-4">${this.agentInterface}</div>`;
+    return html`<div class="w-full h-full p-4 pb-4">
+      <agent-interface-host .agentInterface=${this.agentInterface}></agent-interface-host>
+    </div>`;
   }
 
   renderLeftDemoPanel() {
