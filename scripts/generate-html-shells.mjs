@@ -6,11 +6,13 @@ import { fileURLToPath } from "node:url";
 import { WORKSHOP_ROUTES } from "../src/mini-lit/workshop-routes.js";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const TEMPLATE_PATH = path.join(ROOT, "template", "html-shell.tpl");
 const checkOnly = process.argv.includes("--check");
 const CSS_VERSION = "zh-tw8";
 const NATIVE_POLISH_VERSION = "4";
 const PAGE_BUNDLE_VERSION = "mini-lit-full-1";
 const LOCAL_PI_AUTH_VERSION = "proper-i18n-1";
+const SHELL_TEMPLATE = fs.readFileSync(TEMPLATE_PATH, "utf8");
 
 function themeBootstrap() {
   return `\t\t<!-- Immediately set theme to prevent flicker -->
@@ -30,21 +32,15 @@ function renderShell(route) {
   const classAttr = route.htmlClass ? ` class="${route.htmlClass}"` : "";
   const bodyClass = route.bodyClass ? ` class="${route.bodyClass}"` : "";
   const bootstrap = route.includeThemeBootstrap ? themeBootstrap() : "";
-  return `<!doctype html>
-<html${classAttr} lang="zh-Hant-TW">
-\t<head>
-\t\t<meta charset="UTF-8" />
-\t\t<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-\t\t<title>${route.title}</title>
-${bootstrap}\t\t<link rel="stylesheet" href="build/css/styles.css?v=${CSS_VERSION}" />
-\t\t<link rel="stylesheet" href="native-polish.css?v=${NATIVE_POLISH_VERSION}" />
-\t\t<script type="module" src="build/js/pages/${route.entry}.js?v=${PAGE_BUNDLE_VERSION}"></script>
-\t</head>
-\t<body${bodyClass}>
-\t\t<script type="module" src="local-pi-auth.js?v=${LOCAL_PI_AUTH_VERSION}"></script>
-\t</body>
-</html>
-`;
+  return SHELL_TEMPLATE.replaceAll("{{HTML_CLASS}}", classAttr)
+    .replaceAll("{{BODY_CLASS}}", bodyClass)
+    .replaceAll("{{TITLE}}", route.title)
+    .replaceAll("{{THEME_BOOTSTRAP}}", bootstrap)
+    .replaceAll("{{CSS_VERSION}}", CSS_VERSION)
+    .replaceAll("{{NATIVE_POLISH_VERSION}}", NATIVE_POLISH_VERSION)
+    .replaceAll("{{PAGE_BUNDLE_VERSION}}", PAGE_BUNDLE_VERSION)
+    .replaceAll("{{LOCAL_PI_AUTH_VERSION}}", LOCAL_PI_AUTH_VERSION)
+    .replaceAll("{{ENTRY}}", route.entry);
 }
 
 const failures = [];

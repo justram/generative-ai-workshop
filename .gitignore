@@ -5,8 +5,6 @@ build/icon.iconset/
 node_modules/
 dist-electron/
 test-results/
-verification-screenshots/
-sales-screenshots/*.zip
 .tmp-auth-*/
 .DS_Store
 .env
