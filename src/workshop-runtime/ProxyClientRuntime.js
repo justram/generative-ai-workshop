@@ -2,8 +2,8 @@ import { i18n as e } from "../mini-lit/index.js";
 import {
   AssistantMessageEventStream as t,
   parseStreamingJson as n,
-} from "./app-C9nW8ndw.js";
-import { clearAuthToken as r } from "./auth-token-Dkh_JH49.js";
+} from "./AgentAppRuntime.js";
+import { clearAuthToken as r } from "./AuthTokenRuntime.js";
 function i(i, a, o) {
   let s = new t();
   return (

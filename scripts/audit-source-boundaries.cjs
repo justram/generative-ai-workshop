@@ -9,22 +9,6 @@ const HASHED_RUNTIME_RE = /\/workshop-runtime\/[^"'`/]+-[A-Za-z0-9_]{6,}\.js\b/;
 const HASHED_RUNTIME_FILE_RE = /[^/]+-[A-Za-z0-9_]{6,}\.js$/;
 const IMPORT_RE = /(?:import|export)\s+(?:[^"'`]*?\s+from\s+)?["'`]([^"'`]+)["'`]/g;
 
-const allowedLegacyWrappers = new Set([
-  "src/workshop-runtime/AgentRuntime.js",
-  "src/workshop-runtime/AgentSession.js",
-  "src/workshop-runtime/Artifacts.js",
-  "src/workshop-runtime/AuthToken.js",
-  "src/workshop-runtime/CodeBlock.js",
-  "src/workshop-runtime/DemoBase.js",
-  "src/workshop-runtime/Dialog.js",
-  "src/workshop-runtime/Input.js",
-  "src/workshop-runtime/PreviewCodeToggle.js",
-  "src/workshop-runtime/ProxyClient.js",
-  "src/workshop-runtime/SelfHostingLab.js",
-  "src/workshop-runtime/UiPrimitives.js",
-  "src/workshop-runtime/demoCompanyConfig.js",
-]);
-
 const failures = [];
 
 function rel(file) {
@@ -58,10 +42,14 @@ if (trackedBuildFiles.length > 0) {
 
 for (const file of listFiles(path.join(ROOT, "src"))) {
   const relativeFile = rel(file);
-  const isLegacyRuntimeFile =
+  if (
     relativeFile.startsWith("src/workshop-runtime/") &&
-    HASHED_RUNTIME_FILE_RE.test(path.posix.basename(relativeFile));
-  if (isLegacyRuntimeFile) continue;
+    HASHED_RUNTIME_FILE_RE.test(path.posix.basename(relativeFile))
+  ) {
+    failures.push(
+      `${relativeFile} is a hashed legacy runtime filename. Rename it behind a stable source module.`,
+    );
+  }
 
   const text = fs.readFileSync(file, "utf8");
   for (const match of text.matchAll(IMPORT_RE)) {
@@ -73,27 +61,10 @@ for (const file of listFiles(path.join(ROOT, "src"))) {
       "/./",
       "/",
     );
-    if (
-      (HASHED_RUNTIME_RE.test(specifier) || HASHED_RUNTIME_RE.test(normalizedImport)) &&
-      !allowedLegacyWrappers.has(relativeFile)
-    ) {
-      failures.push(
-        `${relativeFile} imports a legacy hashed runtime module directly: ${specifier}`,
-      );
+    if (HASHED_RUNTIME_RE.test(specifier) || HASHED_RUNTIME_RE.test(normalizedImport)) {
+      failures.push(`${relativeFile} imports a hashed legacy runtime module: ${specifier}`);
     }
   }
-}
-
-const changedLegacyFiles = git(["status", "--porcelain", "--", "src/workshop-runtime"])
-  .split("\n")
-  .filter(Boolean)
-  .map((line) => line.slice(3).trim())
-  .filter((file) => HASHED_RUNTIME_FILE_RE.test(path.posix.basename(file)));
-
-for (const file of changedLegacyFiles) {
-  failures.push(
-    `${file} is a legacy hashed runtime file with local changes. Move edits behind a stable facade instead.`,
-  );
 }
 
 if (failures.length > 0) {

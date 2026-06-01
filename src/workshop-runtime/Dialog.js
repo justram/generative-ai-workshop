@@ -1,1 +1,1 @@
-export * from "./Dialog-C7MHz9Dg.js";
+export * from "./DialogRuntime.js";

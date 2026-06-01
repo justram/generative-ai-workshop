@@ -1,7 +1,7 @@
 import { i18n as e } from "../mini-lit/index.js";
-import { agentLoop as t, getModel as n } from "./app-C9nW8ndw.js";
-import { getAuthToken as r } from "./auth-token-Dkh_JH49.js";
-import { streamSimpleProxy as i } from "./proxy-client-DO8A5rUF.js";
+import { agentLoop as t, getModel as n } from "./AgentAppRuntime.js";
+import { getAuthToken as r } from "./AuthTokenRuntime.js";
+import { streamSimpleProxy as i } from "./ProxyClientRuntime.js";
 var a = class {
     constructor(e, t) {
       ((this.getMessages = e), (this.authTokenProvider = t));

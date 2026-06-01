@@ -7,7 +7,7 @@ import {
   x as html,
 } from "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase as LegacyDemoBase } from "./DemoBase-7724hyNv.js";
+import { DemoBase as LegacyDemoBase } from "./DemoBaseRuntime.js";
 
 export class DemoBase extends LegacyDemoBase {
   firstUpdated(changedProperties) {

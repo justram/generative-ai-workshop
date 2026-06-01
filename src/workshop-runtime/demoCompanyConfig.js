@@ -1,1 +1,1 @@
-export * from "./demo-company-config-DwX2XOme.js";
+export * from "./DemoCompanyConfigRuntime.js";

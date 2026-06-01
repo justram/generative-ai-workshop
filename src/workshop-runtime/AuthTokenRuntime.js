@@ -14,8 +14,8 @@ import {
   DialogContent as u,
   DialogFooter as d,
   DialogHeader as f,
-} from "./Dialog-C7MHz9Dg.js";
-import { Input as p } from "./Input-0pADT9gU.js";
+} from "./DialogRuntime.js";
+import { Input as p } from "./InputRuntime.js";
 var m = class extends r {
     constructor(...e) {
       (super(...e),

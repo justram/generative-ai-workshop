@@ -1,1 +1,1 @@
-export * from "./artifacts-BhLRFxu0.js";
+export * from "./ArtifactsRuntime.js";

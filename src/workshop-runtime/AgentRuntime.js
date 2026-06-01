@@ -1,7 +1,7 @@
-import { AgentInterface as RegisteredAgentInterface } from "./app-C9nW8ndw.js";
+import { AgentInterface as RegisteredAgentInterface } from "./AgentAppRuntime.js";
 import { i18n, x as html } from "../mini-lit/index.js";
 
-export * from "./app-C9nW8ndw.js";
+export * from "./AgentAppRuntime.js";
 
 class AgentInterfaceHost extends HTMLElement {
   constructor() {
