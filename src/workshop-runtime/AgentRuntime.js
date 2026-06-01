@@ -1,7 +1,42 @@
 import { AgentInterface as RegisteredAgentInterface } from "./AgentAppRuntime.js";
 import { i18n, x as html } from "../mini-lit/index.js";
 
-export * from "./AgentAppRuntime.js";
+export {
+  AbortedMessage,
+  AssistantMessage,
+  AssistantMessageEventStream,
+  AttachmentTileList,
+  ConsoleBlock,
+  MessageList,
+  ModelSelector,
+  NEVER,
+  ToolMessage,
+  ToolMessageDebugView,
+  UserMessage,
+  ZodIssueCode,
+  agentLoop,
+  anyType,
+  arrayType,
+  booleanType,
+  createJavaScriptReplTool,
+  discriminatedUnionType,
+  enumType,
+  literalType,
+  numberType,
+  objectType,
+  optionalType,
+  parseStreamingJson,
+  recordType,
+  registerToolRenderer,
+  require_fast_deep_equal,
+  stringType,
+  unionType,
+  unknownType,
+  webSearchTool,
+} from "./AgentAppRuntime.js";
+export { formatCost, formatTokenCount, getModel, models } from "./AgentModels.js";
+export { StringEnum, Type } from "./AgentSchema.js";
+export { calculateTool, getCurrentTimeTool } from "./AgentTools.js";
 
 class AgentInterfaceHost extends HTMLElement {
   constructor() {

@@ -13,7 +13,7 @@ import {
 import "./CodeBlock.js";
 import "./PreviewCodeToggle.js";
 import { Badge } from "./UiPrimitives.js";
-import { StringEnum, Type } from "./AgentRuntime.js";
+import { StringEnum, Type } from "./AgentSchema.js";
 
 function downloadButton({ content, filename, mimeType = "text/plain", title = i18n("Download") }) {
   return Button({
