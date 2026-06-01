@@ -160,6 +160,42 @@ function checkExecutable(report, label, filePath, minBytes) {
   }
 }
 
+function checkPackagedWrapper(report, label, filePath, minBytes) {
+  if (!filePath || !fs.existsSync(filePath)) {
+    return false;
+  }
+
+  try {
+    const info = readPeInfo(filePath);
+    if (info.size < minBytes) {
+      fail(report, `exe:${label}:size`, `${label} looks too small`, {
+        filePath,
+        size: info.size,
+        minBytes,
+        info,
+      });
+      return true;
+    }
+    pass(
+      report,
+      `exe:${label}`,
+      `${label} is a valid Windows package wrapper; app payload architecture is checked separately`,
+      {
+        filePath,
+        size: info.size,
+        wrapperMachineName: info.machineName,
+      },
+    );
+    return true;
+  } catch (error) {
+    fail(report, `exe:${label}`, `${label} is not a valid Windows PE executable`, {
+      filePath,
+      error: error.message,
+    });
+    return true;
+  }
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const report = {
@@ -187,13 +223,13 @@ async function main() {
   const resourcesDir = path.join(winUnpacked, "resources");
   const appAsar = path.join(resourcesDir, "app.asar");
 
-  const hasInstaller = checkExecutable(
+  const hasInstaller = checkPackagedWrapper(
     report,
     "installer",
     installer ? path.join(args.dist, installer) : null,
     50 * 1024 * 1024,
   );
-  const hasPortable = checkExecutable(
+  const hasPortable = checkPackagedWrapper(
     report,
     "portable",
     portable ? path.join(args.dist, portable) : null,
