@@ -95,7 +95,9 @@ function readPeInfo(filePath) {
 }
 
 function normalizedAsarList(asarPath) {
-  return new Set(asar.listPackage(asarPath).map((entry) => entry.replace(/^\/+/, "")));
+  return new Set(
+    asar.listPackage(asarPath).map((entry) => entry.replace(/\\/g, "/").replace(/^\/+/, "")),
+  );
 }
 
 function asarHas(list, file) {
