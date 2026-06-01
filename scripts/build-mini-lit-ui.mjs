@@ -8,6 +8,9 @@ const shared = {
   format: "esm",
   platform: "browser",
   target: ["chrome120"],
+  loader: {
+    ".md": "text",
+  },
   sourcemap: true,
   splitting: true,
   chunkNames: "chunks/[name]-[hash]",

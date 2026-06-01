@@ -1,5 +1,6 @@
 import {
   Button,
+  i$1 as LitElement,
   i18n,
   iconArrowLeftLine,
   iconArticleLine,
@@ -7,9 +8,58 @@ import {
   x as html,
 } from "../mini-lit/index.js";
 import "../mini-lit/index.js";
-import { DemoBase as LegacyDemoBase } from "./DemoBaseRuntime.js";
+import { getWorkshopContent } from "./workshopContent.js";
 
-export class DemoBase extends LegacyDemoBase {
+export class DemoBase extends LitElement {
+  static properties = {
+    showLeftPanel: { state: true },
+    showLeftPanelDesktop: { state: true },
+    showRightPanel: { state: true },
+    showRightPanelDesktop: { state: true },
+  };
+
+  constructor() {
+    super();
+    this.showLeftPanel = false;
+    this.showLeftPanelDesktop = true;
+    this.showRightPanel = false;
+    this.showRightPanelDesktop = true;
+    this.sectionMode = "single";
+  }
+
+  get workshopContent() {
+    return getWorkshopContent();
+  }
+
+  get sectionContent() {
+    const content = this.workshopContent;
+    if (this.sectionMode === "full") return content.getMarkdown({ withTOC: true });
+    if (!this.sectionId) return undefined;
+    return this.sectionMode === "subtree"
+      ? content.getMarkdown({ id: this.sectionId, includeChildren: true })
+      : content.getMarkdown({ id: this.sectionId });
+  }
+
+  getSection(sectionId) {
+    const section = this.workshopContent.sections.find((item) => item.id === sectionId);
+    if (!section) return undefined;
+    const body = section.content.join("\n").trim();
+    const heading = `${"#".repeat(section.level + 1)} ${section.id}. ${section.title}`;
+    return body ? `${heading}\n${body}` : heading;
+  }
+
+  getFullContentWithTOC() {
+    return this.workshopContent.getFullContentWithTOC();
+  }
+
+  renderLeftDemoPanel() {}
+
+  renderRightDemoPanel() {}
+
+  createRenderRoot() {
+    return this;
+  }
+
   firstUpdated(changedProperties) {
     super.firstUpdated?.(changedProperties);
     this.mountAgentInterfaceHosts();
@@ -182,9 +232,7 @@ export class DemoBase extends LegacyDemoBase {
           <div class="flex-1 min-w-0">${this.renderContentPanel()}</div>
 
           <div
-            class="${this.showRightPanel
-              ? "translate-x-0"
-              : "translate-x-full lg:translate-x-0"}
+            class="${this.showRightPanel ? "translate-x-0" : "translate-x-full lg:translate-x-0"}
               ${this.showRightPanelDesktop && hasRightPanel ? "lg:flex" : "lg:hidden"}
               fixed lg:static inset-0 lg:inset-auto z-40 lg:z-auto
               w-full lg:w-[500px] bg-card text-card-foreground lg:border-l border-border
