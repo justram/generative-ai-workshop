@@ -10,6 +10,7 @@
   "main": "electron/main.mjs",
   "scripts": {
     "postinstall": "node scripts/patch-pi-oauth-page.mjs",
+    "dev": "npm run start",
     "prestart": "npm run build:ui && node scripts/patch-pi-oauth-page.mjs",
     "icons": "node scripts/generate-app-icons.mjs",
     "prelectron": "npm run build:ui",
@@ -28,8 +29,12 @@
     "audit:localization": "electron scripts/audit-localization.cjs",
     "compare:mini-lit": "electron scripts/compare-mini-lit-migration.cjs \"$PWD\"",
     "smoke:packaged": "node scripts/smoke-packaged.cjs",
+    "audit:win-dist": "node scripts/audit-windows-distribution.cjs",
+    "audit:win-dist:quick": "npm run build:ui && node scripts/generate-app-icons.mjs && npm run dist:win:dir && npm run audit:win-dist -- --report=test-results/windows-distribution-audit.json",
+    "audit:win-dist:release": "npm run dist:win && npm run audit:win-dist -- --require-installer --require-portable --report=test-results/windows-distribution-audit.json",
     "verify:upload": "node scripts/verify-upload-folder.cjs",
     "dist": "electron-builder",
+    "dist:win:dir": "electron-builder --win dir --x64 --publish never",
     "dist:win": "electron-builder --win nsis portable --x64 --publish never",
     "format": "oxfmt --write \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
     "format:check": "oxfmt --check \"src/mini-lit/**/*.js\" \"src/pages/**/*.js\" \"scripts/**/*.mjs\" \"scripts/**/*.cjs\" \"electron/**/*.mjs\" \"server.mjs\" \"package.json\" \"tsconfig.json\" \".oxlintrc.json\" \".oxfmtrc.json\"",
@@ -62,6 +67,14 @@
       "**/*",
       "!dist-electron/**",
       "!.local-auth/**",
+      "!.env",
+      "!.env.*",
+      "!test-results/**",
+      "!verification-screenshots/**",
+      "!sales-screenshots/*.zip",
+      "!build/js/**",
+      "!build/icon-source.png",
+      "!build/icon.iconset/**",
       "!vendor/**",
       "!*.log"
     ],
@@ -92,7 +105,9 @@
         "from": "build",
         "to": "build",
         "filter": [
-          "**/*"
+          "**/*",
+          "!icon-source.png",
+          "!icon.iconset/**"
         ]
       }
     ]

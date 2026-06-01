@@ -2,12 +2,6 @@ name: Windows release smoke
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -44,6 +38,7 @@ jobs:
         run: |
           node --check scripts/workshop-pages.cjs
           node --check scripts/smoke-packaged.cjs
+          node --check scripts/audit-windows-distribution.cjs
           node --check electron/main.mjs
 
       - name: Run source checks
@@ -57,6 +52,10 @@ jobs:
       - name: Build Windows app
         shell: bash
         run: npm run dist:win
+
+      - name: Audit Windows distribution contents
+        shell: bash
+        run: npm run audit:win-dist -- --require-installer --require-portable --report=test-results/windows-distribution-audit.json
 
       - name: Smoke-test packaged Windows app
         shell: bash

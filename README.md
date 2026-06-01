@@ -6,7 +6,7 @@ This is a local clone of the Generative AI Workshop site with the live GPT demos
 
 ```bash
 npm install
-npm start
+npm run dev
 ```
 
 Open <http://127.0.0.1:4174/>. Click the red/green ChatGPT status light in the upper-right controls and finish the ChatGPT browser login.
@@ -44,15 +44,21 @@ These builds are not code-signed yet, so Windows SmartScreen may warn users befo
 Use three levels of checks before sharing a build:
 
 ```bash
+npm run build:ui
+npm run check
 npm run audit:localization
+npm run audit:win-dist:quick
 npm run verify:upload
 ```
 
 - `npm run audit:localization` catches broken pages, wrong-language UI, bad placeholders, and console errors in the rendered Electron pages.
+- `npm run audit:win-dist:quick` builds a Windows `win-unpacked` directory on macOS/Linux/Windows and audits the packaged payload without spending GitHub Actions Windows minutes.
 - `npm run smoke:packaged` must run on the target platform after packaging. On Windows it launches the real portable `.exe`, waits for the local backend and first page to render, writes a smoke result, then exits.
 - `npm run verify:upload` checks that `dist-electron/google-drive-upload/` contains only the two upload zips, `README.md`, and `LICENSE`.
 
-The GitHub Actions workflow `.github/workflows/windows-release-smoke.yml` runs the Windows build and packaged `.exe` smoke test on a real Windows runner.
+The GitHub Actions workflow `.github/workflows/windows-release-smoke.yml` is manual-only. Run it when you need hosted Windows proof for a release; it builds the Windows artifacts, audits the package, launches the packaged `.exe`, and uploads smoke-test evidence.
+
+See [docs/windows-distribution-audit.md](docs/windows-distribution-audit.md) for the cheap/local versus hosted Windows audit strategy.
 
 ## Mini-Lit Migration Completion Goal
 
