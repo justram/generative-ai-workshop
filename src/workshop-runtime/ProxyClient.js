@@ -1,5 +1,5 @@
 import { i18n } from "../mini-lit/index.js";
-import { AssistantMessageEventStream, parseStreamingJson } from "./AgentRuntime.js";
+import { AssistantMessageEventStream, parseStreamingJson } from "./AgentStream.js";
 import { clearAuthToken } from "./AuthToken.js";
 
 function createEmptyAssistantMessage(model) {

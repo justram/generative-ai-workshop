@@ -4,7 +4,6 @@ import { i18n, x as html } from "../mini-lit/index.js";
 export {
   AbortedMessage,
   AssistantMessage,
-  AssistantMessageEventStream,
   AttachmentTileList,
   ConsoleBlock,
   MessageList,
@@ -25,7 +24,6 @@ export {
   numberType,
   objectType,
   optionalType,
-  parseStreamingJson,
   recordType,
   registerToolRenderer,
   require_fast_deep_equal,
@@ -36,6 +34,7 @@ export {
 } from "./AgentAppRuntime.js";
 export { formatCost, formatTokenCount, getModel, models } from "./AgentModels.js";
 export { StringEnum, Type } from "./AgentSchema.js";
+export { AssistantMessageEventStream, parseStreamingJson } from "./AgentStream.js";
 export { calculateTool, getCurrentTimeTool } from "./AgentTools.js";
 
 class AgentInterfaceHost extends HTMLElement {
