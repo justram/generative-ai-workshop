@@ -232,10 +232,10 @@ async function main() {
       "package.json",
       "electron/main.mjs",
       "server.mjs",
-      "local-pi-auth.js",
+      "public/js/local-pi-auth.js",
       "LICENSE",
-      "native-polish.css",
-      "cozy-workshop-theme.css",
+      "public/css/native-polish.css",
+      "public/css/cozy-workshop-theme.css",
       "node_modules/@earendil-works/pi-ai/package.json",
     ]) {
       assertAsarFile(report, list, file, "Required by packaged Electron runtime");
@@ -278,7 +278,7 @@ async function main() {
       );
       if (asarHas(list, routeShell)) {
         const html = readAsarText(appAsar, routeShell);
-        const expectedScript = `build/js/pages/${route.entry}.js`;
+        const expectedScript = `/build/js/pages/${route.entry}.js`;
         if (html.includes(expectedScript)) {
           pass(report, `route:${route.file}:script`, `${routeShell} loads ${expectedScript}`);
         } else {

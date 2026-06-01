@@ -76,16 +76,16 @@ for (const route of ROUTES) {
   const htmlFile = path.join(ROOT, routeShell);
   if (!fs.existsSync(htmlFile)) continue;
   const html = fs.readFileSync(htmlFile, "utf8");
-  const expectedScript = `build/js/pages/${route.entry}.js`;
+  const expectedScript = `/build/js/pages/${route.entry}.js`;
   const pageScripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)]
     .map((match) => match[1])
-    .filter((src) => src.startsWith("build/js/pages/"));
+    .filter((src) => src.replace(/^\/+/, "").startsWith("build/js/pages/"));
   if (pageScripts.length !== 1) {
     failures.push(`${routeShell} must load exactly one page bundle, found ${pageScripts.length}`);
   } else if (!pageScripts[0].startsWith(expectedScript)) {
     failures.push(`${routeShell} loads ${pageScripts[0]}, expected ${expectedScript}`);
   }
-  if (html.includes("build/js/chunks/")) {
+  if (html.includes("build/js/chunks/") || html.includes("/build/js/chunks/")) {
     failures.push(`${routeShell} must not import generated chunk files directly`);
   }
   if (!exists("src", "pages", `${route.entry}.js`)) {

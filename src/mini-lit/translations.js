@@ -1,4 +1,4 @@
-// Extracted from the pre-mini-lit workshop runtime so migration keeps the same i18n source of truth.
+// Shared i18n source of truth for generated pages and mini-lit components.
 // Add new strings here instead of relying on DOM rewrites or page-specific post-processing.
 
 export const EN_TO_ZH_TW = {
