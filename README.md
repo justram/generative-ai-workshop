@@ -71,6 +71,10 @@ See [docs/windows-distribution-audit.md](docs/windows-distribution-audit.md) for
 
 The OAuth callback uses `127.0.0.1:1455`, which is started temporarily by `pi-ai` during login.
 
+## License
+
+This project, including the original workshop content, Traditional Chinese localization, local app changes, and packaging scripts, is released under the Apache License 2.0. See [LICENSE](LICENSE).
+
 ## Notes
 
 The workshop’s `/api/stream` endpoint is implemented by `server.mjs` and forwards local requests to the ChatGPT-backed OpenAI Codex provider through `pi-ai`.
