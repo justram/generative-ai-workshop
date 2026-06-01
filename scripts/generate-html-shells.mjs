@@ -43,14 +43,20 @@ function renderShell(route) {
     .replaceAll("{{ENTRY}}", route.entry);
 }
 
+function shellPath(route) {
+  return route.file === "index.html" ? route.file : path.join("routes", route.file);
+}
+
 const failures = [];
 for (const route of WORKSHOP_ROUTES) {
-  const file = path.join(ROOT, route.file);
+  const routeShell = shellPath(route);
+  const file = path.join(ROOT, routeShell);
   const next = renderShell(route);
   if (checkOnly) {
     const current = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
-    if (current !== next) failures.push(route.file);
+    if (current !== next) failures.push(routeShell);
   } else {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, next);
   }
 }

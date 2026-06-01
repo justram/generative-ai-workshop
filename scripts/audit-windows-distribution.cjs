@@ -123,6 +123,10 @@ function assertResourceFile(report, resourcesDir, file, reason) {
   }
 }
 
+function shellPath(route) {
+  return route.file === "index.html" ? route.file : path.posix.join("routes", route.file);
+}
+
 function checkExecutable(report, label, filePath, minBytes) {
   if (!filePath || !fs.existsSync(filePath)) {
     return false;
@@ -264,23 +268,24 @@ async function main() {
 
     const routes = readWorkshopRoutes(root);
     for (const route of routes) {
-      assertAsarFile(report, list, route.file, `Route shell for ${route.entry}`);
+      const routeShell = shellPath(route);
+      assertAsarFile(report, list, routeShell, `Route shell for ${route.entry}`);
       assertResourceFile(
         report,
         resourcesDir,
         `build/js/pages/${route.entry}.js`,
         `Mini-lit bundle for ${route.file}`,
       );
-      if (asarHas(list, route.file)) {
-        const html = readAsarText(appAsar, route.file);
+      if (asarHas(list, routeShell)) {
+        const html = readAsarText(appAsar, routeShell);
         const expectedScript = `build/js/pages/${route.entry}.js`;
         if (html.includes(expectedScript)) {
-          pass(report, `route:${route.file}:script`, `${route.file} loads ${expectedScript}`);
+          pass(report, `route:${route.file}:script`, `${routeShell} loads ${expectedScript}`);
         } else {
           fail(
             report,
             `route:${route.file}:script`,
-            `${route.file} does not load expected bundle`,
+            `${routeShell} does not load expected bundle`,
             {
               expectedScript,
             },

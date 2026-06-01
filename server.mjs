@@ -594,26 +594,38 @@ async function handleMcpDemo(req, res) {
 async function handleStatic(req, res, url) {
   const requestedPath = decodeURIComponent(url.pathname === "/" ? "/index.html" : url.pathname);
   const safePath = path.normalize(requestedPath).replace(/^(\.\.[/\\])+/, "");
+  const relativePath = safePath.replace(/^[/\\]+/, "");
+  const staticCandidates = [relativePath];
+  if (
+    path.extname(relativePath).toLowerCase() === ".html" &&
+    path.basename(relativePath) !== "index.html" &&
+    !relativePath.includes("/") &&
+    !relativePath.includes("\\")
+  ) {
+    staticCandidates.push(path.join("routes", relativePath));
+  }
 
   for (const root of staticRoots) {
-    const filePath = path.join(root, safePath);
-    if (!filePath.startsWith(root)) {
-      sendJson(res, 403, { error: "Forbidden" });
-      return;
-    }
+    for (const candidate of staticCandidates) {
+      const filePath = path.join(root, candidate);
+      if (!filePath.startsWith(root)) {
+        sendJson(res, 403, { error: "Forbidden" });
+        return;
+      }
 
-    try {
-      const stat = await fs.stat(filePath);
-      const actualPath = stat.isDirectory() ? path.join(filePath, "index.html") : filePath;
-      const ext = path.extname(actualPath).toLowerCase();
-      res.writeHead(200, {
-        "content-type": MIME_TYPES[ext] || "application/octet-stream",
-        "cache-control": "no-cache",
-      });
-      fsSync.createReadStream(actualPath).pipe(res);
-      return;
-    } catch (error) {
-      if (error.code !== "ENOENT") throw error;
+      try {
+        const stat = await fs.stat(filePath);
+        const actualPath = stat.isDirectory() ? path.join(filePath, "index.html") : filePath;
+        const ext = path.extname(actualPath).toLowerCase();
+        res.writeHead(200, {
+          "content-type": MIME_TYPES[ext] || "application/octet-stream",
+          "cache-control": "no-cache",
+        });
+        fsSync.createReadStream(actualPath).pipe(res);
+        return;
+      } catch (error) {
+        if (error.code !== "ENOENT") throw error;
+      }
     }
   }
 

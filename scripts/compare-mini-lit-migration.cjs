@@ -48,19 +48,32 @@ function serve(root, port) {
     const url = new URL(req.url, `http://127.0.0.1:${port}`);
     let pathname = decodeURIComponent(url.pathname);
     if (pathname === "/") pathname = "/index.html";
-    const file = path.resolve(resolvedRoot, `.${pathname}`);
-    if (!file.startsWith(resolvedRoot)) {
-      res.writeHead(403);
-      res.end("forbidden");
-      return;
-    }
+    const primaryFile = path.resolve(resolvedRoot, `.${pathname}`);
+    const routeFile =
+      path.extname(pathname) === ".html" && path.basename(pathname) !== "index.html"
+        ? path.resolve(resolvedRoot, "routes", path.basename(pathname))
+        : primaryFile;
+    const candidates = primaryFile === routeFile ? [primaryFile] : [primaryFile, routeFile];
     try {
-      const data = await fs.readFile(file);
-      res.writeHead(200, {
-        "cache-control": "no-store",
-        "content-type": mime[path.extname(file)] || "application/octet-stream",
-      });
-      res.end(data);
+      for (const file of candidates) {
+        if (!file.startsWith(resolvedRoot)) {
+          res.writeHead(403);
+          res.end("forbidden");
+          return;
+        }
+        try {
+          const data = await fs.readFile(file);
+          res.writeHead(200, {
+            "cache-control": "no-store",
+            "content-type": mime[path.extname(file)] || "application/octet-stream",
+          });
+          res.end(data);
+          return;
+        } catch (error) {
+          if (error.code !== "ENOENT") throw error;
+        }
+      }
+      throw new Error("not found");
     } catch {
       res.writeHead(404, { "content-type": "text/plain" });
       res.end("not found");
