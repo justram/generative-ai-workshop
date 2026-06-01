@@ -1,17 +1,20 @@
 import {
   i$1 as LitElement,
-  customElement,
   html,
   i18n,
   iconCodeView,
   iconEyeLine,
-  property,
 } from "../mini-lit/index.js";
 
-@customElement("preview-code-toggle")
 export class PreviewCodeToggle extends LitElement {
-  @property({ reflect: false })
-  mode = "preview";
+  static properties = {
+    mode: { type: String },
+  };
+
+  constructor() {
+    super();
+    this.mode = "preview";
+  }
 
   createRenderRoot() {
     return this;
@@ -50,4 +53,8 @@ export class PreviewCodeToggle extends LitElement {
       </div>
     `;
   }
+}
+
+if (!customElements.get("preview-code-toggle")) {
+  customElements.define("preview-code-toggle", PreviewCodeToggle);
 }

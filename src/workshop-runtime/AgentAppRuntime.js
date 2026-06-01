@@ -34,7 +34,7 @@ import {
   v as se,
   x as C,
 } from "../mini-lit/index.js";
-import { es_default as ce } from "./CodeBlockRuntime.js";
+import { es_default as ce } from "./CodeBlock.js";
 import { Badge as le } from "./UiPrimitives.js";
 import { DialogHeader as ue } from "./Dialog.js";
 import { Input as de } from "./Input.js";
