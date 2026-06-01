@@ -35,14 +35,14 @@ import {
   x as C,
 } from "../mini-lit/index.js";
 import { es_default as ce } from "./CodeBlockRuntime.js";
-import { Badge as le } from "./UiPrimitivesRuntime.js";
-import { DialogHeader as ue } from "./DialogRuntime.js";
-import { Input as de } from "./InputRuntime.js";
+import { Badge as le } from "./UiPrimitives.js";
+import { DialogHeader as ue } from "./Dialog.js";
+import { Input as de } from "./Input.js";
 import {
   DialogBase as fe,
   PromptDialog as pe,
   getAuthToken as me,
-} from "./AuthTokenRuntime.js";
+} from "./AuthToken.js";
 function he(e) {
   let t = ``;
   if (

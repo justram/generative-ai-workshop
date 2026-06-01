@@ -15,7 +15,7 @@ import {
 } from "../mini-lit/index.js";
 import { es_default as p } from "./CodeBlockRuntime.js";
 import { StringEnum as m, Type as h } from "./AgentAppRuntime.js";
-import { Badge as g } from "./UiPrimitivesRuntime.js";
+import { Badge as g } from "./UiPrimitives.js";
 import { Diff as _ } from "../mini-lit/index.js";
 function v({
   content: t,

@@ -1,1 +1,1 @@
-export * from "./InputRuntime.js";
+export { Input } from "../mini-lit/index.js";

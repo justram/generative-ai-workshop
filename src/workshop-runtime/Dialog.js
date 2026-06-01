@@ -1,1 +1,1 @@
-export * from "./DialogRuntime.js";
+export { Dialog, DialogContent, DialogFooter, DialogHeader } from "../mini-lit/index.js";
